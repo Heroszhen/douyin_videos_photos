@@ -1,0 +1,43 @@
+@import "_variables";
+
+$navWidth: 150px;
+#leftnav{
+    animation-fill-mode:forwards;
+    --nav-width: 150px;
+    position: fixed;
+    z-index: 100;
+    left: -1 * $navWidth;
+    top:$top;
+    width: $navWidth;
+    height: calc(100vh - $top);
+    color: $douyinActiveColor;
+    background-color: $douyinBackgroundColor2;
+    >a.path{
+        font-size:16px;
+        display: block;
+    }
+}
+
+#leftnav.displayed {
+    animation: show_nav .5s linear;
+    animation-fill-mode:forwards;
+}
+
+@keyframes show_nav {
+    0% {  transform: translateX(-1 * $navWidth);  }
+    50% {  transform: translateX(0);  }
+    100% {  transform: translateX(150px);  }
+}
+
+@keyframes hide_nav {
+    0% {  transform: translateX(0);  }
+    50% {  transform: translateX(-75px);  }
+    100% {  transform: translateX(-1 * $navWidth);  }
+}
+
+@media (max-width:767px) {
+    #leftnav{
+        top: $top2;
+        height: calc(100vh - $top2);
+    }
+}

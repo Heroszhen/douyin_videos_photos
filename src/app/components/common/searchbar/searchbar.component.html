@@ -1,0 +1,20 @@
+<div id="searchbar-component" (click)="$event.stopPropagation()">
+    <div>
+        <i class="bi bi-chevron-left pointer" (click)="closeSearchSection()"></i>
+    </div>
+    <div>
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="rechercher...." [(ngModel)]="keywords" (keydown)="avoidUp($event)" (keyup)="sendKeywords($event, 1)">
+        <i class="bi bi-upc-scan pointer"></i>
+    </div>
+    <div>
+        <i class="bi bi-arrow-right pointer" (click)="sendKeywords($event, 2)"></i>
+    </div>
+    <div class="list-propositions" *ngIf="propositions.length != 0">
+        <div class="wrap">
+            <div *ngFor="let item of propositions;let key = index;"(click)="elmindex=key;changeElmindex(13)">
+                <div class="proposition" [innerHTML]="item" [ngClass]="{'active':elmindex==key}"></div>
+            </div>
+        </div>
+    </div>
+</div>

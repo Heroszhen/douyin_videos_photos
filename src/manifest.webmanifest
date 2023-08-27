@@ -1,0 +1,17 @@
+{
+    "name": "MeiNv",
+    "short_name": "MeiNv",
+    "theme_color": "#060716",
+    "background_color": "#060716",
+    "display": "standalone",
+    "scope": "/",
+    "id": "/",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "assets/photos/icon-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        }
+    ]
+}

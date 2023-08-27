@@ -1,1 +1,198 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "_variables";
+
+@layer base {
+    h2 {
+        font-size:26px;
+        font-weight: bold;
+    }
+    h3 {
+        font-size:22px;
+        font-weight: bold;
+    }
+    h4 {
+        font-size:18px;
+        font-weight: bold;
+    }
+    .douyin-color{
+        color: $douyinColor;
+    }
+    .douyin-active-color {
+        color: $douyinActiveColor;
+    }
+    .douyin-border-color {
+        border: 1px solid $douyinBorderColor;
+    }
+    .douyin-background-color {
+        background-color: $douyinBackgroundColor;
+    }
+    .douyin-background-color2 {
+        background-color: $douyinBackgroundColor2;
+    }
+    .douyin-padding-top {
+        padding-top:50px;
+    }
+    .w-inherit {
+        width:inherit;
+    }
+
+}
+
+@layer components {
+    .card{
+        border-radius:theme('borderRadius.xl');
+        border: 1px solid gainsboro;
+        transition: .3s;
+        @apply px-7 py-2;
+        &:hover{
+            box-shadow: 0px 8px 10px 1px rgba(0,0,0,.14), 0px 3px 14px 2px rgba(0,0,0,.12), 0px 5px 5px -3px rgba(0,0,0,.2);
+        }
+    }
+}
+
+:root {
+    --top-nav-height:$top;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+iframe{
+    width:100%;
+    height:100%;
+    background-color: transparent;
+    
+}
+
+.douyin{
+    background-color: $douyinBackgroundColor;
+    color:$douyinActiveColor;
+}
+
+.panel{
+    border-radius: 8px;
+    box-shadow: 0 0 24px rgba(0,0,0,.1);
+    padding: 24px 38px 40px;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+section.component{
+    width:100%;
+    min-height:100%;
+    padding-top:50px;
+}
+
+section#searched-videos{
+    position: fixed;
+    z-index: 2000;
+    background-color: white;
+    color:black;
+    width:100%;
+    height: 100vh;
+    top:0;
+    left:0;
+    padding:3px 10px;
+    overflow-y: auto;
+}
+
+.path{
+    cursor: pointer;
+}
+.path.active{
+    color:$douyinActiveColor;
+}
+
+app-videos{
+    width:100%;
+}
+
+#section-videos{
+    iframe,
+    video{
+        width: 100%;
+        height: calc(100vh - 50px);
+    }
+    .wrap-video{
+        display: flex;
+        justify-content: center
+    }
+    .wrap-video-ticktok {
+        iframe{
+            width:324px !important;
+            height:1000px !important;
+            border-radius: 8px;
+        }
+    }
+}
+
+
+.foundVideo{
+    iframe,
+    video{
+        height:80vh !important;
+        width:100% !important;
+    }
+}
+
+@media (max-width:767px) {
+    section.component{
+        padding-top:0;
+    }
+
+    #section-videos{
+        iframe,
+        video{
+            height:100vh;
+            width:100%;
+        }
+    }
+}
+
+
+
+
+
+
+@media (max-width:576px) {
+    .container{
+        width:100% !important;
+    }
+}
+
+@media (min-width:576px) {
+    .container{
+        width:540px !important;
+    }
+}
+
+@media (min-width:768px) {
+    .container{
+        width:720px !important;
+    }
+}
+
+@media (min-width:992px) {
+    .container{
+        width:900px !important;
+    }
+}
+
+@media (min-width:1200px) {
+    .container{
+        width:1140px !important;
+    }
+}
+
+@media (min-width:1400px) {
+    .container{
+        width:1320px !important;
+    }
+}
+
+

@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  baseUrlAD: "https://alexandra-daddario.yangzhen.tech",
+  baseUrlBack: "https://www.yangzhen.tech/notes3waapi/public/api",
 };

@@ -1,0 +1,59 @@
+
+<section class="component container mx-auto" id="section-videos">
+    <section 
+        id="wrap-list-videos"
+        (touchstart)="touchStart($event)"
+        (touchmove)="touchMove($event)"
+        (touchend)="touchEnd($event)"
+        class="columns-1"
+    >
+    <ng-container *ngIf="elmindex != -1">
+        <app-videoplayer class="w-full h-full" [params]="videoPlayerParams"></app-videoplayer>
+    </ng-container>
+
+    </section>
+    <div id="play-switch">
+        <div class="playswitch-prev"><i class="bi bi-chevron-up" (click)="changeElmindex(2)"></i></div>
+        <div class="playswitch-prev"><i class="bi bi-chevron-down" (click)="changeElmindex(1)"></i></div>
+    </div>
+    <div id="wrap-description" #wrap_description>
+        <ng-container *ngIf="elmindex != -1">
+            <section class="wrap">
+                <div>
+                    <img [src]="videos[elmindex]['photourl']">
+                </div>
+                <div class="text-[22px]">
+                    {{videos[elmindex]['name']}}
+                </div>
+                <div [innerHTML]="videos[elmindex]['description']"></div>
+                <div>
+                    <a href="{{videos[elmindex]['siteurl']}}" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a>
+                </div>
+                <div id="wrap-gear" (click)="switchDescription()">
+                    <div class="wrap">
+                        <i class="bi bi-gear"></i>
+                    </div>
+                </div>
+            </section>
+        </ng-container>
+    </div>
+
+    <section id="searched-videos" *ngIf="toSearch==true" (click)="$event.stopPropagation();propositions=[];" (scroll)="ListenToSectionFroundVideosScroll($event)">
+        <section class="fixed z-50 top-0 left-0 w-full">
+            <div class="container mx-auto ">
+                <div class="columns-1 ml-[-15px]">
+                    <app-searchbar class="w-full" [propositions]="propositions" (toSendKeywords)="getKeywords($event)"></app-searchbar>
+                </div>
+            </div>
+        </section>
+        <section class="container mx-auto pt-[50px]">
+            <div class="columns-1">
+                <div *ngFor="let video of foundVideos;" class="pb-3 mb-10 border-b-8 border-b-gray-200">
+                    <h4>{{video['actressname']}}</h4>
+                    <div class="mb-3">{{video['name']}}</div>
+                    <app-videoplayer class="w-full h-full" [params]="setVideoPlayerParamsByType(video, 'foundVideo')"></app-videoplayer>
+                </div>
+            </div>
+        </section>
+    </section>
+</section>

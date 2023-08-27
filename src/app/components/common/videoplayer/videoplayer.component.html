@@ -1,0 +1,30 @@
+<section id="video-player" [className]="(params != null && params['className'] != null) ? params['className'] + ' w-full h-full' : 'w-full h-full'" >
+    <ng-container *ngIf='params != null'>
+        <ng-container *ngIf="[videoType.TickTok, videoType.Html].includes(params['type'])">
+            <section [innerHTML]="params['video']|safe:'html'" class="wrap-video" [ngClass]="{'wrap-video-ticktok':params['type']==videoType.TickTok}"></section>
+        </ng-container>
+
+        <ng-container *ngIf="params['type']==videoType.Iframe">
+            <section class="wrap-video">
+                <iframe
+                    [src]="params['video']|safe:'resourceUrl'"
+                    title=""
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    autoplay
+                    allowfullscreen
+                ></iframe>
+            </section>
+        </ng-container>
+
+        <ng-container *ngIf="params['type']==videoType.Video">
+            <section class="wrap-video">
+                <video controls>
+                    <source [src]="params['video']|safe:'resourceUrl'" type="video/mp4" type="video/mp4" />
+                </video>
+            </section>
+        </ng-container>
+
+        
+    </ng-container>
+</section>

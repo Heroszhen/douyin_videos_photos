@@ -1,0 +1,11 @@
+<nav class="h-[43px] md:h-[50px] douyin-color border-none md:douyin-border-color" id="topnav">
+    <div class="path text-[25px] md:text-[30px]">
+        <i class="bi bi-list" (click)="switchLeftNav()"></i>
+    </div>
+    <a class="path hover:douyin-active-color" [routerLink]="['/actrices']" routerLinkActive="active">Actrices</a>
+    <a class="path">Photos</a>
+    <a class="path hover:douyin-active-color" [routerLink]="['/videos']" routerLinkActive="active">Videos</a>
+    <div class="path text-[18px] md:text-[27px]" (click)="openSearchSection()">
+        <i class="bi bi-search"></i>
+    </div>
+</nav>
