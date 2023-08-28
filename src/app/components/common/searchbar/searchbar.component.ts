@@ -13,6 +13,7 @@ export class SearchbarComponent implements OnInit {
   @Input() propositions:Array<string> = [];
   elmindex:number = -1;
   pageItem:number = 1;
+  action:number = -1;
   constructor(private storeService:StoreService) { }
 
   ngOnInit(): void {

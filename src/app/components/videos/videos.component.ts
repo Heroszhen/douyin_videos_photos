@@ -174,8 +174,10 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   getKeywords(e:IData): void{
+    this.canCharge2 = true;
+    this.keywordsAction = e.data.action;
     let keywords:string = removeTags(e.data.keywords);
-    if (e.data.action === 1) {
+    if (e.data.action === 1) { 
       if (keywords.length >= 2) {
         this.apiService.getSearchVideosByKeywords(keywords).subscribe({
           next: (data:IData)=>{
@@ -199,7 +201,6 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     }
    
     if ([2, 3].includes(e.data.action)) {
-      this.keywordsAction = e.data.action;
       this.keywordsPageItem = 1;
       this.foundVideos = [];
       if (e.data.action === 2) {
@@ -215,19 +216,42 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
       this.apiService.getGetVideosByKeywords(this.keywordsAction, this.keywordsKeywords, this.keywordsName, this.keywordsActressname, this.keywordsPageItem).subscribe({
         next: (data:IData)=>{
           if (data["status"] === 1) {
-            this.foundVideos = this.foundVideos.concat(data["data"]);
+            if (data["data"] !== null && data["data"].length != 0) {
+              this.foundVideos = this.foundVideos.concat(data["data"]);
+              this.keywordsPageItem++;
+            }
           }
         },
         error:(err)=>{
           console.log(err);
         }
-      });
+      });console.log(this.keywordsKeywords)
     }
   }
 
   ListenToSectionFroundVideosScroll(e:Event): void{
     let target:Element = (e.target as Element);
-    console.log(target.clientHeight, target.scrollTop, target.scrollHeight)
+    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 50) {
+      if (this.canCharge2) {
+        this.canCharge2 = false;
+        this.apiService.getGetVideosByKeywords(this.keywordsAction, this.keywordsKeywords, this.keywordsName, this.keywordsActressname, this.keywordsPageItem).subscribe({
+          next: (data:IData)=>{
+            if (data["status"] === 1) {
+              if (data["data"] !== null && data["data"].length != 0) {
+                this.foundVideos = this.foundVideos.concat(data["data"]);
+                this.canCharge2 = true;
+                this.keywordsPageItem++;
+              }
+            }
+          },
+          error:(err)=>{
+            this.canCharge2 = true;
+            console.log(err);
+          }
+        });
+      }
+    }
+    
   }
 
 

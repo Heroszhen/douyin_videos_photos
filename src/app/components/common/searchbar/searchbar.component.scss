@@ -16,12 +16,12 @@
         width:30px;
     }
     >div:nth-child(2){
-        width:calc(100% - 72px);
+        width:calc(100% - 60px);
         background-color: #F3F3F3;
         padding:2px 3px;
     }
     >div:nth-child(3){
-        width:42px;
+        width:30px;
         justify-content: flex-start;
         padding-left:1px;
     }
@@ -38,7 +38,7 @@
     .list-propositions{
         width: 100%;
         .wrap{
-            width:calc(100% - 72px);
+            width:calc(100% - 60px);
             box-shadow: 0 2px 4px 0 rgba(0,0,0,.13);
             position: relative;
             margin-left:-10px;
