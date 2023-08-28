@@ -7,7 +7,7 @@
         (touchend)="touchEnd($event)"
         class="columns-1"
     >
-    <ng-container *ngIf="elmindex != -1">
+    <ng-container *ngIf="elmindex !== -1">
         <app-videoplayer class="w-full h-full" [params]="videoPlayerParams"></app-videoplayer>
     </ng-container>
 
@@ -17,7 +17,7 @@
         <div class="playswitch-prev"><i class="bi bi-chevron-down" (click)="changeElmindex(1)"></i></div>
     </div>
     <div id="wrap-description" #wrap_description>
-        <ng-container *ngIf="elmindex != -1">
+        <ng-container *ngIf="elmindex !== -1">
             <section class="wrap">
                 <div>
                     <img [src]="videos[elmindex]['photourl']">
@@ -38,7 +38,7 @@
         </ng-container>
     </div>
 
-    <section id="searched-videos" *ngIf="toSearch==true" (click)="$event.stopPropagation();propositions=[];" (scroll)="ListenToSectionFroundVideosScroll($event)">
+    <section id="searched-videos" *ngIf="toSearch===true" (click)="$event.stopPropagation();propositions=[];" (scroll)="ListenToSectionFroundVideosScroll($event)">
         <section class="fixed z-50 top-0 left-0 w-full">
             <div class="container mx-auto ">
                 <div class="columns-1">
@@ -50,8 +50,8 @@
             <div class="columns-1">
                 <div class="mb-5">
                     <span class="text-red-500">Mot clé</span> : 
-                    <ng-container *ngIf="keywordsAction==2"> {{keywordsKeywords}}</ng-container>
-                    <ng-container *ngIf="keywordsAction==3"> {{keywordsName}} {{keywordsActressname}}</ng-container>
+                    <ng-container *ngIf="keywordsAction===2"> {{keywordsKeywords}}</ng-container>
+                    <ng-container *ngIf="keywordsAction===3"> {{keywordsName}} {{keywordsActressname}}</ng-container>
                 </div>
                 <div *ngFor="let video of foundVideos;" class="pb-3 mb-10 border-b-8 border-b-gray-200">
                     <h4>{{video['actressname']}}</h4>
