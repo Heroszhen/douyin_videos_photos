@@ -41,7 +41,6 @@
             width:calc(100% - 60px);
             box-shadow: 0 2px 4px 0 rgba(0,0,0,.13);
             position: relative;
-            margin-left:-10px;
             font-size:18px;
             .proposition{
                 padding:3px 7px 4px 5px;
@@ -57,9 +56,6 @@
 
 @media (max-width:767px) {
     #searchbar-component {
-        >div{
-            font-size:20px;
-        }
         .list-propositions{
             .wrap{
                 font-size:14px;

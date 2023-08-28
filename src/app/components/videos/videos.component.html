@@ -40,8 +40,8 @@
 
     <section id="searched-videos" *ngIf="toSearch===true" (click)="$event.stopPropagation();propositions=[];" (scroll)="ListenToSectionFroundVideosScroll($event)">
         <section class="fixed z-50 top-0 left-0 w-full">
-            <div class="container mx-auto ">
-                <div class="columns-1">
+            <div class="container mx-auto">
+                <div class="columns-1" [ngClass]="{'ml-[-10px]':foundVideos.length>1}">
                     <app-searchbar class="w-full" [propositions]="propositions" (toSendKeywords)="getKeywords($event)"></app-searchbar>
                 </div>
             </div>

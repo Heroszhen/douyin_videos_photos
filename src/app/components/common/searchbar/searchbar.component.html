@@ -5,7 +5,7 @@
     <div>
         <i class="bi bi-search"></i>
         <input type="text" placeholder="rechercher...." [(ngModel)]="keywords" (keydown)="avoidUp($event)" (keyup)="sendKeywords($event, 1)">
-        <i class="bi bi-upc-scan pointer"></i>
+        <i class="bi bi-camera-fill pointer"></i>
     </div>
     <div>
         <i class="bi bi-arrow-right pointer" (click)="sendKeywords($event, 2)"></i>

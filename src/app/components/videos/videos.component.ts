@@ -61,6 +61,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
       this.foundVideos = [];
       this.propositions = [];
       this.canCharge2 = true;
+      this.keywordsAction = null!
     });
     this.subscribers.push(connectedSubscriber, searchSubscriber);
     window.addEventListener('resize', this.listener.bind(this), true);
