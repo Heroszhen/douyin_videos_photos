@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IData } from 'src/app/interfaces/IData';
 import { StoreService } from 'src/app/services/store.service';
+import { wait } from 'src/app/utils/util';
 
 @Component({
   selector: 'app-searchbar',
@@ -14,6 +15,7 @@ export class SearchbarComponent implements OnInit {
   elmindex:number = -1;
   pageItem:number = 1;
   action:number = -1;
+  section:number|null =null;
   constructor(private storeService:StoreService) { }
 
   ngOnInit(): void {
@@ -66,6 +68,13 @@ export class SearchbarComponent implements OnInit {
           else this.elmindex++;
         }
       }
+    } else {
+      this.sendKeywords(null, 2);
     }
+  }
+
+  async switchSection(s:number|null){
+    this.section = s;
+    await wait(1);
   }
 }

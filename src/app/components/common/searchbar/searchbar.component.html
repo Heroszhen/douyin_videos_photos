@@ -5,7 +5,7 @@
     <div>
         <i class="bi bi-search"></i>
         <input type="text" placeholder="rechercher...." [(ngModel)]="keywords" (keydown)="avoidUp($event)" (keyup)="sendKeywords($event, 1)">
-        <i class="bi bi-camera-fill pointer"></i>
+        <i class="bi bi-camera-fill pointer" (click)="switchSection(1)"></i>
     </div>
     <div>
         <i class="bi bi-arrow-right pointer" (click)="sendKeywords($event, 2)"></i>
@@ -18,3 +18,23 @@
         </div>
     </div>
 </div>
+<section class="loader p-5 flex items-center justify-center" *ngIf="section !== null" (click)="switchSection(null)">
+    <section class="panel bg-white p-5 w-full container" *ngIf="section===1" (click)="$event.stopPropagation()">
+        <div class="columns-1 md:columns-2">
+            <div class="text-[18px] mb-2">
+                <div class="mb-3">
+                    <label for="imageFile" class="block w-full pointer">
+                        <span class="p-1 border-2 border-transparent hover:border-2 hover:border-black rounded-[5px]">Choisir une photo</span>
+                    </label>
+                    <input type="file" id="imageFile" capture="user" accept="image/*" class="hidden" />
+                </div>
+                <div class="pointer">
+                    <span class="p-1 border-2 border-transparent hover:border-2 hover:border-black rounded-[5px]">Prendre une photo</span>
+                </div>
+            </div>
+            <div class="min-h-[60px] text-center">
+                <!-- imagehttps://developer.mozilla.org/en-US/docs/Web/API/Media_Capture_and_Streams_API/Taking_still_photos#demo -->
+            </div>
+        </div>
+    </section>
+</section>
