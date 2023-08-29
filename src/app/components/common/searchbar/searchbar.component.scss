@@ -1,5 +1,6 @@
 #searchbar-component {
     display:flex;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     width:100%;
@@ -13,17 +14,15 @@
         font-size:25px;
     }
     >div:nth-child(1){
-        width:30px;
+        width:35px;
     }
     >div:nth-child(2){
-        width:calc(100% - 60px);
+        width:calc(100% - 70px);
         background-color: #F3F3F3;
         padding:2px 3px;
     }
     >div:nth-child(3){
-        width:30px;
-        justify-content: flex-start;
-        padding-left:1px;
+        width:35px;
     }
     input,
     input:focus{
@@ -38,7 +37,7 @@
     .list-propositions{
         width: 100%;
         .wrap{
-            width:calc(100% - 60px);
+            width:calc(100% - 70px);
             box-shadow: 0 2px 4px 0 rgba(0,0,0,.13);
             position: relative;
             font-size:18px;

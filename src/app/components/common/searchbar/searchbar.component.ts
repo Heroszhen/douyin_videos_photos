@@ -160,9 +160,11 @@ export class SearchbarComponent implements OnInit, OnDestroy {
     await worker.initialize('eng+fra+chi_sim');
     const { data: { text } } = await worker.recognize(file);
     await worker.terminate();
-    if (window.confirm(text)) {
-      this.keywords = text;
+
+    let result:string|null = window.prompt("Souhaites-tu faire une recherche par ?", text);
+    if (result !== null) {
       this.switchSection(null);
+      this.keywords = text;
     }
   }
 }
