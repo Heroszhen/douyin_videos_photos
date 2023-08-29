@@ -1,14 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { IData } from 'src/app/interfaces/IData';
 import { StoreService } from 'src/app/services/store.service';
-import { wait } from 'src/app/utils/util';
+import { wait, readFile } from 'src/app/utils/util';
+import { createWorker } from 'tesseract.js';
 
 @Component({
   selector: 'app-searchbar',
   templateUrl: './searchbar.component.html',
   styleUrls: ['./searchbar.component.scss']
 })
-export class SearchbarComponent implements OnInit {
+export class SearchbarComponent implements OnInit, OnDestroy {
   keywords:string = "";
   @Output() toSendKeywords = new EventEmitter<IData>();
   @Input() propositions:Array<string> = [];
@@ -16,9 +17,17 @@ export class SearchbarComponent implements OnInit {
   pageItem:number = 1;
   action:number = -1;
   section:number|null =null;
+  photo_video_action:number|null = null;
+  photo_video_url:string = "";
+  @ViewChild('video') video: ElementRef<HTMLVideoElement> = null!;
+  @ViewChild('canvas') canvas: ElementRef<HTMLCanvasElement> = null!;
   constructor(private storeService:StoreService) { }
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.turnOffCamera();
   }
 
   closeSearchSection(): void{
@@ -73,8 +82,87 @@ export class SearchbarComponent implements OnInit {
     }
   }
 
-  async switchSection(s:number|null){
+  async switchSection(s:number|null) : Promise<void> {
+    this.turnOffCamera();
+    this.resetPhoto_video();
     this.section = s;
-    await wait(1);
+  }
+
+  
+
+  async handleInputFile(e:Event): Promise<void> {
+    let files:FileList | null = (e.target as HTMLInputElement).files;
+    if (files === null)return;
+
+    let file:File|null = files.item(0);
+    if (file === null)return;
+
+    if (file.type.includes("image")) {
+      this.photo_video_url = (await readFile(file)).target.result;
+      this.doOCR(this.photo_video_url);
+    }
+  }
+
+  async openCamera(): Promise<void>{
+    this.photo_video_action = 2;
+    this.photo_video_url = "";
+    await wait(0.1);
+    navigator.mediaDevices
+    .getUserMedia({ video: true, audio: false })
+    .then((stream) => {
+      if (this.video !== undefined) {
+        this.video.nativeElement.srcObject = stream;
+        this.video.nativeElement.play();
+      } 
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  }
+
+  turnOffCamera(): void {
+    if (this.video == null) return;
+    const mediaStream = <MediaStream>this.video.nativeElement.srcObject;
+    if (mediaStream !== null) {
+      // Through the MediaStream, you can get the MediaStreamTracks with getTracks():
+      const tracks = mediaStream.getTracks();
+      // Tracks are returned as an array, so if you know you only have one, you can stop it with: 
+      tracks[0].stop();
+      // Or stop all like so:
+      tracks.forEach(track => track.stop())
+    }
+    this.video = null!;
+  }
+
+  resetPhoto_video():void{
+    this.photo_video_action = null;
+    this.photo_video_url = "";
+    this.canvas?.nativeElement.getContext('2d')?.clearRect(0, 0, this.canvas.nativeElement.width,this.canvas.nativeElement.height);
+  }
+
+  takePhoto() {
+    let canvas:HTMLCanvasElement = this.canvas.nativeElement;
+    canvas.setAttribute("width", this.video.nativeElement.videoWidth.toString());
+    canvas.setAttribute("height", this.video.nativeElement.videoHeight.toString());
+    const context:CanvasRenderingContext2D|null = canvas.getContext("2d");
+    if (context === null)return;
+    context.drawImage(this.video.nativeElement, 0, 0, this.video.nativeElement.videoWidth, this.video.nativeElement.videoHeight);
+
+    const data:string = canvas.toDataURL("image/png");
+    
+  }
+
+  async doOCR(file: File | string): Promise<void> {
+    let worker = await createWorker();
+    // await worker.loadLanguage('eng+fra+chi_sim+chi_tra');
+    // await worker.initialize('eng+fra+chi_sim+chi_tra');
+    await worker.loadLanguage('eng+fra+chi_sim');
+    await worker.initialize('eng+fra+chi_sim');
+    const { data: { text } } = await worker.recognize(file);
+    await worker.terminate();
+    if (window.confirm(text)) {
+      this.keywords = text;
+      this.switchSection(null);
+    }
   }
 }

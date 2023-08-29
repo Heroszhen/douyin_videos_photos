@@ -37,7 +37,9 @@
     .w-inherit {
         width:inherit;
     }
-
+    .text-center{
+        text-align: center;
+    }
 }
 
 @layer components {
@@ -66,7 +68,9 @@ iframe{
     background-color: transparent;
     
 }
-
+img{
+    display:inline;
+}
 .douyin{
     background-color: $douyinBackgroundColor;
     color:$douyinActiveColor;
@@ -74,7 +78,19 @@ iframe{
 
 .panel{
     border-radius: 8px;
-    box-shadow: 0 0 24px rgba(0,0,0,.1);
+    box-shadow: 0 0 24px rgba(0, 0, 0, .1);
+    max-height:100%;
+    overflow-y: auto;
+    .wrap-close{
+        text-align: right;
+        margin-bottom:10px;
+        .icon-close{
+            cursor: pointer;
+            &:hover{
+                color:red;
+            }
+        }
+    }
 }
 
 .pointer{

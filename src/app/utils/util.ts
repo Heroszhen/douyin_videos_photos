@@ -44,4 +44,14 @@ export function detecteBrowser(): string {
     }
     
     return "";
-  }
+}
+
+export function readFile(file: File): Promise<any> {
+    return new Promise((resolve, err) => {
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        resolve(e);
+      };
+      reader.readAsDataURL(file);
+    });
+}

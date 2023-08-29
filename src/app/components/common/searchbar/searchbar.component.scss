@@ -63,3 +63,16 @@
         }
     }
 }
+
+
+.loader{
+    video{
+        height:300px !important;
+    }
+    img{
+        width:300px;
+    }
+    canvas{
+        margin:0 auto;
+    }
+}
