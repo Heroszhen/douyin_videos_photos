@@ -151,15 +151,18 @@ export class SearchbarComponent implements OnInit, OnDestroy {
   }
 
   async doOCR(file: File | string): Promise<void> {
+    this.storeService.loading$.next([true, '']);
     let worker = await createWorker();
     await worker.loadLanguage('eng+fra+chi_sim');
     await worker.initialize('eng+fra+chi_sim');
     const { data: { text } } = await worker.recognize(file);
     await worker.terminate();
 
+    this.storeService.loading$.next([false, '']);
+    
     this.switchSection(null);
     this.keywords = text.trim();
-
+    
     // let result:string|null = window.prompt(`Souhaites-tu faire une recherche par ${text}?`);
     // if (result !== null) {
     //   this.switchSection(null);

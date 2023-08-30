@@ -4,4 +4,6 @@
     <router-outlet></router-outlet>
 </main>
 
-
+<section class="wrap-loading" *ngIf="loading[0]===true">
+    <img src="{{loading[1]}}" alt="">
+</section>
