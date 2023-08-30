@@ -99,7 +99,7 @@ export class SearchbarComponent implements OnInit, OnDestroy {
 
     if (file.type.includes("image")) {
       this.photo_video_url = (await readFile(file)).target.result;
-      this.doOCR(this.photo_video_url);
+      this.doOCR(file);
     }
   }
 
@@ -121,9 +121,8 @@ export class SearchbarComponent implements OnInit, OnDestroy {
   }
 
   turnOffCamera(): void {
-    if (this.video == null) return;
-    const mediaStream = <MediaStream>this.video.nativeElement.srcObject;
-    if (mediaStream !== null) {
+    const mediaStream = <MediaStream>this.video?.nativeElement.srcObject;
+    if (mediaStream !== undefined && mediaStream !== null) {
       // Through the MediaStream, you can get the MediaStreamTracks with getTracks():
       const tracks = mediaStream.getTracks();
       // Tracks are returned as an array, so if you know you only have one, you can stop it with: 
@@ -147,24 +146,24 @@ export class SearchbarComponent implements OnInit, OnDestroy {
     const context:CanvasRenderingContext2D|null = canvas.getContext("2d");
     if (context === null)return;
     context.drawImage(this.video.nativeElement, 0, 0, this.video.nativeElement.videoWidth, this.video.nativeElement.videoHeight);
-
     const data:string = canvas.toDataURL("image/png");
-    
+    this.doOCR(data);
   }
 
   async doOCR(file: File | string): Promise<void> {
     let worker = await createWorker();
-    // await worker.loadLanguage('eng+fra+chi_sim+chi_tra');
-    // await worker.initialize('eng+fra+chi_sim+chi_tra');
     await worker.loadLanguage('eng+fra+chi_sim');
     await worker.initialize('eng+fra+chi_sim');
     const { data: { text } } = await worker.recognize(file);
     await worker.terminate();
 
-    let result:string|null = window.prompt("Souhaites-tu faire une recherche par ?", text);
-    if (result !== null) {
-      this.switchSection(null);
-      this.keywords = text;
-    }
+    this.switchSection(null);
+    this.keywords = text.trim();
+
+    // let result:string|null = window.prompt(`Souhaites-tu faire une recherche par ${text}?`);
+    // if (result !== null) {
+    //   this.switchSection(null);
+    //   this.keywords = text;console.log(this.keywords)
+    // }
   }
 }

@@ -7,6 +7,7 @@
     background-color: white;
     padding-top:2px;
     padding-bottom:2px;
+    position:relative;
     >div{
         display:flex;
         justify-content: center;
@@ -36,11 +37,15 @@
     
     .list-propositions{
         width: 100%;
+        position:absolute;
+        top:46px;
+        background-color: transparent;
         .wrap{
             width:calc(100% - 70px);
             box-shadow: 0 2px 4px 0 rgba(0,0,0,.13);
             position: relative;
             font-size:18px;
+            background-color: white;
             .proposition{
                 padding:3px 7px 4px 5px;
                 cursor:pointer
@@ -56,8 +61,10 @@
 @media (max-width:767px) {
     #searchbar-component {
         .list-propositions{
+            background-color: transparent;
             .wrap{
                 font-size:14px;
+
             }
         }
     }

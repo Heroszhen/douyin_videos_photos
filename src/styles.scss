@@ -107,6 +107,20 @@ img{
     left:0;
 }
 
+
+.scrollbar{
+    overflow:overlay !important;
+}
+.scrollbar::-webkit-scrollbar{
+    width:8px;
+    height:10px;
+    
+}
+.scrollbar::-webkit-scrollbar-thumb{
+    background-color:gray;
+    border-radius:10px;
+}
+
 section.component{
     width:100%;
     min-height:100%;

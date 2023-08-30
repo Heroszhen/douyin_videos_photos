@@ -175,6 +175,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   getKeywords(e:IData): void{
+    if (e.data.keywords === '')return;
     this.canCharge2 = true;
     this.keywordsAction = e.data.action;
     let keywords:string = removeTags(e.data.keywords);
