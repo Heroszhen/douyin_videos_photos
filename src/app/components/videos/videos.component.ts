@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 import { ApiService } from 'src/app/services/api.service';
 import { StoreService } from 'src/app/services/store.service';
 import { Subscription } from 'rxjs';
-import { IData } from 'src/app/interfaces/IData';
+import { IData, ICache, CacheType } from 'src/app/interfaces/IData';
 import { IVideoPlayerParams, videoType } from 'src/app/interfaces/ivideoPlayerParams';
 import { wait, removeTags } from 'src/app/utils/util';
 
@@ -53,7 +53,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     let connectedSubscriber = this.storeService.connected$.subscribe((data:Array<boolean>) => {
       if (data[0] !== undefined && data[0]) {
         this.canCharge = true;
-        this.getVideos();
+        if (!this.getCache())this.getVideos();
       }
     });
     let searchSubscriber = this.storeService.toSearch$.subscribe((data:Array<boolean>) => {
@@ -109,6 +109,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
             if (data["data"].length > 0) {
               this.pageItem++;
               this.canCharge = true;
+              this.setCache();
             }
           }
         },
@@ -175,6 +176,35 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.wrapDescription.nativeElement.classList.contains("displayed"))this.wrapDescription.nativeElement.classList.toggle("displayed");
     else this.wrapDescription.nativeElement.classList.toggle("cached");
   }
+
+  setCache(): void {
+    localStorage.setItem("cache", JSON.stringify({
+      content: this.videos,
+      type:CacheType.Video,
+      pageItem:this.pageItem
+    }));
+  }
+
+  getCache(): boolean {
+    let cache:string|null = localStorage.getItem("cache")
+    if (cache !== null && cache !== '') {
+      let json:ICache = JSON.parse(cache);
+      if (json.type === CacheType.Video) {
+        this.videos = json["content"];
+        this.pageItem = json.pageItem;
+        if (this.videos.length > 0) {
+          this.elmindex = 0;
+          this.canCharge = true;
+          this.setVideoPlayerParams();
+        }
+
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 
 
   getKeywords(e:IData): void{
@@ -260,6 +290,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     
   }
+
 
 
   touchStart(e:Event): void {
