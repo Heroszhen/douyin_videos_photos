@@ -122,8 +122,10 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   //action: 1=>down, 2:up
   changeElmindex(action:number): void {
     if(this.toSearch || 
-      this.wrapDescription.nativeElement.classList.contains("displayed")
-      )return;
+      (this.wrapDescription.nativeElement.classList.contains("displayed") &&
+        !this.wrapDescription.nativeElement.classList.contains("cached")
+      )
+    )return;
 
     if (action === 1) {
       if (this.elmindex < this.videos.length - 1){
