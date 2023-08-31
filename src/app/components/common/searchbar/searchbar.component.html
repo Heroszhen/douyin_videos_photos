@@ -5,16 +5,56 @@
     <div>
         <i class="bi bi-search"></i>
         <input type="text" placeholder="rechercher...." [(ngModel)]="keywords" (keydown)="avoidUp($event)" (keyup)="sendKeywords($event, 1)">
-        <i class="bi bi-upc-scan pointer"></i>
+        <i class="bi bi-camera-video pointer" (click)="switchSection(1)"></i>
     </div>
     <div>
         <i class="bi bi-arrow-right pointer" (click)="sendKeywords($event, 2)"></i>
     </div>
-    <div class="list-propositions" *ngIf="propositions.length != 0">
+    <div class="list-propositions" *ngIf="propositions.length !== 0">
         <div class="wrap">
             <div *ngFor="let item of propositions;let key = index;"(click)="elmindex=key;changeElmindex(13)">
-                <div class="proposition" [innerHTML]="item" [ngClass]="{'active':elmindex==key}"></div>
+                <div class="proposition" [innerHTML]="item" [ngClass]="{'active':elmindex===key}"></div>
             </div>
         </div>
     </div>
 </div>
+
+<section class="loader p-5 flex items-center justify-center" *ngIf="section !== null" >
+    <section class="panel bg-white p-5 w-full container" *ngIf="section===1" (click)="$event.stopPropagation()">
+        <div class="wrap-close">
+            <i class="bi bi-x-lg icon-close" (click)="switchSection(null)"></i>
+        </div>
+        <div class="columns-1 md:columns-2">
+            <div class="text-[18px] mb-2">
+                <div class="mb-4">
+                    <label for="imageFile" class="block w-full pointer">
+                        <span class="p-1 border-2 border-transparent hover:border-2 hover:border-black rounded-[5px]" (click)="photo_video_action=1">Choisir une photo</span>
+                    </label>
+                    <input type="file" id="imageFile" capture="user" accept="image/*" class="hidden" (change)="handleInputFile($event)" />
+                </div>
+                <div class="pointer mb-3">
+                    <span class="p-1 border-2 border-transparent hover:border-2 hover:border-black rounded-[5px]" (click)="openCamera()">Prendre une photo</span>
+                    <div class="hidden">
+                        
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="photo_video_action===2" class="mb-4 overflow-auto max-h-[450px]">
+                <canvas id="canvas" #canvas> </canvas>
+            </div>  
+            <div class="min-h-[70px]" *ngIf="photo_video_action !== null">
+                <div *ngIf="photo_video_action===1" class="text-center">
+                    <img src="{{photo_video_url}}" alt="" *ngIf="photo_video_url !== ''">
+                </div>
+                <div *ngIf="photo_video_action===2">
+                    <video id="video"  #video></video>
+                    <div class="text-[25px] text-right pr-2">
+                        <i class="bi bi-camera-fill pointer" (click)="takePhoto()"></i>
+                    </div>
+                </div>
+                   
+                <!-- https://developer.mozilla.org/en-US/docs/Web/API/Media_Capture_and_Streams_API/Taking_still_photos#demo -->
+            </div>
+        </div>
+    </section>
+</section>

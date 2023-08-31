@@ -1,7 +1,9 @@
-<app-topnav (toSwitchLeftNav)="switchLeftNav($event)" *ngIf="isConnected==true"></app-topnav>
-<app-leftnav #leftNav *ngIf="isConnected==true"></app-leftnav>
+<app-topnav (toSwitchLeftNav)="switchLeftNav($event)" *ngIf="isConnected===true"></app-topnav>
+<app-leftnav #leftNav *ngIf="isConnected===true"></app-leftnav>
 <main class="douyin">
     <router-outlet></router-outlet>
 </main>
 
-
+<section class="wrap-loading" *ngIf="loading[0]===true">
+    <img src="{{loading[1]}}" alt="">
+</section>

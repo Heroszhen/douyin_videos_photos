@@ -1,11 +1,13 @@
 #searchbar-component {
     display:flex;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     width:100%;
     background-color: white;
     padding-top:2px;
     padding-bottom:2px;
+    position:relative;
     >div{
         display:flex;
         justify-content: center;
@@ -13,17 +15,15 @@
         font-size:25px;
     }
     >div:nth-child(1){
-        width:30px;
+        width:35px;
     }
     >div:nth-child(2){
-        width:calc(100% - 72px);
+        width:calc(100% - 70px);
         background-color: #F3F3F3;
         padding:2px 3px;
     }
     >div:nth-child(3){
-        width:42px;
-        justify-content: flex-start;
-        padding-left:1px;
+        width:35px;
     }
     input,
     input:focus{
@@ -37,12 +37,15 @@
     
     .list-propositions{
         width: 100%;
+        position:absolute;
+        top:46px;
+        background-color: transparent;
         .wrap{
-            width:calc(100% - 72px);
+            width:calc(100% - 70px);
             box-shadow: 0 2px 4px 0 rgba(0,0,0,.13);
             position: relative;
-            margin-left:-10px;
             font-size:18px;
+            background-color: white;
             .proposition{
                 padding:3px 7px 4px 5px;
                 cursor:pointer
@@ -57,13 +60,25 @@
 
 @media (max-width:767px) {
     #searchbar-component {
-        >div{
-            font-size:20px;
-        }
         .list-propositions{
+            background-color: transparent;
             .wrap{
                 font-size:14px;
+
             }
         }
+    }
+}
+
+
+.loader{
+    video{
+        height:300px !important;
+    }
+    img{
+        width:300px;
+    }
+    canvas{
+        margin:0 auto;
     }
 }

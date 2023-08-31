@@ -61,6 +61,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
       this.foundVideos = [];
       this.propositions = [];
       this.canCharge2 = true;
+      this.keywordsAction = null!
     });
     this.subscribers.push(connectedSubscriber, searchSubscriber);
     window.addEventListener('resize', this.listener.bind(this), true);
@@ -100,7 +101,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
       this.apiService.getGetVideos(this.pageItem).subscribe({
         next: (data:IData)=>{
           if (data["status"] === 1) {
-            this.videos = this.videos.concat(data["data"]);
+            this.videos = data["data"];
             if (this.elmindex === -1){
               this.elmindex = 0;
               this.setVideoPlayerParams();
@@ -121,8 +122,10 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   //action: 1=>down, 2:up
   changeElmindex(action:number): void {
     if(this.toSearch || 
-      this.wrapDescription.nativeElement.classList.contains("displayed")
-      )return;
+      (this.wrapDescription.nativeElement.classList.contains("displayed") &&
+        !this.wrapDescription.nativeElement.classList.contains("cached")
+      )
+    )return;
 
     if (action === 1) {
       if (this.elmindex < this.videos.length - 1){
@@ -169,13 +172,17 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   switchDescription(): void{
-    this.wrapDescription.nativeElement.classList.toggle("displayed");
+    if (!this.wrapDescription.nativeElement.classList.contains("displayed"))this.wrapDescription.nativeElement.classList.toggle("displayed");
+    else this.wrapDescription.nativeElement.classList.toggle("cached");
   }
 
 
   getKeywords(e:IData): void{
+    if (e.data.keywords === '')return;
+    this.canCharge2 = true;
+    this.keywordsAction = e.data.action;
     let keywords:string = removeTags(e.data.keywords);
-    if (e.data.action === 1) {
+    if (e.data.action === 1) { 
       if (keywords.length >= 2) {
         this.apiService.getSearchVideosByKeywords(keywords).subscribe({
           next: (data:IData)=>{
@@ -199,7 +206,6 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     }
    
     if ([2, 3].includes(e.data.action)) {
-      this.keywordsAction = e.data.action;
       this.keywordsPageItem = 1;
       this.foundVideos = [];
       if (e.data.action === 2) {
@@ -215,19 +221,42 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
       this.apiService.getGetVideosByKeywords(this.keywordsAction, this.keywordsKeywords, this.keywordsName, this.keywordsActressname, this.keywordsPageItem).subscribe({
         next: (data:IData)=>{
           if (data["status"] === 1) {
-            this.foundVideos = this.foundVideos.concat(data["data"]);
+            if (data["data"] !== null && data["data"].length != 0) {
+              this.foundVideos = this.foundVideos.concat(data["data"]);
+              this.keywordsPageItem++;
+            }
           }
         },
         error:(err)=>{
           console.log(err);
         }
-      });
+      });console.log(this.keywordsKeywords)
     }
   }
 
   ListenToSectionFroundVideosScroll(e:Event): void{
     let target:Element = (e.target as Element);
-    console.log(target.clientHeight, target.scrollTop, target.scrollHeight)
+    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 50) {
+      if (this.canCharge2) {
+        this.canCharge2 = false;
+        this.apiService.getGetVideosByKeywords(this.keywordsAction, this.keywordsKeywords, this.keywordsName, this.keywordsActressname, this.keywordsPageItem).subscribe({
+          next: (data:IData)=>{
+            if (data["status"] === 1) {
+              if (data["data"] !== null && data["data"].length != 0) {
+                this.foundVideos = this.foundVideos.concat(data["data"]);
+                this.canCharge2 = true;
+                this.keywordsPageItem++;
+              }
+            }
+          },
+          error:(err)=>{
+            this.canCharge2 = true;
+            console.log(err);
+          }
+        });
+      }
+    }
+    
   }
 
 

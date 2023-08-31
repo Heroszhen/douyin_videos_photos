@@ -14,18 +14,23 @@ import { StoreService } from './services/store.service';
 export class AppComponent implements OnInit {
   @ViewChild('leftNav') leftnav!: LeftnavComponent;
   isConnected?:boolean = null!;
-
+  loading:Array<boolean|string> = [false, ""];
   constructor(
     private router: Router,
     private apiService: ApiService,
     private storeService: StoreService
   ) { 
+    localStorage.setItem("token", "123");
   }
 
   ngOnInit(): void {
     this.routerListener();
     this.storeService.connected$.subscribe((data:boolean[]) => {
       this.isConnected = data[0];
+    })
+    this.storeService.loading$.subscribe((data:Array<boolean|string>) => {
+      this.loading = data;
+      if (this.loading[1] === '')this.loading[1] = 'assets/photos/ad_loader.png';
     })
   }
 
@@ -46,11 +51,13 @@ export class AppComponent implements OnInit {
 
   checkToken(route:string):void {
     if (route === "/" || !route.includes("/tailwindcss/")) {
-      this.apiService.checkToken(localStorage.getItem("token") ?? '');
+      //this.apiService.checkToken(localStorage.getItem("token") ?? '');
     }
   }
 
   switchLeftNav(event:IData): void {
     if(event["status"] === 1)this.leftnav.switchHidden();
   }
+
+
 }
