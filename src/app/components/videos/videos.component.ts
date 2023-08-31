@@ -132,6 +132,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.elmindex < this.videos.length - 1){
         this.elmindex++;
         this.setVideoPlayerParams();
+        this.setElmindexInCache();
       }
       if (this.elmindex === this.videos.length - 3)this.getVideos();
     }
@@ -139,6 +140,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.elmindex > 0){
         this.elmindex--;
         this.setVideoPlayerParams();
+        this.setElmindexInCache();
       }
     }
   }
@@ -181,7 +183,8 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     localStorage.setItem("cache", JSON.stringify({
       content: this.videos,
       type:CacheType.Video,
-      pageItem:this.pageItem
+      pageItem:this.pageItem,
+      elmindex:this.elmindex
     }));
   }
 
@@ -193,7 +196,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
         this.videos = json["content"];
         this.pageItem = json.pageItem;
         if (this.videos.length > 0) {
-          this.elmindex = 0;
+          this.elmindex = json.elmindex;
           this.canCharge = true;
           this.setVideoPlayerParams();
         }
@@ -203,6 +206,15 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     return false;
+  }
+
+  setElmindexInCache(): void {
+    let cache:string|null = localStorage.getItem("cache")
+    if (cache !== null && cache !== '') {
+      let json:ICache = JSON.parse(cache);
+      json.elmindex = this.elmindex,
+      localStorage.setItem("cache", JSON.stringify(json));
+    }
   }
 
 

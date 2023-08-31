@@ -6,7 +6,8 @@ export interface IData {
 export interface ICache {
     content: Array<any>,
     type:CacheType,
-    pageItem:number
+    pageItem:number,
+    elmindex:number
 }
 
 export enum CacheType {
