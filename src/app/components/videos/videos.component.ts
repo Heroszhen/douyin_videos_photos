@@ -170,7 +170,8 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   switchDescription(): void{
-    this.wrapDescription.nativeElement.classList.toggle("displayed");
+    if (!this.wrapDescription.nativeElement.classList.contains("displayed"))this.wrapDescription.nativeElement.classList.toggle("displayed");
+    else this.wrapDescription.nativeElement.classList.toggle("cached");
   }
 
 
