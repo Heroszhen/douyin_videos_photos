@@ -16,16 +16,11 @@ export class TailwindcssComponent implements OnInit {
     this.activedroute.params.subscribe((params)=>{
       if (params["token"] !== undefined) {
         this.token = params["token"];
-        this.checkToken(params["token"])
+        //this.apiService.checkToken(this.token);
       }
     });
   }
 
   ngOnInit(): void {
   }
-
-  checkToken(token:string): void {
-    this.apiService.checkToken(token);
-  }
-
 }

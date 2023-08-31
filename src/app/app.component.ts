@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
     private apiService: ApiService,
     private storeService: StoreService
   ) { 
+    localStorage.setItem("token", "123");
   }
 
   ngOnInit(): void {
@@ -50,7 +51,7 @@ export class AppComponent implements OnInit {
 
   checkToken(route:string):void {
     if (route === "/" || !route.includes("/tailwindcss/")) {
-      this.apiService.checkToken(localStorage.getItem("token") ?? '');
+      //this.apiService.checkToken(localStorage.getItem("token") ?? '');
     }
   }
 
