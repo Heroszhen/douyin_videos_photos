@@ -101,7 +101,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
       this.apiService.getGetVideos(this.pageItem).subscribe({
         next: (data:IData)=>{
           if (data["status"] === 1) {
-            this.videos = this.videos.concat(data["data"]);
+            this.videos = data["data"];
             if (this.elmindex === -1){
               this.elmindex = 0;
               this.setVideoPlayerParams();
