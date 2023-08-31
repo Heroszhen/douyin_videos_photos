@@ -179,7 +179,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getKeywords(e:IData): void{
     if (e.data.keywords === '')return;
-    this.canCharge2 = true;
+    this.canCharge2 = false;
     this.keywordsAction = e.data.action;
     let keywords:string = removeTags(e.data.keywords);
     if (e.data.action === 1) { 
@@ -220,17 +220,19 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.apiService.getGetVideosByKeywords(this.keywordsAction, this.keywordsKeywords, this.keywordsName, this.keywordsActressname, this.keywordsPageItem).subscribe({
         next: (data:IData)=>{
-          if (data["status"] === 1) {
+          if (data["status"] === 1) {console.log(this.foundVideos)
             if (data["data"] !== null && data["data"].length != 0) {
-              this.foundVideos = this.foundVideos.concat(data["data"]);
+              this.foundVideos = data["data"];
               this.keywordsPageItem++;
             }
           }
+          this.canCharge2 = true;
         },
         error:(err)=>{
           console.log(err);
+          this.canCharge2 = true;
         }
-      });console.log(this.keywordsKeywords)
+      });
     }
   }
 
