@@ -7,12 +7,11 @@
         (touchend)="touchEnd($event)"
         class="columns-1"
     >
-    <ng-container *ngIf="elmindex !== -1">
-        <app-videoplayer class="w-full h-full" [params]="videoPlayerParams"></app-videoplayer>
-    </ng-container>
-
+        <ng-container *ngIf="elmindex !== -1">
+            <app-videoplayer class="w-full h-full" [params]="videoPlayerParams"></app-videoplayer>
+        </ng-container>
     </section>
-    <div id="play-switch">
+    <div id="play-switch" *ngIf="elmindex !== -1">
         <div class="playswitch-prev"><i class="bi bi-chevron-up" (click)="changeElmindex(2)"></i></div>
         <div class="playswitch-prev"><i class="bi bi-chevron-down" (click)="changeElmindex(1)"></i></div>
     </div>
@@ -56,7 +55,7 @@
                     <ng-container *ngIf="keywordsAction===2"> {{keywordsKeywords}}</ng-container>
                     <ng-container *ngIf="keywordsAction===3"> {{keywordsName}} {{keywordsActressname}}</ng-container>
                 </div>
-                <div *ngFor="let video of foundVideos;" class="pb-3 mb-10 border-b-8 border-b-gray-200">
+                <div *ngFor="let video of foundVideos;let key = index;" class="pb-3 mb-10 border-b-8 border-b-gray-200">
                     <h4>{{video['actressname']}}</h4>
                     <div class="mb-3">{{video['name']}}</div>
                     <app-videoplayer class="w-full h-full" [params]="setVideoPlayerParamsByType(video, 'foundVideo')"></app-videoplayer>

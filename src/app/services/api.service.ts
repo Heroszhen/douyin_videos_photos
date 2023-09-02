@@ -41,7 +41,7 @@ export class ApiService extends BaseService {
         })
       }
       
-      this.http.get<IData>(`${this.baseUrl}/profile/check-login`, this.httpOptionsAuth).subscribe({
+      this.http.get<IData>(`${this.baseUrl2}/mk/jf/check-token-ad`, this.httpOptionsAuth).subscribe({
         next: (data:IData)=>{
           this.treatTokenResult(data)
         },
