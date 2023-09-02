@@ -92,4 +92,8 @@ export class ApiService extends BaseService {
 
     return this.http.get<IData>(`${this.baseUrl2}/mk/jf/get-videos-by-keywords`, this.getHttpOptionsAuth({params: params}));
   }
+
+  getGetVideoById(id:number): Observable<IData>{
+    return this.http.get<IData>(`${this.baseUrl2}/mk/onevideo_web/${id}`, this.getHttpOptionsAuth());
+  }
 }
