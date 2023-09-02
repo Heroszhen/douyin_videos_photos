@@ -19,16 +19,18 @@ export class TailwindcssComponent implements OnInit {
   ) { 
     this.activedroute.queryParams.subscribe((params:any) => {
       if (params["token"] !== undefined) {
-        localStorage.setItem('token', params["token"])
+        this.token = params["token"];
+        localStorage.setItem('token', this.token);
+        this.apiService.checkToken(this.token);
       }
     });
 
-    this.activedroute.params.subscribe((params)=>{
-      if (params["token"] !== undefined) {
-        this.token = params["token"];
-        //this.apiService.checkToken(this.token);
-      }
-    });
+    // this.activedroute.params.subscribe((params)=>{
+    //   if (params["token"] !== undefined) {
+    //     this.token = params["token"];
+    //     this.apiService.checkToken(this.token);
+    //   }
+    // });
   }
 
   ngOnInit(): void {
