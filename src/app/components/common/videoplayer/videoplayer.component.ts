@@ -7,7 +7,7 @@ import { IVideoPlayerParams, videoType } from 'src/app/interfaces/ivideoPlayerPa
   styleUrls: ['./videoplayer.component.scss']
 })
 export class VideoplayerComponent implements OnInit {
-  @Input() params:IVideoPlayerParams = null!;
+  @Input() params:IVideoPlayerParams|null = null;
   videoType = videoType;
   constructor() { }
 

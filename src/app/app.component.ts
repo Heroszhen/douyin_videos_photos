@@ -57,6 +57,4 @@ export class AppComponent implements OnInit {
   switchLeftNav(event:IData): void {
     if(event["status"] === 1)this.leftnav.switchHidden();
   }
-
-
 }

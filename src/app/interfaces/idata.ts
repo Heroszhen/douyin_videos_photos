@@ -5,7 +5,7 @@ export interface IData {
 
 export interface ICache {
     content: Array<any>,
-    type:CacheType,
+    type:CacheType|null,
     pageItem:number,
     elmindex:number
 }

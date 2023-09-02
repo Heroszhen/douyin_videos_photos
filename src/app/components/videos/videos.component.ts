@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { IData, ICache, CacheType } from 'src/app/interfaces/IData';
 import { IVideoPlayerParams, videoType } from 'src/app/interfaces/ivideoPlayerParams';
 import { wait, removeTags } from 'src/app/utils/util';
+import { Indexeddb } from 'src/app/indexeddb/indexeddb';
+import { IndexeddbCache } from 'src/app/models/IndexeddbCache';
 
 interface IVideo {
   actressname:string,
@@ -32,10 +34,13 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   canCharge:boolean = false;
   videos:Array<IVideo> = [];
   elmindex:number = -1;
-  wheelTimer:number = null!;
+  wheelTimer:number|null = null;
   @ViewChild('wrap_description') wrapDescription!:ElementRef<HTMLDivElement>;
   toSearch:boolean = false;
-  videoPlayerParams:IVideoPlayerParams = null!;
+  videoPlayerParams:IVideoPlayerParams|null = null;
+  indexedDB:Indexeddb;
+  indexedDB_db:IDBDatabase;
+  indexedDB_videoId:number;
 
   foundVideos:Array<IVideo> = [];
   propositions:Array<string> = [];
@@ -47,13 +52,14 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   canCharge2:boolean = true;
   constructor(private apiService: ApiService, private storeService: StoreService) { 
     this.windowWidth = window.innerWidth;
+    this.indexedDB = new Indexeddb();
   }
 
-  ngOnInit(): void {
-    let connectedSubscriber = this.storeService.connected$.subscribe((data:Array<boolean>) => {
+  async ngOnInit(): Promise<void> {
+    let connectedSubscriber = this.storeService.connected$.subscribe(async (data:Array<boolean>) => {
       if (data[0] !== undefined && data[0]) {
         this.canCharge = true;
-        if (!this.getCache())this.getVideos();
+        if (!await this.getCache())this.getVideos();
       }
     });
     let searchSubscriber = this.storeService.toSearch$.subscribe((data:Array<boolean>) => {
@@ -84,7 +90,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   wheelListener(event:WheelEvent): void {
     if (this.wheelTimer === null) {
       this.wheelTimer = window.setTimeout(() => {
-        window.clearTimeout(this.wheelTimer);
+        if(this.wheelTimer !== null)window.clearTimeout(this.wheelTimer);
         this.wheelTimer = null!;
       }, 1000);
       if (event.deltaY < 0) {//up
@@ -93,6 +99,10 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
         this.changeElmindex(1);
       } 
     }
+  }
+
+  async getIndexeddb(): Promise<void> {
+    console.log(Indexeddb);
   }
 
   getVideos(): void {
@@ -179,42 +189,45 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     else this.wrapDescription.nativeElement.classList.toggle("cached");
   }
 
-  setCache(): void {
-    localStorage.setItem("cache", JSON.stringify({
+  async setCache(): Promise<void> {
+    let cache = new IndexeddbCache();
+    cache.assignData({
       content: this.videos,
       type:CacheType.Video,
       pageItem:this.pageItem,
-      elmindex:this.elmindex
-    }));
+      elmindex:this.elmindex,
+      id: this.indexedDB_videoId
+    });
+    await this.indexedDB.update("video", cache, this.indexedDB_db);
   }
 
-  getCache(): boolean {
-    let cache:string|null = localStorage.getItem("cache")
-    if (cache !== null && cache !== '') {
-      let json:ICache = JSON.parse(cache);
-      if (json.type === CacheType.Video) {
-        this.videos = json["content"];
-        this.pageItem = json.pageItem;
-        if (this.videos.length > 0) {
-          this.elmindex = json.elmindex;
-          this.canCharge = true;
-          this.setVideoPlayerParams();
-        }
-
-        return true;
+  async getCache(): Promise<boolean> {
+    this.indexedDB_db = await this.indexedDB.opendDB();
+    await wait(0.1);
+    let tab:object[] = await this.indexedDB.get("video", this.indexedDB_db);
+    if (tab.length === 0) {//first time
+      this.indexedDB_videoId = await this.indexedDB.add("video", new IndexeddbCache(), this.indexedDB_db);
+    } else {
+      let cache:IndexeddbCache = tab[0] as IndexeddbCache;
+      this.indexedDB_videoId = cache.id as number;
+      this.videos = cache["content"];
+      this.pageItem = cache.pageItem;
+      if (this.videos.length > 0) {
+        this.elmindex = cache.elmindex;
+        this.canCharge = true;
+        this.setVideoPlayerParams();
       }
-    }
 
+      return true;
+    }
+    
     return false;
   }
 
-  setElmindexInCache(): void {
-    let cache:string|null = localStorage.getItem("cache")
-    if (cache !== null && cache !== '') {
-      let json:ICache = JSON.parse(cache);
-      json.elmindex = this.elmindex,
-      localStorage.setItem("cache", JSON.stringify(json));
-    }
+  async setElmindexInCache(): Promise<void> {
+    let cache:object =  await this.indexedDB.getById("video", this.indexedDB_videoId, this.indexedDB_db);
+    (cache as IndexeddbCache).elmindex = this.elmindex;
+    this.indexedDB.update("video", cache, this.indexedDB_db);
   }
 
 
