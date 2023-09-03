@@ -39,6 +39,8 @@ export class AppComponent implements OnInit {
       if (this.loading[1] === '')this.loading[1] = 'assets/photos/ad_loader.png';
     })
 
+    this.apiService.checkToken(localStorage.getItem("token") ?? '');
+
     window.addEventListener('beforeinstallprompt', (event: BeforeInstallPromptEvent) => {
       console.log('🚀 onBeforeInstallPrompt');
       event?.preventDefault();
@@ -58,7 +60,7 @@ export class AppComponent implements OnInit {
       map((event: NavigationEnd) => event.url))
       .subscribe({
         next: (data:string)=>{
-          this.checkToken(data);
+          //this.checkToken(data);
           this.storeService.toSearch$.next([false]);
         },
         error:(err:any) =>{}

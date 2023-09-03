@@ -30,13 +30,11 @@
                     <label for="imageFile" class="block w-full pointer">
                         <span class="p-1 border-2 border-transparent hover:border-2 hover:border-black rounded-[5px]" (click)="photo_video_action=1">Choisir une photo</span>
                     </label>
-                    <input type="file" id="imageFile" capture="user" accept="image/*" class="hidden" (change)="handleInputFile($event)" />
+                    <input type="file" id="imageFile" accept="image/*" class="hidden" (change)="handleInputFile($event)" />
                 </div>
                 <div class="pointer mb-3">
                     <span class="p-1 border-2 border-transparent hover:border-2 hover:border-black rounded-[5px]" (click)="openCamera()">Prendre une photo</span>
-                    <div class="hidden">
-                        
-                    </div>
+                    <div class="hidden"></div>
                 </div>
             </div>
             <div *ngIf="photo_video_action===2" class="mb-4 overflow-auto max-h-[450px]">
