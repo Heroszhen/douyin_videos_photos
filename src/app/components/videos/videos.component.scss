@@ -102,11 +102,11 @@
     }
 }
 #wrap-description.displayed{
-    animation: show_description .5s linear;
+    animation: show_description .3s linear;
     animation-fill-mode:forwards;
 }
 #wrap-description.cached{
-    animation: hide_description .5s linear;
+    animation: hide_description .3s linear;
     animation-fill-mode:forwards;
 }
 
