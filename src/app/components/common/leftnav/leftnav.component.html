@@ -2,6 +2,7 @@
     <a class="path" href="#" [routerLink]="['/tailwindcss']" routerLinkActive="active">Tailwind CSS</a>
     <a class="path" href="#" [routerLink]="['/douyin']" routerLinkActive="active">douyin</a>
     <div class="path">Se connecter</div>
-    <div class="path">Vider le cache</div>
+    <div class="path" (click)="clearCache()">Vider le cache</div>
+    <a class="path" href="#">Historique</a>
     <div class="path" (click)="installZooliclient()">Installer</div>
 </div>

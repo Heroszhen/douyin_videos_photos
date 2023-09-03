@@ -18,6 +18,7 @@ import { environment } from '../environments/environment';
 import { VideoplayerComponent } from './components/common/videoplayer/videoplayer.component';
 import { SearchbarComponent } from './components/common/searchbar/searchbar.component';
 import { DouyinComponent } from './components/douyin/douyin.component';
+import { HistoryComponent } from './components/history/history.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { DouyinComponent } from './components/douyin/douyin.component';
     LeftnavComponent,
     VideoplayerComponent,
     SearchbarComponent,
-    DouyinComponent
+    DouyinComponent,
+    HistoryComponent
   ],
   imports: [
     BrowserModule,

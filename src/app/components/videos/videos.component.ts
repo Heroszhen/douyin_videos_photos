@@ -214,13 +214,16 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   async getCache(): Promise<boolean> {
     this.indexedDB_db = await this.indexedDB.opendDB();
     await wait(0.1);
+
     let tab:object[] = await this.indexedDB.get("video", this.indexedDB_db);
     if (tab.length === 0) {//first time
       this.indexedDB_videoId = await this.indexedDB.add("video", new IndexeddbCache(), this.indexedDB_db);
     } else {
       let cache:IndexeddbCache = tab[0] as IndexeddbCache;
       this.indexedDB_videoId = cache.id as number;
+
       if (!window.confirm("Voulez-vous recharger les videos que vous avez regardées précédemment?"))return false;
+      if (cache["content"].length === 0)return false;
 
       this.videos = cache["content"];
       this.pageItem = cache.pageItem;
@@ -339,8 +342,8 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   getVideoById(): void {
     if(this.videoId !== null)this.apiService.getGetVideoById(this.videoId).subscribe({
       next: (data:any)=>{
-        if (data["status"] === 200 && data['video'] !== null) {
-          this.videos = [data['video']];
+        if (data["status"] === 1) {
+          this.videos = [data['data']];
           this.elmindex = 0;
           this.setVideoPlayerParams();
         }
