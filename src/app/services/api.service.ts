@@ -96,4 +96,10 @@ export class ApiService extends BaseService {
   getGetVideoById(id:number): Observable<IData>{
     return this.http.get<IData>(`${this.baseUrl2}/mk/jf/videos/${id}`, this.getHttpOptionsAuth());
   }
+
+  getGetDouyinVideos(pageItem:number): Observable<IData> {
+    let params = new HttpParams().set('page', pageItem);
+    
+    return this.http.get<IData>(`${this.baseUrl2}/mk/jf/douyin/videos`, this.getHttpOptionsAuth({params: params}));
+  }
 }

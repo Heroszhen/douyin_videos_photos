@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 import { ApiService } from 'src/app/services/api.service';
 import { StoreService } from 'src/app/services/store.service';
 import { Subscription } from 'rxjs';
-import { IData, CacheType } from 'src/app/interfaces/IData';
+import { IData, CacheType, IVideo } from 'src/app/interfaces/IData';
 import { IVideoPlayerParams, videoType } from 'src/app/interfaces/ivideoPlayerParams';
 import { wait, removeTags, copyToClipboard } from 'src/app/utils/util';
 import { Indexeddb } from 'src/app/indexeddb/indexeddb';
@@ -10,19 +10,6 @@ import { IndexeddbCache } from 'src/app/models/IndexeddbCache';
 import { ActivatedRoute } from "@angular/router";
 import { environment } from 'src/environments/environment';
 
-interface IVideo {
-  actressname:string,
-  created:string,
-  description?:string
-  id:number,
-  last:number,
-  name:string,
-  phototype:number,
-  photourl:string,
-  siteurl:string,
-  videotype:number,
-  videourl:string
-}
 
 @Component({
   selector: 'app-videos',

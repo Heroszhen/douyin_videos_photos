@@ -1,3 +1,12 @@
-<section class="component container mx-auto flex items-center justify-center" id="section-douyin">
-    <h1 class="columns-1 text-center">En constructions....</h1>
+<section class="component" id="section-douyin" (scroll)="listenToScroll($event.target)">
+    <article *ngFor="let video of videos; let key = index;" class="douyin-video container mx-auto">
+        <img src="{{video.photourl}}" alt="" (dblclick)="openOriginalSite(key)">
+        <div class="info">
+            <h3>{{video.actressname}}</h3>
+            <h5>{{video.name}}</h5>
+        </div>
+    </article>
+    <article class="container mx-auto text-center pt-5 pb-5" *ngIf="videos.length > 0">
+        Zhen est le plus grand héros du monde.
+    </article>
 </section>

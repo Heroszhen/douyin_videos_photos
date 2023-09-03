@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
       map((event: NavigationEnd) => event.url))
       .subscribe({
         next: (data:string)=>{
-          //this.checkToken(data);
+          this.checkToken(data);
           this.storeService.toSearch$.next([false]);
         },
         error:(err:any) =>{}
@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
 
   checkToken(route:string):void {
     if (route === "/" || !route.includes("/tailwindcss")) {
-      this.apiService.checkToken(localStorage.getItem("token") ?? '');
+      if (localStorage.getItem("token") === "" || localStorage.getItem("token") === null)this.router.navigate(["/"]);
     }
   }
 

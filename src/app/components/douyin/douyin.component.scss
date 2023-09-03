@@ -1,0 +1,40 @@
+:host { 
+    width:100%;
+}
+
+#section-douyin { 
+    padding-top:0;
+    height:100vh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    article.douyin-video{
+        height:100%;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        scroll-snap-align: start;
+        img{
+            width:auto;
+            height:100%;
+            cursor: pointer;
+        }
+        .info{
+            position:absolute;
+            z-index:20;
+            bottom:0;
+            left:0;
+            padding:20px 16px;
+        }
+    }
+}
+
+@media (max-width:767px) {
+    #section-douyin {
+        article.douyin-video{
+            img{
+                max-width:none !important;
+            }
+        }
+    }
+}
