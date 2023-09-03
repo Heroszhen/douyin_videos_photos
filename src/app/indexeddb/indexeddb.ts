@@ -1,6 +1,7 @@
 //https://www.npmjs.com/package/ngx-indexed-db
 //https://github.com/firefox-devtools/profiler/blob/8436a874983faf0690b3dbba82d094859541ed76/src/types/indexeddb.js
 export class Indexeddb { 
+    readonly TABLES_CACHE:string[] = ["video"];
 
     opendDB():Promise<IDBDatabase> {
         let db:IDBDatabase;
@@ -9,17 +10,24 @@ export class Indexeddb {
         return new Promise<IDBDatabase>((resolve, reject) => {
             openRequest.onupgradeneeded = () => {
                 db = openRequest.result;
-                if (!db.objectStoreNames.contains('video')) {
-                    db.createObjectStore('video', { keyPath: 'id', autoIncrement: true })
-                        .createIndex('id', 'id', { unique: true });
-                }
+                this.createObjectStore(db);
+
                 resolve(db);
             }
             openRequest.onsuccess = () => {
                 db = openRequest.result;
+                this.createObjectStore(db);
+                
                 resolve(db);
             }
         });
+    }
+
+    private createObjectStore(db:IDBDatabase): void {
+        if (!db.objectStoreNames.contains('video')) {
+            db.createObjectStore('video', { keyPath: 'id', autoIncrement: true })
+                .createIndex('id', 'id', { unique: true });
+        }
     }
 
     get(table:string, db:IDBDatabase = null!): Promise<Array<object>> {
@@ -54,7 +62,8 @@ export class Indexeddb {
     }
 
     add(table:string, data:any, db:IDBDatabase = null!): Promise<number> {
-        return new Promise((resolve, reject) => {
+        return new Promise(async(resolve, reject) => {
+            db = db ?? await this.opendDB();
             let request:IDBRequest<IDBValidKey> = db.transaction([table], 'readwrite')
                 .objectStore(table)
                 .add(data);
@@ -66,7 +75,8 @@ export class Indexeddb {
     }
 
     update(table:string, data:any, db:IDBDatabase = null!): Promise<number> {
-        return new Promise<number>((resolve, reject) => {
+        return new Promise<number>(async (resolve, reject) => {
+            db = db ?? await this.opendDB();
             let request:IDBRequest<IDBValidKey> = db.transaction([table], 'readwrite')
                 .objectStore(table)
                 .put(data);
@@ -74,6 +84,18 @@ export class Indexeddb {
             request.onsuccess = () => {
                 resolve(request.result as number);
             }
+        });
+    }
+
+    empty(table:string, db:IDBDatabase = null!): Promise<boolean> {
+        return new Promise<boolean>(async (resolve, reject) => {
+            db = db ?? await this.opendDB();
+            let request:IDBRequest = db.transaction([table], 'readwrite')
+                .objectStore(table)
+                .clear();
+
+            request.onsuccess = () => {resolve(true);}
+            request.onerror = () => {resolve(false);}
         });
     }
 }

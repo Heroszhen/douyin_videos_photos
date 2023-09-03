@@ -94,6 +94,6 @@ export class ApiService extends BaseService {
   }
 
   getGetVideoById(id:number): Observable<IData>{
-    return this.http.get<IData>(`${this.baseUrl2}/mk/onevideo_web/${id}`, this.getHttpOptionsAuth());
+    return this.http.get<IData>(`${this.baseUrl2}/mk/jf/videos/${id}`, this.getHttpOptionsAuth());
   }
 }
