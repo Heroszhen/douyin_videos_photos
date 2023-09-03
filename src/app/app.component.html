@@ -1,5 +1,5 @@
 <app-topnav (toSwitchLeftNav)="switchLeftNav($event)" *ngIf="isConnected===true"></app-topnav>
-<app-leftnav #leftNav *ngIf="isConnected===true"></app-leftnav>
+<app-leftnav #leftNav *ngIf="isConnected===true" (installApp)="installApp($event)"></app-leftnav>
 <main class="douyin">
     <router-outlet></router-outlet>
 </main>

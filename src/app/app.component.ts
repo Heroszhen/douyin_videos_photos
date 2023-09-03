@@ -5,6 +5,12 @@ import { filter, map } from 'rxjs';
 import { IData } from './interfaces/IData';
 import { LeftnavComponent } from './components/common/leftnav/leftnav.component';
 import { StoreService } from './services/store.service';
+import { BeforeInstallPromptEvent } from 'src/app/interfaces/beforeInstallPromptEvent';
+declare global {
+  interface WindowEventMap {
+    beforeinstallprompt: BeforeInstallPromptEvent;
+  }
+}
 
 @Component({
   selector: 'app-root',
@@ -15,6 +21,7 @@ export class AppComponent implements OnInit {
   @ViewChild('leftNav') leftnav!: LeftnavComponent;
   isConnected?:boolean = null!;
   loading:Array<boolean|string> = [false, ""];
+  deferredPrompt:BeforeInstallPromptEvent|null = null;
   constructor(
     private router: Router,
     private apiService: ApiService,
@@ -31,6 +38,16 @@ export class AppComponent implements OnInit {
       this.loading = data;
       if (this.loading[1] === '')this.loading[1] = 'assets/photos/ad_loader.png';
     })
+
+    window.addEventListener('beforeinstallprompt', (event: BeforeInstallPromptEvent) => {
+      console.log('🚀 onBeforeInstallPrompt');
+      event?.preventDefault();
+      this.deferredPrompt = event;
+    });
+    window.addEventListener('appinstalled', () => {
+      console.log('🚀 onAppInstalled');
+      this.deferredPrompt = null;
+    });
   }
 
  
@@ -56,5 +73,17 @@ export class AppComponent implements OnInit {
 
   switchLeftNav(event:IData): void {
     if(event["status"] === 1)this.leftnav.switchHidden();
+  }
+
+  async installApp(e:IData): Promise<void> {
+    console.log('install', this.deferredPrompt);
+    if (!this.deferredPrompt) {
+      return;
+    }
+    this.deferredPrompt.prompt();
+    const {outcome: outcome, platform:platform} = await this.deferredPrompt.userChoice;
+    if (outcome === "accepted") {
+      this.deferredPrompt = null;
+    }
   }
 }
