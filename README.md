@@ -7,9 +7,10 @@ watch videos on <a href="https://joliesfilles.yangzhen.tech/videos" target="_bla
 ### PC
 <img src="docs/md/1.png" alt=""><br>
 <img src="docs/md/2.png" alt=""><br>
+<img src="docs/md/4.png" alt=""><br>
 
 ### mobile
-<img src="docs/md/2.png" alt=""><br>
+<img src="docs/md/3.png" alt=""><br>
 
 ## build
 ng build
