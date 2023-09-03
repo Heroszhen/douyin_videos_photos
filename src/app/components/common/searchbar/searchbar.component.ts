@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { IData } from 'src/app/interfaces/IData';
 import { StoreService } from 'src/app/services/store.service';
-import { wait, readFile } from 'src/app/utils/util';
+import { wait, readFile, isMobile } from 'src/app/utils/util';
 import { createWorker } from 'tesseract.js';
 
 @Component({
@@ -107,6 +107,9 @@ export class SearchbarComponent implements OnInit, OnDestroy {
     this.photo_video_action = 2;
     this.photo_video_url = "";
     await wait(0.1);
+
+    console.log(isMobile())
+
     navigator.mediaDevices
     .getUserMedia({ video: true, audio: false })
     .then((stream) => {

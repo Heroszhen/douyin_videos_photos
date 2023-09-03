@@ -12,9 +12,15 @@ $navWidth: 150px;
     height: calc(100vh - $top);
     color: $douyinActiveColor;
     background-color: $douyinBackgroundColor2;
-    >a.path{
+    >.path{
         font-size:16px;
         display: block;
+        padding-left:10px;
+        margin-bottom:10px;
+        &.active{
+            font-weight: bold;
+            border-bottom:1px solid white;
+        }
     }
 }
 

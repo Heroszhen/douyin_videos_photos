@@ -2,11 +2,13 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } fr
 import { ApiService } from 'src/app/services/api.service';
 import { StoreService } from 'src/app/services/store.service';
 import { Subscription } from 'rxjs';
-import { IData, ICache, CacheType } from 'src/app/interfaces/IData';
+import { IData, CacheType } from 'src/app/interfaces/IData';
 import { IVideoPlayerParams, videoType } from 'src/app/interfaces/ivideoPlayerParams';
-import { wait, removeTags } from 'src/app/utils/util';
+import { wait, removeTags, copyToClipboard } from 'src/app/utils/util';
 import { Indexeddb } from 'src/app/indexeddb/indexeddb';
 import { IndexeddbCache } from 'src/app/models/IndexeddbCache';
+import { ActivatedRoute } from "@angular/router";
+import { environment } from 'src/environments/environment';
 
 interface IVideo {
   actressname:string,
@@ -50,19 +52,29 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   keywordsActressname:string = "";
   keywordsPageItem:number = 1;
   canCharge2:boolean = true;
-  constructor(private apiService: ApiService, private storeService: StoreService) { 
+
+  videoId:number|null = null;
+  constructor(private apiService: ApiService, private storeService: StoreService, private activedroute: ActivatedRoute) { 
+    this.activedroute.queryParams.subscribe((params:any) => {
+      if (params["vid"] !== undefined && Number.isInteger(parseInt(params["vid"]))) {
+        this.videoId = params["vid"];
+        this.getVideoById();
+      }
+    });
     this.windowWidth = window.innerWidth;
     this.indexedDB = new Indexeddb();
   }
 
   async ngOnInit(): Promise<void> {
-    let connectedSubscriber = this.storeService.connected$.subscribe(async (data:Array<boolean>) => {
+    let connectedSubscriber:Subscription = this.storeService.connected$.subscribe(async (data:Array<boolean>) => {
       if (data[0] !== undefined && data[0]) {
-        this.canCharge = true;
-        if (!await this.getCache())this.getVideos();
+        if (this.videoId === null) {
+          this.canCharge = true;
+          if (!await this.getCache())this.getVideos();
+        }
       }
     });
-    let searchSubscriber = this.storeService.toSearch$.subscribe((data:Array<boolean>) => {
+    let searchSubscriber:Subscription = this.storeService.toSearch$.subscribe((data:Array<boolean>) => {
       this.toSearch = data[0];
       this.foundVideos = [];
       this.propositions = [];
@@ -88,6 +100,8 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   wheelListener(event:WheelEvent): void {
+    if (this.videoId !== null)return;
+
     if (this.wheelTimer === null) {
       this.wheelTimer = window.setTimeout(() => {
         if(this.wheelTimer !== null)window.clearTimeout(this.wheelTimer);
@@ -99,10 +113,6 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
         this.changeElmindex(1);
       } 
     }
-  }
-
-  async getIndexeddb(): Promise<void> {
-    console.log(Indexeddb);
   }
 
   getVideos(): void {
@@ -210,6 +220,8 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       let cache:IndexeddbCache = tab[0] as IndexeddbCache;
       this.indexedDB_videoId = cache.id as number;
+      if (!window.confirm("Voulez-vous recharger les videos que vous avez regardées précédemment?"))return false;
+
       this.videos = cache["content"];
       this.pageItem = cache.pageItem;
       if (this.videos.length > 0) {
@@ -228,6 +240,12 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     let cache:object =  await this.indexedDB.getById("video", this.indexedDB_videoId, this.indexedDB_db);
     (cache as IndexeddbCache).elmindex = this.elmindex;
     this.indexedDB.update("video", cache, this.indexedDB_db);
+  }
+
+  copyVideoUrl(): void{
+    let port:string = (environment.production === false) ? `:${location.port}/` : `/`;
+    let url:string = location.protocol + '//' + location.hostname + port + `videos?vid=${this.videos[this.elmindex]['id']}`;
+    copyToClipboard(url, true);
   }
 
 
@@ -275,7 +293,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.apiService.getGetVideosByKeywords(this.keywordsAction, this.keywordsKeywords, this.keywordsName, this.keywordsActressname, this.keywordsPageItem).subscribe({
         next: (data:IData)=>{
-          if (data["status"] === 1) {console.log(this.foundVideos)
+          if (data["status"] === 1) {
             if (data["data"] !== null && data["data"].length != 0) {
               this.foundVideos = data["data"];
               this.keywordsPageItem++;
@@ -314,6 +332,23 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
     
+  }
+
+
+
+  getVideoById(): void {
+    if(this.videoId !== null)this.apiService.getGetVideoById(this.videoId).subscribe({
+      next: (data:any)=>{
+        if (data["status"] === 200 && data['video'] !== null) {
+          this.videos = [data['video']];
+          this.elmindex = 0;
+          this.setVideoPlayerParams();
+        }
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    });
   }
 
 

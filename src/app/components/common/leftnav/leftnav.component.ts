@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, OnInit, ViewChild } from '@angular/core';
+import { IData } from 'src/app/interfaces/IData';
 import { BeforeInstallPromptEvent } from 'src/app/interfaces/beforeInstallPromptEvent';
 declare global {
   interface WindowEventMap {
@@ -14,43 +15,17 @@ declare global {
 export class LeftnavComponent implements OnInit {
 
   @ViewChild('div_leftnav') div!:ElementRef<HTMLDivElement>;
-  deferredPrompt:any = null;
+  @Output() installApp = new EventEmitter<IData>();
   constructor() { }
 
   ngOnInit(): void {
-    window.addEventListener('beforeinstallprompt', this.onBeforeInstallPrompt.bind(this));
-    window.addEventListener('appinstalled', this.onAppInstalled.bind(this));
   }
 
   switchHidden(): void{
     this.div.nativeElement.classList.toggle('displayed')
   }
 
-  onBeforeInstallPrompt(event: BeforeInstallPromptEvent): void {
-    console.log('🚀 onBeforeInstallPrompt');
-    // Prevent the mini-info bar from appearing on mobile
-    event?.preventDefault();
-    // Stash the event so it can be triggered later.
-    this.deferredPrompt = event;
-  }
-
-  onAppInstalled(): void {
-    console.log('🚀 onAppInstalled');
-    this.deferredPrompt = null;
-  }
-
-  async installZooliclient(): Promise<void> {
-    const promptEvent = this.deferredPrompt;
-    console.log('install', this.deferredPrompt);
-    if (!promptEvent) {
-      return;
-    }
-    promptEvent.prompt();
-
-    const result: boolean = await promptEvent.userChoice;
-    console.log(result);
-    if (result) {
-      this.deferredPrompt = null;
-    }
+  installZooliclient(): void {
+    this.installApp.emit({status:1, data:""});
   }
 }

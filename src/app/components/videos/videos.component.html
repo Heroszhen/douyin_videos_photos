@@ -6,12 +6,13 @@
         (touchmove)="touchMove($event)"
         (touchend)="touchEnd($event)"
         class="columns-1"
+        *ngIf="videoId === null"
     >
         <ng-container *ngIf="elmindex !== -1">
             <app-videoplayer class="w-full h-full" [params]="videoPlayerParams"></app-videoplayer>
         </ng-container>
     </section>
-    <div id="play-switch" *ngIf="elmindex !== -1">
+    <div id="play-switch" *ngIf="elmindex !== -1 && videoId === null">
         <div class="playswitch-prev"><i class="bi bi-chevron-up" (click)="changeElmindex(2)"></i></div>
         <div class="playswitch-prev"><i class="bi bi-chevron-down" (click)="changeElmindex(1)"></i></div>
     </div>
@@ -28,8 +29,11 @@
                     {{videos[elmindex]['actressname']}}
                 </div>
                 <div [innerHTML]="videos[elmindex]['description']"></div>
-                <div>
-                    <a href="{{videos[elmindex]['siteurl']}}" target="_blank"><i class="bi bi-box-arrow-up-right"></i></a>
+                <div class="shares">
+                    <a href="{{videos[elmindex]['siteurl']}}" target="_blank" class="share">
+                        <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                    <div class="share" (click)="copyVideoUrl()"><i class="bi bi-link-45deg"></i></div>
                 </div>
                 <div id="wrap-gear" (click)="switchDescription()">
                     <div class="wrap">
@@ -62,5 +66,11 @@
                 </div>
             </div>
         </section>
+    </section>
+
+    <section id="wrap-list-videos" class="columns-1" *ngIf="videoId !== null">
+        <ng-container *ngIf="elmindex !== -1">
+            <app-videoplayer class="w-full h-full" [params]="videoPlayerParams"></app-videoplayer>
+        </ng-container>
     </section>
 </section>
