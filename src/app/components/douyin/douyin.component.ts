@@ -16,6 +16,7 @@ export class DouyinComponent implements OnInit {
 
   ngOnInit(): void {
     this.getVideos();
+    alert("Cliquer 2 fois sur l'image pour regarder la vidéo.")
   }
 
   getVideos(): void {
