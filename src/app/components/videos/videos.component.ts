@@ -19,6 +19,7 @@ import { environment } from 'src/environments/environment';
 export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   subscribers: Subscription[] = [];
   windowWidth: number = 768;
+
   pageItem:number = 1;
   canCharge:boolean = false;
   videos:Array<IVideo> = [];
@@ -41,6 +42,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   canCharge2:boolean = true;
 
   videoId:number|null = null;
+  
   constructor(private apiService: ApiService, private storeService: StoreService, private activedroute: ActivatedRoute) { 
     this.activedroute.queryParams.subscribe((params:any) => {
       if (params["vid"] !== undefined && Number.isInteger(parseInt(params["vid"]))) {
@@ -299,7 +301,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  ListenToSectionFroundVideosScroll(e:Event): void{
+  listenToSectionFroundVideosScroll(e:Event): void{
     let target:Element = (e.target as Element);
     if (target.scrollTop + target.clientHeight >= target.scrollHeight - 50) {
       if (this.canCharge2) {

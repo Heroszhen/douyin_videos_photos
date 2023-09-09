@@ -1,3 +1,73 @@
 :host { 
     width:100%;
 }
+
+#section-photos{
+    height:100vh;
+    overflow-y:auto;
+}
+
+ngx-masonry{
+    width:100% !important;
+    padding-left:10px;
+    .masonry-item {
+        width:calc(100% / 5 - 12px);
+        margin-right:10px;
+        margin-bottom:15px;
+        .wrap {
+            position: relative;
+            width:100%;
+            cursor: pointer;
+            img{
+                width:100%;
+                height:auto;
+                border-radius:5px;
+            }
+            .actressname {
+                position:absolute;
+                z-index:10;
+                width:100%;
+                height:0;
+                left:0;
+                top:0;
+                background-color: rgba(0,0,0,.5);
+                transition: .5s;
+                overflow: hidden;
+                display:flex;
+                justify-content: center;
+                align-items: center;
+                div{
+                    padding-left:10px;
+                    padding-right:10px;
+                    display:none;
+                }
+            }
+            &:hover .actressname{
+                height: 100%;
+                div{
+                    display:block;
+                }
+            }
+        }
+    }
+    .masonry-item:nth-child(5n) {
+        margin-right:0 !important;
+        right:0;
+    }
+}
+
+@media (max-width:992px) {
+    ngx-masonry{
+        .masonry-item {
+            width:calc(100% / 3 - 14px);
+        }
+    }
+}
+
+@media (max-width:767px) {
+    ngx-masonry{
+        .masonry-item {
+            width:calc(100% / 2 - 16px);
+        }
+    }
+}

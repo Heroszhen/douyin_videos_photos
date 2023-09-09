@@ -1,3 +1,16 @@
-<section class="component container mx-auto flex items-center justify-center" id="section-photos">
-    <h1 class="columns-1 text-center">En constructions....</h1>
+<section class="component" id="section-photos" (scroll)="listenToScroll($event)">
+    <section class="container mx-auto">
+        <div class="columns-1">
+            <ngx-masonry [options]="masonryOptions" [useImagesLoaded]="true">
+                <div ngxMasonryItem class="masonry-item"  *ngFor="let picture of photos" class="masonry-item">
+                    <div class="wrap">
+                        <img src="{{picture.photourl}}">
+                        <div class="actressname">
+                            <div>{{picture.name}}</div>
+                        </div>
+                    </div>
+                </div>
+              </ngx-masonry>
+        </div>
+    </section>
 </section>

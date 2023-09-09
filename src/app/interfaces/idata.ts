@@ -21,4 +21,11 @@ export interface IVideo {
     siteurl:string,
     videotype:number,
     videourl:string
-  }
+}
+
+export interface IPhoto {
+    id:number,
+    name:string,
+    photoname:string,
+    photourl:string
+}

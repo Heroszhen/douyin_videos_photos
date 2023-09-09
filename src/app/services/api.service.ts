@@ -102,4 +102,10 @@ export class ApiService extends BaseService {
     
     return this.http.get<IData>(`${this.baseUrl2}/mk/jf/douyin/videos`, this.getHttpOptionsAuth({params: params}));
   }
+
+  getGetPhotos(pageItem:number): Observable<IData> {
+    let params = new HttpParams().set('page', pageItem);
+    
+    return this.http.get<IData>(`${this.baseUrl2}/mk/jf/photos`, this.getHttpOptionsAuth({params: params}));
+  }
 }

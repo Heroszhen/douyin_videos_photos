@@ -44,7 +44,7 @@
         </ng-container>
     </div>
 
-    <section id="searched-videos" class="scrollbar" *ngIf="toSearch===true" (click)="$event.stopPropagation();propositions=[];" (scroll)="ListenToSectionFroundVideosScroll($event)">
+    <section id="searched-videos" class="scrollbar" *ngIf="toSearch===true" (click)="$event.stopPropagation();propositions=[];" (scroll)="listenToSectionFroundVideosScroll($event)">
         <section class="fixed z-50 top-0 left-0 w-full">
             <div class="container mx-auto">
                 <div class="columns-1" [ngClass]="{'ml-[-10px]':foundVideos.length>1}">
