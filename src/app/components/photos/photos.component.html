@@ -2,8 +2,8 @@
     <section class="container mx-auto">
         <div class="columns-1">
             <ngx-masonry [options]="masonryOptions" [useImagesLoaded]="true">
-                <div ngxMasonryItem class="masonry-item"  *ngFor="let picture of photos" class="masonry-item">
-                    <div class="wrap">
+                <div ngxMasonryItem class="masonry-item"  *ngFor="let picture of photos;let key = index;" class="masonry-item">
+                    <div class="wrap" (click)="choosePhoto(key)">
                         <img src="{{picture.photourl}}">
                         <div class="actressname">
                             <div>{{picture.name}}</div>

@@ -63,4 +63,8 @@ export class PhotosComponent implements OnInit, OnDestroy {
     }
   }
 
+  choosePhoto(index:number|null): void{
+    this.elmindex = index;
+  }
+
 }
