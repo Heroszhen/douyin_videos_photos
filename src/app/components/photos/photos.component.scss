@@ -56,6 +56,39 @@ ngx-masonry{
     }
 }
 
+.loader{
+    background-color: rgba(0,0,0,.9);
+    .btns{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 3px 3px;
+        >div{
+            cursor: pointer;
+            font-size:25px;
+            margin-right:15px;
+        }
+    }
+
+    .wrap-images{
+        width:100%;
+        height:calc(100vh - 44px);
+        >.wrap{
+            width:100%;
+            height:100%;
+            padding:5px;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            img{
+                width:auto;
+                height:96%;
+            }
+        }
+    }
+}
+
 @media (max-width:992px) {
     ngx-masonry{
         .masonry-item {
@@ -68,6 +101,17 @@ ngx-masonry{
     ngx-masonry{
         .masonry-item {
             width:calc(100% / 2 - 16px);
+        }
+    }
+
+    .loader{
+        .wrap-images{
+            >.wrap{
+                img{
+                    width:98%;
+                    height:auto;
+                }
+            }
         }
     }
 }

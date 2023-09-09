@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgxMasonryModule } from 'ngx-masonry';
+import { NgMagnizoomModule } from 'ng-magnizoom';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -51,7 +52,8 @@ import { HistoryComponent } from './components/history/history.component';
       registrationStrategy: 'registerWhenStable:30000'
     }),
     NgxMasonryModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgMagnizoomModule
   ],
   providers: [],
   bootstrap: [AppComponent],

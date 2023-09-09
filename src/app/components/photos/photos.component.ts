@@ -4,6 +4,7 @@ import { StoreService } from 'src/app/services/store.service';
 import { Subscription } from 'rxjs';
 import { IData, IPhoto } from 'src/app/interfaces/IData';
 import { NgxMasonryOptions } from 'ngx-masonry';
+import { wait } from 'src/app/utils/util';
 
 @Component({
   selector: 'app-photos',
@@ -12,6 +13,7 @@ import { NgxMasonryOptions } from 'ngx-masonry';
 })
 export class PhotosComponent implements OnInit, OnDestroy {
   subscribers: Subscription[] = [];
+  window_width:number = window.innerWidth;
 
   canCharge:boolean = false;
   pageItem:number = 1;
@@ -21,6 +23,8 @@ export class PhotosComponent implements OnInit, OnDestroy {
 		initLayout: true
 	};
   elmindex:number|null = null;
+  photoAction:number|null = null;
+  magnizoom_imageStyle:any = "";
 
   constructor(private apiService: ApiService, private storeService: StoreService) { }
 
@@ -30,10 +34,16 @@ export class PhotosComponent implements OnInit, OnDestroy {
     });
     this.subscribers.push(searchSubscriber);
     this.getPhotos();
+    window.addEventListener('resize', this.listener.bind(this), true);
   }
 
   ngOnDestroy(): void {
     for (let entry of this.subscribers) entry.unsubscribe();
+    window.removeEventListener('resize', this.listener.bind(this), true);
+  }
+
+  listener():void {
+    this.window_width = window.innerWidth;
   }
 
   getPhotos(): void {
@@ -64,7 +74,15 @@ export class PhotosComponent implements OnInit, OnDestroy {
   }
 
   choosePhoto(index:number|null): void{
+    this.photoAction = null;
     this.elmindex = index;
   }
 
+  async setPhotoAction(action:number|null): Promise<void>{
+    if (this.photoAction === action)this.photoAction = null;
+    else {
+    
+       this.photoAction = action;
+    }
+  }
 }

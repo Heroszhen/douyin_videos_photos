@@ -10,7 +10,41 @@
                         </div>
                     </div>
                 </div>
-              </ngx-masonry>
+            </ngx-masonry>
         </div>
     </section>
+</section>
+
+
+<section class="loader" *ngIf="elmindex !== null">
+    <div class="btns">
+        <div (click)="setPhotoAction(1)"><i class="bi bi-search"></i></div>
+        <div><i class="bi bi-arrows-angle-expand"></i></div>
+        <div><i class="bi bi-cloud-download-fill"></i></div>
+        <div (click)="elmindex=null"><i class="bi bi-x-circle"></i></div>
+    </div>
+    
+    <div *ngIf="photos[elmindex] !== undefined" class="wrap-images">
+        <div *ngIf="photoAction === null" class="wrap">
+            <img src="{{photos[elmindex]['photourl']}}" alt="">
+        </div>
+        <ng-magnizoom
+            zoomMode="LENS"
+            imageSrc="{{photos[elmindex]['photourl']}}"
+            [imageStyle]="{ 'width': 'auto', 'height': '96%' }"
+            [lensSize]="{ width: 0.20, height: 0.20 }"
+            *ngIf="photoAction===1 && window_width > 767" 
+            class="wrap"
+        >
+        </ng-magnizoom>
+        <ng-magnizoom
+            zoomMode="LENS"
+            imageSrc="{{photos[elmindex]['photourl']}}"
+            [imageStyle]="{ 'width': '98%', 'height': 'auto' }"
+            [lensSize]="{ width: 0.20, height: 0.20 }"
+            *ngIf="photoAction===1 && window_width <= 767" 
+            class="wrap"
+        >
+        </ng-magnizoom>
+    </div>
 </section>
