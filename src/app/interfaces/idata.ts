@@ -27,5 +27,6 @@ export interface IPhoto {
     id:number,
     name:string,
     photoname:string,
-    photourl:string
+    photourl:string,
+    actress:{name:string}|null
 }

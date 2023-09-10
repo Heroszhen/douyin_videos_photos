@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { StoreService } from 'src/app/services/store.service';
 import { Subscription } from 'rxjs';
 import { IData, IPhoto } from 'src/app/interfaces/IData';
 import { NgxMasonryOptions } from 'ngx-masonry';
-import { wait } from 'src/app/utils/util';
 
 @Component({
   selector: 'app-photos',
@@ -25,6 +24,9 @@ export class PhotosComponent implements OnInit, OnDestroy {
   elmindex:number|null = null;
   photoAction:number|null = null;
   magnizoom_imageStyle:any = "";
+  photoZoomOut:number = 0;
+  @ViewChild('photoToZoom') photoToZoom: ElementRef<HTMLImageElement>;
+  angle:number = 0;
 
   constructor(private apiService: ApiService, private storeService: StoreService) { }
 
@@ -81,8 +83,37 @@ export class PhotosComponent implements OnInit, OnDestroy {
   async setPhotoAction(action:number|null): Promise<void>{
     if (this.photoAction === action)this.photoAction = null;
     else {
-    
-       this.photoAction = action;
+      if (action === 2){
+        this.photoZoomOut = 0;
+      }
+      if (action === 3){
+        this.angle = 0;
+      }
+      this.photoAction = action;
     }
+  }
+
+  getActressName(index:number):string {
+    if (this.photos[index]["name"] !== null) {
+      return this.photos[index]["name"] ;
+    } 
+    
+    let name:string|undefined = this.photos[index].actress?.name;
+    return name  ?? "" ;
+  }
+
+  zoomPhoto(): void {
+    if (this.photoZoomOut === 0){
+      this.photoToZoom.nativeElement.style.width = `auto`;
+    }
+    this.photoZoomOut += 200;
+    this.photoToZoom.nativeElement.style.height = `${this.photoZoomOut + this.photoToZoom.nativeElement.width}px`;
+    console.log(this.photoToZoom.nativeElement.width)
+  }
+
+  rotatePhoto(): void {
+    this.angle += 45;
+    if (this.angle === 180)this.angle = 0;
+    this.photoToZoom.nativeElement.style.transform = `rotate(${this.angle}deg)`;
   }
 }

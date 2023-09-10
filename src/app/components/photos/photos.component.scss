@@ -58,6 +58,7 @@ ngx-masonry{
 
 .loader{
     background-color: rgba(0,0,0,.9);
+    box-sizing: content-box;
     .btns{
         display: flex;
         justify-content: center;
@@ -67,6 +68,11 @@ ngx-masonry{
             cursor: pointer;
             font-size:25px;
             margin-right:15px;
+            color:gray;
+        }
+        >div.active{
+            color:white;
+            font-weight: bold;
         }
     }
 
@@ -84,6 +90,13 @@ ngx-masonry{
             img{
                 width:auto;
                 height:96%;
+            }
+        }
+        >.wrap-zoom{
+            overflow: auto;
+            cursor: zoom-in;
+            img{
+                max-width:9999px;
             }
         }
     }
