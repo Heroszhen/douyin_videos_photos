@@ -1,5 +1,10 @@
 # douyin_videos_photos
 
+## config
+Angular : 14.2.12<br>
+nodejs : v14.15.1<br>
+typescript : typescript<bt>
+
 ## website
 sign up on <a href="https://alexandra-daddario.yangzhen.tech/logup" target="_blank">https://alexandra-daddario.yangzhen.tech</a><br>
 watch videos on <a href="https://joliesfilles.yangzhen.tech/videos" target="_blank">https://joliesfilles.yangzhen.tech</a><br>

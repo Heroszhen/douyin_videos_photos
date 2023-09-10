@@ -55,7 +55,7 @@
         <div *ngIf="photoAction === 3" class="wrap">
             <img src="{{photos[elmindex]['photourl']}}" alt="" (click)="rotatePhoto()" #photoToZoom>
         </div>
-        <pinch-zoom class="wrap" *ngIf="photoAction === 4">
+        <pinch-zoom class="h-full w-full" *ngIf="photoAction === 4">
             <img src="{{photos[elmindex]['photourl']}}" /> 
         </pinch-zoom>
     </div>
