@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgxMasonryModule } from 'ngx-masonry';
 import { NgMagnizoomModule } from 'ng-magnizoom';
+import { PinchZoomModule } from 'ngx-pinch-zoom';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -53,7 +54,8 @@ import { HistoryComponent } from './components/history/history.component';
     }),
     NgxMasonryModule,
     BrowserAnimationsModule,
-    NgMagnizoomModule
+    NgMagnizoomModule,
+    PinchZoomModule
   ],
   providers: [],
   bootstrap: [AppComponent],

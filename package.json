@@ -25,6 +25,7 @@
     "masonry-layout": "^4.2.2",
     "ng-magnizoom": "^1.2.0",
     "ngx-masonry": "^14.0.1",
+    "ngx-pinch-zoom": "^2.6.2",
     "rxjs": "~7.5.0",
     "tesseract.js": "^4.1.0",
     "tslib": "^2.3.0",
