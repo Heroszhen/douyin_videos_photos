@@ -3,7 +3,7 @@
 ## config
 Angular : 14.2.12<br>
 nodejs : v14.15.1<br>
-typescript : typescript<bt>
+typescript : 4.7.2<bt>
 
 ## website
 sign up on <a href="https://alexandra-daddario.yangzhen.tech/logup" target="_blank">https://alexandra-daddario.yangzhen.tech</a><br>
