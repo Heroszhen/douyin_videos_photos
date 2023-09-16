@@ -108,4 +108,8 @@ export class ApiService extends BaseService {
     
     return this.http.get<IData>(`${this.baseUrl2}/mk/jf/photos`, this.getHttpOptionsAuth({params: params}));
   }
+
+  getGetActresses(): Observable<IData> {
+    return this.http.get<IData>(`${this.baseUrl2}/mk/jf/actresses`, this.getHttpOptionsAuth());
+  }
 }

@@ -30,3 +30,9 @@ export interface IPhoto {
     photourl:string,
     actress:{name:string}|null
 }
+
+export interface IActress {
+    id:number,
+    name:string,
+    photourl:string
+}
