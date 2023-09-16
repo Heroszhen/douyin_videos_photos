@@ -1,5 +1,15 @@
-<section class="component container-fluid mx-auto" id="section-actresses">
-    <div  class="columns-1 text-center">
-
+<section class="component container mx-auto" id="section-actresses">
+    <div class="columns-1 text-center">
+        <acuw-carousel 
+            #carousel 
+            class="carousel" 
+            [autoPlay]="options.autoPlay"
+            *ngIf="displayCarousel===true"
+            [cameraDistance]="options.cameraDistance"
+        >
+            <acuw-carousel-item *ngFor="let item of actresses;index as i" class="carousel-item">
+              <img [src]="item.photourl" loading="lazy" alt="{{item.name}}" />
+            </acuw-carousel-item>
+          </acuw-carousel>
     </div>
 </section>

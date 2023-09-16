@@ -194,6 +194,23 @@ app-videos{
     }
 }
 
+
+/**acuw-carousel */
+.carousel{
+    position: relative;
+    .threejs-container
+    {
+        >div{
+            >div{
+                display: flex !important;
+            }
+        }
+    }
+    .dots{
+        display:none !important;
+    }
+}
+
 @media (max-width:767px) {
     section.component{
         padding-top:0;
