@@ -1,8 +1,9 @@
 <div id="leftnav" #div_leftnav>
     <a class="path" href="#" [routerLink]="['/tailwindcss']" routerLinkActive="active">Tailwind CSS</a>
     <a class="path" href="#" [routerLink]="['/douyin']" routerLinkActive="active">douyin</a>
-    <div class="path">Se connecter</div>
     <div class="path" (click)="clearCache()">Vider le cache</div>
     <a class="path" href="#" [routerLink]="['/historique']" routerLinkActive="active">Historique</a>
     <div class="path" (click)="installZooliclient()">Installer</div>
+    <div class="path" (click)="toLogin()" *ngIf="isConnected !==true">Se connecter</div>
+    <div class="path" (click)="deconnect()" *ngIf="isConnected ===true">Se déconnecter</div>
 </div>

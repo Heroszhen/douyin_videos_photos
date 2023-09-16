@@ -22,6 +22,12 @@ export class AppComponent implements OnInit {
   isConnected?:boolean = null!;
   loading:Array<boolean|string> = [false, ""];
   deferredPrompt:BeforeInstallPromptEvent|null = null;
+  displayLogin:boolean = false;
+  user = {
+    email:"",
+    password:"",
+    passwordType:""
+  }
   constructor(
     private router: Router,
     private apiService: ApiService,
@@ -68,9 +74,13 @@ export class AppComponent implements OnInit {
   }
 
   checkToken(route:string):void {
-    if (route === "/" || !route.includes("/tailwindcss")) {
-      if (localStorage.getItem("token") === "" || localStorage.getItem("token") === null)this.router.navigate(["/"]);
+    if (localStorage.getItem("token") === "" || localStorage.getItem("token") === null) { 
+      this.storeService.connected$.next([false]);
+      if (route !== "/" || !route.includes("/tailwindcss")) {
+        this.router.navigate(["/"]);
+      }
     }
+    
   }
 
   switchLeftNav(event:IData): void {
@@ -87,5 +97,35 @@ export class AppComponent implements OnInit {
     if (outcome === "accepted") {
       this.deferredPrompt = null;
     }
+  }
+
+  showLoginForm(e:IData):void {
+    this.user = {
+      email:"",
+      password:"",
+      passwordType:"password"
+    }
+    this.displayLogin = true;
+  }
+  toLogin(target:EventTarget): void {
+    const button:HTMLButtonElement|null = (target as HTMLFormElement).querySelector("button");
+    const toggleButton = (disabled:boolean) => {
+      if (button !== null)button.disabled = disabled;
+    }
+    toggleButton(true);
+    this.apiService.postLoginToAD(this.user).subscribe({
+      next: (data:IData)=>{
+        if (data["status"] === 1) {
+          localStorage.setItem('token', data['data']);
+          this.storeService.connected$.next([true]);
+          this.displayLogin = false;
+        } 
+        toggleButton(false);
+      },
+      error:(err)=>{
+        console.log(err);
+        toggleButton(false);
+      }
+    });
   }
 }

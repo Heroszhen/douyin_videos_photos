@@ -16,7 +16,6 @@ export class DouyinComponent implements OnInit {
 
   ngOnInit(): void {
     this.getVideos();
-    alert("Cliquer 2 fois sur l'image pour regarder la vidéo.")
   }
 
   getVideos(): void {
@@ -25,6 +24,7 @@ export class DouyinComponent implements OnInit {
       next: (data:IData)=>{
         if (data["status"] === 1) {
           this.videos = this.videos.concat(data["data"]);
+          if (this.pageItem === 1)alert("Cliquer 2 fois sur l'image pour regarder la vidéo.")
           if (data["data"].length > 0) {
             this.pageItem++;
             this.canCharge = true;

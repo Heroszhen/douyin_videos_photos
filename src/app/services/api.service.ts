@@ -115,4 +115,7 @@ export class ApiService extends BaseService {
   getGetActressPhotos(id:number): Observable<IData> {
     return this.http.get<IData>(`${this.baseUrl2}/mk/jf/actress/${id}`, this.getHttpOptionsAuth());
   }
+  postLoginToAD(user:Object): Observable<IData> {
+    return this.http.post<IData>(`${this.baseUrl2}/mk/jf/login-to-AD`, JSON.stringify(user), this.getHttpOptionsAuth());
+  }
 }

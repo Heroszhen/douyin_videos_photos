@@ -2,6 +2,8 @@ import { Component, ElementRef, EventEmitter, Output, OnInit, ViewChild } from '
 import { IData } from 'src/app/interfaces/IData';
 import { Indexeddb } from 'src/app/indexeddb/indexeddb';
 import { wait } from 'src/app/utils/util';
+import { StoreService } from 'src/app/services/store.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-leftnav',
@@ -12,10 +14,15 @@ export class LeftnavComponent implements OnInit {
 
   @ViewChild('div_leftnav') div!:ElementRef<HTMLDivElement>;
   @Output() installApp = new EventEmitter<IData>();
+  @Output() login = new EventEmitter<IData>();
   indexeddb = new Indexeddb();
-  constructor() { }
+  isConnected:boolean = false;
+  constructor(private storeService:StoreService, private router:Router) { }
 
   ngOnInit(): void {
+    this.storeService.connected$.subscribe((data:boolean[])=>{
+      this.isConnected = data[0];
+    })
   }
 
   switchHidden(): void{
@@ -33,5 +40,15 @@ export class LeftnavComponent implements OnInit {
       await this.indexeddb.empty(entry, db);
     }
     location.reload();
+  }
+
+  toLogin():void {
+    this.login.emit({status:1, data:""});
+  }
+
+  deconnect():void {
+    localStorage.removeItem('token');
+    this.storeService.connected$.next([false]);
+    this.router.navigate(['/']);
   }
 }
