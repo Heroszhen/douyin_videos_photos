@@ -1,15 +1,53 @@
 <section class="component container mx-auto" id="section-actresses">
-    <div class="columns-1 text-center">
+    <div class="columns-1 text-center pl-1 pr-1">
         <acuw-carousel 
             #carousel 
-            class="carousel" 
-            [autoPlay]="options.autoPlay"
+            class="carousel"  
             *ngIf="displayCarousel===true"
+            [autoPlay]="options.autoPlay"
             [cameraDistance]="options.cameraDistance"
+            [activeCarouselElement]="options.activeCarouselItem" 
         >
             <acuw-carousel-item *ngFor="let item of actresses;index as i" class="carousel-item">
-              <img [src]="item.photourl" loading="lazy" alt="{{item.name}}" />
+              <img [src]="item.photourl" loading="lazy" alt="{{item.name}}"  />
             </acuw-carousel-item>
-          </acuw-carousel>
+        </acuw-carousel>
+
+        <div class="mb-1 flex justify-end items-center text-[25px] absolute top-[50px] right-[20px]">
+            <div class="pointer mr-3" (click)="carousel.previous()">
+                <i class="bi bi-arrow-left"></i>
+            </div>
+            <div class="pointer mr-3" >
+                <i class="bi bi-arrow-right" (click)="carousel.next()"></i>
+            </div>
+            <div class="pointer" (click)="getActressDescription()">
+                <i class="bi bi-eye"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="actress-description" class="loader" #actress_description>
+    <div class="text-center text-gray-950 text-[20px] mb-2" (click)="toggleActressDescription()"><i class="bi bi-border-width pointer"></i></div>
+    <div *ngIf="actressPhotos !== null">
+        <section class="description container mx-auto">
+            <div class="text-right">
+                <img src="{{actresses[elmindex]['photourl']}}" alt="">
+            </div>
+            <div>
+                <h2 class="mb-2">{{actresses[elmindex]['name']}}</h2>
+                <h4>{{actressPhotos['birthday'] | date:'dd/MM/YYYY hh:mm:ss'}}</h4>
+                <h5>{{actressPhotos['country']}}</h5>
+                <div [innerHTML]="actressPhotos['description']"></div>
+            </div>
+        </section>
+        <section class="wrap-photos" *ngIf="actressPhotos['mkphotos'].length>0">
+            <ng-container *ngFor="let photo of actressPhotos['mkphotos'];let key = index;">
+                <img src="{{photo.photourl}}" alt="" (dblclick)="showBigPhoto(key)">
+            </ng-container>
+        </section>
+        <section class="big-photo" *ngIf="actressPhotoIndex !== -1">
+            <img src="{{actressPhotos['mkphotos'][actressPhotoIndex]['photourl']}}" alt="">
+        </section>
     </div>
 </section>

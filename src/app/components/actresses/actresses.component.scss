@@ -2,6 +2,7 @@
     width:100%;
 }
 #section-actresses {
+
     >div{
         height:calc(100vh - 60px);
     }
@@ -18,4 +19,82 @@
         }
     }
 
+}
+
+#actress-description{
+    background-color: white;
+    top:101vh;
+    left:3px;
+    width:calc(100% - 6px);
+    height:calc(100vh - 9px);
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    padding:10px;
+    overflow-y: auto;
+    color:black;
+    .description{
+        display:flex;
+        margin-bottom:20px;
+        >div{
+            padding:5px;
+            width:50%;
+        }
+    }
+    .wrap-photos{
+        height:200px;
+        display:flex;
+        width:100%;
+        padding:3px 5px;
+        overflow-x: auto;
+        img {
+            height:100%;
+            width: auto;
+            margin-right:5px;
+        }
+    }
+    .big-photo{
+        padding:10px;
+        img{
+            width:100%;
+            height:auto;
+        }
+    }
+}
+
+#actress-description.displayed{
+    animation: show_description 0.3s linear;
+    animation-fill-mode:forwards;
+}
+#actress-description.closed{
+    animation: hide_description .3s linear;
+    animation-fill-mode:forwards;
+}
+
+@keyframes show_description {
+    0% { top:101vh; }
+    50% { top:50vh; }
+    100% {  top:3px;  }
+}
+
+@keyframes hide_description {
+    0% { top:3px; }
+    50% { top:50vh; }
+    100% {  top:101vh;  }
+}
+
+@media (max-width:767px) {
+    #actress-description{
+        img{
+            max-width:none;
+        }
+        .description{
+            flex-wrap: wrap;
+            >div{
+                width:100%;
+                img{
+                    width:100%;
+                }
+            }
+        }
+    }
 }

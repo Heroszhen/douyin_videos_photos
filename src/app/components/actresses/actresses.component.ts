@@ -1,7 +1,16 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { IActress, IData } from 'src/app/interfaces/IData';
-import { wait } from 'src/app/utils/util';
+import { CarouselComponent } from 'ngx-acuw';
+
+interface IActressPhotos {
+    birthday:string,
+    country:string,
+    description:string,
+    mkphotos:Array<{
+      photourl:string
+    }>
+}
 
 @Component({
   selector: 'app-actresses',
@@ -13,11 +22,16 @@ export class ActressesComponent implements OnInit {
   actresses: Array<IActress> = [];
   autoPlay:boolean = true;
   displayCarousel:boolean = false;
-  @ViewChild('carousel') carousel: ElementRef;
   options = {
     autoPlay: true,
-    cameraDistance: 300
+    cameraDistance: 330,
+    activeCarouselItem:0
   }
+  @ViewChild('carousel') carousel:CarouselComponent;
+  @ViewChild('actress_description') actressDescription: ElementRef<HTMLDivElement>;
+  elmindex:number = -1;
+  actressPhotos:IActressPhotos|null = null;
+  actressPhotoIndex:number = -1;
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
@@ -29,7 +43,7 @@ export class ActressesComponent implements OnInit {
       next: (data:IData)=>{
         if (data["status"] === 1) {
           if (data["data"] !== null && data["data"].length !== 0) {
-            this.actresses = data["data"];console.log(this.actresses)
+            this.actresses = data["data"];
             this.displayCarousel = true;
           }
         }
@@ -38,5 +52,39 @@ export class ActressesComponent implements OnInit {
         console.log(err);
       }
     });
+  }
+
+  getActressDescription(): void {
+    this.elmindex = this.carousel.activeCarouselElement;
+    let id:number = this.actresses[this.carousel.activeCarouselElement]["id"];
+    this.getActressPhotos(id);
+    this.actressPhotos = null;
+    this.actressPhotoIndex = -1;
+    this.toggleActressDescription();
+  }
+
+  toggleActressDescription(): void{
+    if (!this.actressDescription.nativeElement.classList.contains('displayed')) {
+      this.actressDescription.nativeElement.classList.add('displayed')
+    } else {
+      this.actressDescription.nativeElement.classList.toggle('closed');
+    }
+  }
+
+  getActressPhotos(id:number): void {
+    this.apiService.getGetActressPhotos(id).subscribe({
+      next: (data:IData)=>{
+        if (data["status"] === 1) {
+          this.actressPhotos = data["data"];
+        }
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    });
+  }
+
+  showBigPhoto(index:number):void {
+    this.actressPhotoIndex = index;
   }
 }

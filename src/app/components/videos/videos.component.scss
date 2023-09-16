@@ -116,13 +116,13 @@
 
 @keyframes show_description {
     0% { right:-200px; }
-    150% { right:-100px; }
+    50% { right:-100px; }
     100% {  right:0px  }
 }
 
 @keyframes hide_description {
     0% { right:0px; }
-    150% { right:-100px; }
+    50% { right:-100px; }
     100% {  right:-200px  }
 }
 
