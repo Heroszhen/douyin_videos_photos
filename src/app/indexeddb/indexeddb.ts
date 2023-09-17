@@ -13,13 +13,13 @@ export class Indexeddb {
                 this.createObjectStore(db);
 
                 resolve(db);
-            }
+            };
             openRequest.onsuccess = () => {
                 db = openRequest.result;
                 this.createObjectStore(db);
                 
                 resolve(db);
-            }
+            };
         });
     }
 
@@ -31,11 +31,11 @@ export class Indexeddb {
     }
 
     get(table:string, db:IDBDatabase = null!): Promise<Array<object>> {
-        return  new Promise<Array<object>>(async(resolve, reject) => {
+        return new Promise<Array<object>>(async(resolve, reject) => {
             db = db ?? await this.opendDB();
             let objectStore:IDBObjectStore = db.transaction([table], "readonly").objectStore(table);
             let tab:object[] = [];
-            objectStore.openCursor().onsuccess =  (event:Event) => {
+            objectStore.openCursor().onsuccess = (event:Event) => {
                 let cursor:IDBCursorWithValue = (event.target as IDBRequest).result;
                 if (cursor) {
                     tab.push(JSON.parse(JSON.stringify(cursor.value)));
@@ -43,7 +43,7 @@ export class Indexeddb {
                 } else {
                     resolve(tab);
                 }
-            }
+            };
         });
     }
 
@@ -57,7 +57,7 @@ export class Indexeddb {
                 
             request.onsuccess = () => {
                 resolve(request.result);
-            }
+            };
         });
     }
 
@@ -70,7 +70,7 @@ export class Indexeddb {
 
             request.onsuccess = () => {
                 resolve(request.result as number);
-            }
+            };
         });
     }
 
@@ -83,7 +83,7 @@ export class Indexeddb {
 
             request.onsuccess = () => {
                 resolve(request.result as number);
-            }
+            };
         });
     }
 
@@ -94,8 +94,8 @@ export class Indexeddb {
                 .objectStore(table)
                 .clear();
 
-            request.onsuccess = () => {resolve(true);}
-            request.onerror = () => {resolve(false);}
+            request.onsuccess = () => {resolve(true);};
+            request.onerror = () => {resolve(false);};
         });
     }
 }

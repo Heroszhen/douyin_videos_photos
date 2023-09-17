@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { IData } from 'src/app/interfaces/IData';
 import { StoreService } from 'src/app/services/store.service';
-import { wait, readFile, isMobile } from 'src/app/utils/util';
+import { wait, readFile } from 'src/app/utils/util';
 import { createWorker } from 'tesseract.js';
 
 @Component({
@@ -89,7 +89,6 @@ export class SearchbarComponent implements OnInit, OnDestroy {
   }
 
   
-
   async handleInputFile(e:Event): Promise<void> {
     let files:FileList | null = (e.target as HTMLInputElement).files;
     if (files === null)return;
@@ -107,8 +106,6 @@ export class SearchbarComponent implements OnInit, OnDestroy {
     this.photo_video_action = 2;
     this.photo_video_url = "";
     await wait(0.1);
-
-    console.log(isMobile())
 
     navigator.mediaDevices
     .getUserMedia({ video: true, audio: false })
@@ -131,7 +128,7 @@ export class SearchbarComponent implements OnInit, OnDestroy {
       // Tracks are returned as an array, so if you know you only have one, you can stop it with: 
       tracks[0].stop();
       // Or stop all like so:
-      tracks.forEach(track => track.stop())
+      tracks.forEach(track => track.stop());
     }
     this.video = null!;
   }

@@ -24,7 +24,7 @@ export class AlertComponent implements OnInit {
   }
 
   reply(response:boolean):void {
-    this.type = null
+    this.type = null;
     this.response = response;
   }
 

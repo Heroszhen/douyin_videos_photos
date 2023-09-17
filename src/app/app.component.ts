@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
     email:"",
     password:"",
     passwordType:""
-  }
+  };
   constructor(
     private router: Router,
     private apiService: ApiService,
@@ -39,11 +39,11 @@ export class AppComponent implements OnInit {
     this.routerListener();
     this.storeService.connected$.subscribe((data:boolean[]) => {
       this.isConnected = data[0];
-    })
+    });
     this.storeService.loading$.subscribe((data:Array<boolean|string>) => {
       this.loading = data;
       if (this.loading[1] === '')this.loading[1] = 'assets/photos/ad_loader.png';
-    })
+    });
 
     this.apiService.checkToken(localStorage.getItem("token") ?? '');
 
@@ -59,7 +59,6 @@ export class AppComponent implements OnInit {
   }
 
  
-
   routerListener(): void {
     this.router.events.pipe(
       filter((event:any): event is NavigationEnd => event instanceof NavigationEnd),
@@ -70,7 +69,7 @@ export class AppComponent implements OnInit {
           this.storeService.toSearch$.next([false]);
         },
         error:(err:any) =>{}
-    })
+    });
   }
 
   checkToken(route:string):void {
@@ -104,14 +103,14 @@ export class AppComponent implements OnInit {
       email:"",
       password:"",
       passwordType:"password"
-    }
+    };
     this.displayLogin = true;
   }
   toLogin(target:EventTarget): void {
     const button:HTMLButtonElement|null = (target as HTMLFormElement).querySelector("button");
     const toggleButton = (disabled:boolean) => {
       if (button !== null)button.disabled = disabled;
-    }
+    };
     toggleButton(true);
     this.apiService.postLoginToAD(this.user).subscribe({
       next: (data:IData)=>{

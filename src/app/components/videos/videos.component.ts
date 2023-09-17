@@ -70,7 +70,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
       this.foundVideos = [];
       this.propositions = [];
       this.canCharge2 = true;
-      this.keywordsAction = null!
+      this.keywordsAction = null!;
     });
     this.subscribers.push(connectedSubscriber, searchSubscriber);
     window.addEventListener('resize', this.listener.bind(this), true);
@@ -79,11 +79,11 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     for (let entry of this.subscribers) entry.unsubscribe();
     window.removeEventListener('resize', this.listener.bind(this), true);
-    window.removeEventListener("wheel", this.wheelListener.bind(this), true)
+    window.removeEventListener("wheel", this.wheelListener.bind(this), true);
   }
 
   ngAfterViewInit(): void {
-    window.addEventListener("wheel", this.wheelListener.bind(this), true)
+    window.addEventListener("wheel", this.wheelListener.bind(this), true);
   }
 
   listener(): void {
@@ -156,7 +156,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  async setVideoPlayerParams(): Promise<void>  {
+  async setVideoPlayerParams(): Promise<void> {
     this.videoPlayerParams = null!;
     await wait(0.1);
     this.videoPlayerParams = this.setVideoPlayerParamsByType(this.videos[this.elmindex]);
@@ -176,13 +176,16 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
         break;
       case 5:
         type = videoType.Iframe;
+        break;
+      default:
+        break;
     }
 
     return {
       video:video["videourl"],
       type: type,
       className: classname,
-    }
+    };
   }
 
   switchDescription(): void{
@@ -232,7 +235,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async setElmindexInCache(): Promise<void> {
-    let cache:object =  await this.indexedDB.getById("video", this.indexedDB_videoId, this.indexedDB_db);
+    let cache:object = await this.indexedDB.getById("video", this.indexedDB_videoId, this.indexedDB_db);
     (cache as IndexeddbCache).elmindex = this.elmindex;
     this.indexedDB.update("video", cache, this.indexedDB_db);
   }
@@ -242,7 +245,6 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     let url:string = location.protocol + '//' + location.hostname + port + `videos?vid=${this.videos[this.elmindex]['id']}`;
     copyToClipboard(url, true);
   }
-
 
 
   getKeywords(e:IData): void{
@@ -260,7 +262,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
               for (let index in data["data"]) {
                 result = data["data"][index].match(pattern);
                 for (let retrieve of result) {
-                  data["data"][index] = data["data"][index].replaceAll(retrieve, `<span class='font-bold text-red-600'>${retrieve}</span>`)
+                  data["data"][index] = data["data"][index].replaceAll(retrieve, `<span class='font-bold text-red-600'>${retrieve}</span>`);
                 }
               }
               this.propositions = data["data"];
@@ -269,7 +271,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
           error:(err)=>{
             console.log(err);
           }
-        })
+        });
       }
     }
    
@@ -289,7 +291,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
       this.apiService.getGetVideosByKeywords(this.keywordsAction, this.keywordsKeywords, this.keywordsName, this.keywordsActressname, this.keywordsPageItem).subscribe({
         next: (data:IData)=>{
           if (data["status"] === 1) {
-            if (data["data"] !== null && data["data"].length != 0) {
+            if (data["data"] !== null && data["data"].length !== 0) {
               this.foundVideos = data["data"];
               this.keywordsPageItem++;
             }
@@ -312,7 +314,7 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
         this.apiService.getGetVideosByKeywords(this.keywordsAction, this.keywordsKeywords, this.keywordsName, this.keywordsActressname, this.keywordsPageItem).subscribe({
           next: (data:IData)=>{
             if (data["status"] === 1) {
-              if (data["data"] !== null && data["data"].length != 0) {
+              if (data["data"] !== null && data["data"].length !== 0) {
                 this.foundVideos = this.foundVideos.concat(data["data"]);
                 this.canCharge2 = true;
                 this.keywordsPageItem++;
@@ -328,7 +330,6 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     
   }
-
 
 
   getVideoById(): void {
@@ -347,13 +348,12 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-
   touchStart(e:Event): void {
 
   }
 
   touchMove(e:Event): void {
-    console.log(e)
+    console.log(e);
   }
 
   touchEnd(e:Event): void {

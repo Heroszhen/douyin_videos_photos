@@ -9,6 +9,6 @@ export class StoreService {
   user$ = new BehaviorSubject<Array<object>>([]);
   topNavheight:number = 50;
   toSearch$ = new BehaviorSubject<Array<boolean>>([false]);
-  loading$ = new BehaviorSubject<Array<boolean|string>>([false, ""])
+  loading$ = new BehaviorSubject<Array<boolean|string>>([false, ""]);
   constructor() { }
 }

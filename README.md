@@ -20,5 +20,6 @@ watch videos on <a href="https://joliesfilles.yangzhen.tech/videos" target="_bla
 ## build
 ng build
 
-## test lint
+## test
+### lint
 ng lint

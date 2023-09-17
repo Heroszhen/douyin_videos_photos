@@ -39,11 +39,11 @@ export class ApiService extends BaseService {
           'Authorization': `Bearer ${token}`,
           'X-Requested-With': 'XMLHttpRequest'
         })
-      }
+      };
       
       this.http.get<IData>(`${this.baseUrl2}/mk/jf/check-token-ad`, this.httpOptionsAuth).subscribe({
         next: (data:IData)=>{
-          this.treatTokenResult(data)
+          this.treatTokenResult(data);
         },
         error:(err)=>{
           console.log(err);
@@ -56,7 +56,7 @@ export class ApiService extends BaseService {
   treatTokenResult(data:IData): void {
     if (data["status"] === 1) {
       this.storeService.connected$.next([true]);
-      this.storeService.user$.next([data.data])
+      this.storeService.user$.next([data.data]);
     } else {
       this.treatTokenNegativeResult();
     }

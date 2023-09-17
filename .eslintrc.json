@@ -19,6 +19,24 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        /**
+         * Any TypeScript source code (NOT TEMPLATE) related rules you wish to use/reconfigure over and above the recommended set provided by the @angular-eslint project would go here.
+         * 0 = off, 1 = warn, 2 = error
+         */
+        "no-alert": 2,
+        "default-case": 1,
+        "eqeqeq": 2,
+        "max-classes-per-file": ["error", 1],
+        "no-eq-null": 2,
+        "no-multi-spaces": 1,
+        "no-new": 1,
+        "no-self-assign": 2,
+        "no-self-compare": 2,
+        "no-useless-return" : 1,
+        "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }],
+        "no-var": 2,
+        "no-duplicate-imports": 2,
+        "semi": ["error", "always"],
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -45,7 +63,12 @@
       "extends": [
         "plugin:@angular-eslint/template/recommended"
       ],
-      "rules": {}
+      "rules": {
+        /**
+         * Any template/HTML related rules you wish to use/reconfigure over and above the
+         * recommended set provided by the @angular-eslint project would go here.
+         */
+      }
     }
   ]
 }

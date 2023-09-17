@@ -26,11 +26,11 @@ export abstract class BaseService {
         'Authorization': `Bearer ${this.authToken}`,
         'X-Requested-With': 'XMLHttpRequest'
       })
-    }
+    };
 
     this.httpOptions = {
       headers: new HttpHeaders({})
-    }
+    };
   }
 
   getHttpOptionsAuth(options:object = null!): object {
@@ -40,7 +40,7 @@ export abstract class BaseService {
         'X-Requested-With': 'XMLHttpRequest',
         'ngsw-bypass': ''
       })
-    }
+    };
 
     if (options !== null)this.httpOptionsAuth = {...this.httpOptionsAuth, ...options};
 

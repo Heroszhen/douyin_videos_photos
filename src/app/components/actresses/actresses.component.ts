@@ -26,7 +26,7 @@ export class ActressesComponent implements OnInit {
     autoPlay: true,
     cameraDistance: 330,
     activeCarouselItem:0
-  }
+  };
   @ViewChild('carousel') carousel:CarouselComponent;
   @ViewChild('actress_description') actressDescription: ElementRef<HTMLDivElement>;
   elmindex:number = -1;
@@ -65,7 +65,7 @@ export class ActressesComponent implements OnInit {
 
   toggleActressDescription(): void{
     if (!this.actressDescription.nativeElement.classList.contains('displayed')) {
-      this.actressDescription.nativeElement.classList.add('displayed')
+      this.actressDescription.nativeElement.classList.add('displayed');
     } else {
       this.actressDescription.nativeElement.classList.toggle('closed');
     }

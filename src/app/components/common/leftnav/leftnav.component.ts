@@ -22,11 +22,11 @@ export class LeftnavComponent implements OnInit {
   ngOnInit(): void {
     this.storeService.connected$.subscribe((data:boolean[])=>{
       this.isConnected = data[0];
-    })
+    });
   }
 
   switchHidden(): void{
-    this.div.nativeElement.classList.toggle('displayed')
+    this.div.nativeElement.classList.toggle('displayed');
   }
 
   installZooliclient(): void {

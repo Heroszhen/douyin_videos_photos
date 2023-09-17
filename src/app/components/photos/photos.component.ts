@@ -99,7 +99,7 @@ export class PhotosComponent implements OnInit, OnDestroy {
     } 
     
     let name:string|undefined = this.photos[index].actress?.name;
-    return name  ?? "" ;
+    return name ?? "" ;
   }
 
   zoomPhoto(): void {
@@ -108,7 +108,6 @@ export class PhotosComponent implements OnInit, OnDestroy {
     }
     this.photoZoomOut += 200;
     this.photoToZoom.nativeElement.style.height = `${this.photoZoomOut + this.photoToZoom.nativeElement.width}px`;
-    console.log(this.photoToZoom.nativeElement.width)
   }
 
   rotatePhoto(): void {

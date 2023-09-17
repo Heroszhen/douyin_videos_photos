@@ -26,7 +26,7 @@ export class DouyinComponent implements OnInit {
       next: (data:IData)=>{
         if (data["status"] === 1) {
           this.videos = this.videos.concat(data["data"]);
-          if (this.pageItem === 1)this.alert.showDialogue(1, "Cliquer 2 fois sur l'image pour regarder la vidéo.")
+          if (this.pageItem === 1)this.alert.showDialogue(1, "Cliquer 2 fois sur l'image pour regarder la vidéo.");
           if (data["data"].length > 0) {
             this.pageItem++;
             this.canCharge = true;
