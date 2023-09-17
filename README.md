@@ -10,11 +10,11 @@ nodejs : v14.15.1<br>
 typescript : 4.7.2<bt>
 
 ## build
-ng build
+npm run build
 
 ## test
 ### lint
-ng lint
+npm run lint
 
 ### PC
 <img src="docs/md/1.png" alt=""><br>
