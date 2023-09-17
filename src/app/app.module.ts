@@ -24,6 +24,7 @@ import { VideoplayerComponent } from './components/common/videoplayer/videoplaye
 import { SearchbarComponent } from './components/common/searchbar/searchbar.component';
 import { DouyinComponent } from './components/douyin/douyin.component';
 import { HistoryComponent } from './components/history/history.component';
+import { AlertComponent } from './components/common/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { HistoryComponent } from './components/history/history.component';
     VideoplayerComponent,
     SearchbarComponent,
     DouyinComponent,
-    HistoryComponent
+    HistoryComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,

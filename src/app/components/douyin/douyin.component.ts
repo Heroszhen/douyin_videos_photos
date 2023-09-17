@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IData, IVideo } from 'src/app/interfaces/IData';
 import { ApiService } from 'src/app/services/api.service';
+import { AlertComponent } from '../common/alert/alert.component';
 
 @Component({
   selector: 'app-douyin',
@@ -8,6 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./douyin.component.scss']
 })
 export class DouyinComponent implements OnInit {
+  @ViewChild('alert') alert:AlertComponent;
 
   videos:IVideo[] = [];
   pageItem:number = 1;
@@ -24,7 +26,7 @@ export class DouyinComponent implements OnInit {
       next: (data:IData)=>{
         if (data["status"] === 1) {
           this.videos = this.videos.concat(data["data"]);
-          if (this.pageItem === 1)alert("Cliquer 2 fois sur l'image pour regarder la vidéo.")
+          if (this.pageItem === 1)this.alert.showDialogue(1, "Cliquer 2 fois sur l'image pour regarder la vidéo.")
           if (data["data"].length > 0) {
             this.pageItem++;
             this.canCharge = true;

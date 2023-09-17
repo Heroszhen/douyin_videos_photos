@@ -9,6 +9,7 @@ import { Indexeddb } from 'src/app/indexeddb/indexeddb';
 import { IndexeddbCache } from 'src/app/models/IndexeddbCache';
 import { ActivatedRoute } from "@angular/router";
 import { environment } from 'src/environments/environment';
+import { AlertComponent } from '../common/alert/alert.component';
 
 
 @Component({
@@ -19,6 +20,7 @@ import { environment } from 'src/environments/environment';
 export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
   subscribers: Subscription[] = [];
   windowWidth: number = 768;
+  @ViewChild('alert') alert:AlertComponent;
 
   pageItem:number = 1;
   canCharge:boolean = false;
@@ -211,7 +213,8 @@ export class VideosComponent implements OnInit, OnDestroy, AfterViewInit {
       let cache:IndexeddbCache = tab[0] as IndexeddbCache;
       this.indexedDB_videoId = cache.id as number;
 
-      if (!window.confirm("Voulez-vous recharger les videos que vous avez regardées précédemment?"))return false;
+      this.alert.showDialogue(2, 'Voulez-vous recharger les videos que vous avez regardées précédemment?');
+      if ((await this.alert.getResponse()) !== true)return false;
       if (cache["content"].length === 0)return false;
 
       this.videos = cache["content"];

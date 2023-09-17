@@ -17,7 +17,7 @@ export function removeTags(str:string): string {
     return str.replace( /(<([^>]+)>)/ig, '');
 }
 
-export async function copyToClipboard(value:string, toAlert=true): Promise<void>{
+export async function copyToClipboard(value:string, toAlert:boolean = true): Promise<void>{
     let input:HTMLInputElement = document.createElement("input");
     document.body.appendChild(input);
     input.value = value;
@@ -25,7 +25,6 @@ export async function copyToClipboard(value:string, toAlert=true): Promise<void>
     input.select();
     document.execCommand('copy');
     input.parentNode?.removeChild(input);
-    if(toAlert === true)alert("Copié");
 }
 
 export function isMobile(): boolean {

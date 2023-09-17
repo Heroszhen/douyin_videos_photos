@@ -1,0 +1,10 @@
+<div id="alert" *ngIf="type !== null">
+    <div class="body">
+        <h4 class="mb-2">{{host}} indique :</h4>
+        <div class="mb-8" [innerHTML]="sentence"></div>
+        <div class="flex justify-end">
+            <button type="button" class="btn-ok mr-2" (click)="reply(true)">OK</button>
+            <button type="button" class="btn-cancel" (click)="reply(false)" *ngIf="type===2">Annuler</button>
+        </div>
+    </div>
+</div>
