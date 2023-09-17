@@ -24,6 +24,9 @@
     ],
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
