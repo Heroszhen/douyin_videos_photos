@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class StoreService {
-  connected$ = new BehaviorSubject<Array<boolean>>([true]);
+  connected$ = new BehaviorSubject<Array<boolean>>([false]);
   user$ = new BehaviorSubject<Array<object>>([]);
   topNavheight:number = 50;
   toSearch$ = new BehaviorSubject<Array<boolean>>([false]);

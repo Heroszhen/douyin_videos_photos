@@ -2,3 +2,6 @@
 https://www.syt5.com/guniangtag/
 
 //https://github.com/avmaisak/ngx-bootstrap-icons
+
+
+https://guide-angular.wishtack.io/angular/testing/unit-testing/unit-test-dun-composant
