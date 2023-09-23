@@ -76,6 +76,12 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "test": {
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.ts"
+              }]
             }
           },
           "defaultConfiguration": "production"
@@ -118,7 +124,13 @@
               "includePaths": [
                 "./src/styles"
               ]
-            }
+            },
+            "fileReplacements": [
+              {
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.prod.ts"
+              }
+            ]
           }
         },
         "lint": {
