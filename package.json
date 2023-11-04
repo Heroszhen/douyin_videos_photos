@@ -7,7 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "private": true,
   "dependencies": {
@@ -44,10 +47,12 @@
     "@angular-eslint/template-parser": "14.4.0",
     "@angular/cli": "~14.2.10",
     "@angular/compiler-cli": "^14.2.0",
+    "@cypress/schematic": "^2.4.0",
     "@types/jasmine": "~4.0.0",
     "@typescript-eslint/eslint-plugin": "5.43.0",
     "@typescript-eslint/parser": "5.43.0",
     "autoprefixer": "^10.4.14",
+    "cypress": "latest",
     "eslint": "^8.28.0",
     "jasmine-core": "~4.3.0",
     "karma": "~6.4.0",
