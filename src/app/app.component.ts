@@ -74,7 +74,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         .pipe(filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'))
         .subscribe(async (evt) => {
           await wait(0.5);
+
           this.alert.showDialogue(1, "Une nouvelle version détectée, l'application va être redémarrée pour être mise à jour.");
+          await this.alert.getResponse();
           document.location.reload();
         });
     } else {
