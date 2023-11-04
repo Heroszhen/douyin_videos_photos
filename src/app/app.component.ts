@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ApiService } from './services/api.service';
 import { filter, map } from 'rxjs';
@@ -6,6 +6,7 @@ import { IData } from './interfaces/IData';
 import { LeftnavComponent } from './components/common/leftnav/leftnav.component';
 import { StoreService } from './services/store.service';
 import { BeforeInstallPromptEvent } from 'src/app/interfaces/beforeInstallPromptEvent';
+import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 declare global {
   interface WindowEventMap {
     beforeinstallprompt: BeforeInstallPromptEvent;
@@ -17,7 +18,7 @@ declare global {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('leftNav') leftnav!: LeftnavComponent;
   isConnected?:boolean = null!;
   loading:Array<boolean|string> = [false, ""];
@@ -31,7 +32,8 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private apiService: ApiService,
-    private storeService: StoreService
+    private storeService: StoreService,
+    private swUpdate: SwUpdate
   ) { 
   }
 
@@ -58,6 +60,22 @@ export class AppComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit() {
+    this.updateApplication();
+  }
+
+  updateApplication(): void {
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.versionUpdates
+        .pipe(filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'))
+        .subscribe(evt => {
+          alert("Une nouvelle version détectée, l'application va être redémarrer pour faire une mise à jour.")
+          document.location.reload();
+        });
+    } else {
+      alert("Le service de la mise à jour automaique est désactivé, veuillez vider le cache manuellement pour mettre à jour l'application.");
+    }
+  }
  
   routerListener(): void {
     this.router.events.pipe(
