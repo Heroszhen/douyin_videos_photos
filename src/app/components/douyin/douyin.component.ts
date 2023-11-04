@@ -49,7 +49,7 @@ export class DouyinComponent implements OnInit {
   }
 
   openOriginalSite(index:number): void {
-    window.open(this.videos[index]["videourl"], "douyin", `toolbar=yes,scrollbars=yes,resizable=yes,top=0,left=0,width=${window.innerWidth},height=${window.innerHeight}`);
+    window.open(this.videos[index]["videourl"], "douyin", `toolbar=yes,scrollbars=yes,resizable=yes,top=5,left=5,width=${window.innerWidth - 10},height=${window.innerHeight- 10}`);
   }
 
 }
