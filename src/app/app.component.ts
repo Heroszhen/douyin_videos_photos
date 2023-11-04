@@ -5,7 +5,7 @@ import { filter, map } from 'rxjs';
 import { IData } from './interfaces/IData';
 import { LeftnavComponent } from './components/common/leftnav/leftnav.component';
 import { StoreService } from './services/store.service';
-import { BeforeInstallPromptEvent } from 'src/app/interfaces/beforeInstallPromptEvent';
+import { BeforeInstallPromptEvent } from './interfaces/beforeInstallPromptEvent';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 declare global {
   interface WindowEventMap {

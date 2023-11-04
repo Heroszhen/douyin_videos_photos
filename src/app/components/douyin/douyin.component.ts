@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IData, IVideo } from 'src/app/interfaces/IData';
-import { ApiService } from 'src/app/services/api.service';
+import { IData, IVideo } from '../../interfaces/IData';
+import { ApiService } from '../../services/api.service'; 
 import { AlertComponent } from '../common/alert/alert.component';
 
 @Component({
