@@ -12,6 +12,8 @@ declare global {
     beforeinstallprompt: BeforeInstallPromptEvent;
   }
 }
+import { AlertComponent } from './components/common/alert/alert.component';
+import { wait } from './utils/util';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +31,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     password:"",
     passwordType:""
   };
+  @ViewChild('alert') alert:AlertComponent;
+
   constructor(
     private router: Router,
     private apiService: ApiService,
@@ -64,16 +68,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.updateApplication();
   }
 
-  updateApplication(): void {
+  async updateApplication(): Promise<void> {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.versionUpdates
         .pipe(filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'))
-        .subscribe(evt => {
-          alert("Une nouvelle version détectée, l'application va être redémarrée pour être mise à jour.")
+        .subscribe(async (evt) => {
+          await wait(0.5);
+          this.alert.showDialogue(1, "Une nouvelle version détectée, l'application va être redémarrée pour être mise à jour.");
           document.location.reload();
         });
     } else {
-      alert("Le service de la mise à jour automaique est désactivé, veuillez vider le cache manuellement pour mettre à jour l'application.");
+      await wait(0.5);
+      this.alert.showDialogue(1, "Le service de la mise à jour automaique est désactivé, veuillez vider le cache manuellement pour mettre à jour l'application.");
     }
   }
  
