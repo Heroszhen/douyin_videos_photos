@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.swUpdate.versionUpdates
         .pipe(filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'))
         .subscribe(evt => {
-          alert("Une nouvelle version détectée, l'application va être redémarrer pour faire une mise à jour.")
+          alert("Une nouvelle version détectée, l'application va être redémarrée pour faire une mise à jour.")
           document.location.reload();
         });
     } else {
