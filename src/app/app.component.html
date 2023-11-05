@@ -18,7 +18,7 @@
             <form #loginForm="ngForm" (ngSubmit)="toLogin($event.target)" id="login-form">
                 <div class="mb-2">
                     <div class="wrap-field">
-                        <input type="text" name="email" placeholder="Mail" #email [(ngModel)]="user.email" required>
+                        <input type="email" name="email" placeholder="Mail" #email [(ngModel)]="user.email" required>
                     </div>
                 </div>
                 <div class="mb-2">

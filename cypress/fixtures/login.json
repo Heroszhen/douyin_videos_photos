@@ -1,0 +1,10 @@
+{
+    "correct": {
+        "email": "abc@gmail.com",
+        "password": "aaaaaaaa"
+    },
+    "incorrect": {
+        "email": "ccc@gmail.com",
+        "password": "111111"
+    }
+}

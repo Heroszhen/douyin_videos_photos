@@ -2,3 +2,6 @@
 https://www.syt5.com/guniangtag/
 
 //https://github.com/avmaisak/ngx-bootstrap-icons
+
+---cypress
+https://docs.cypress.io/api/table-of-contents

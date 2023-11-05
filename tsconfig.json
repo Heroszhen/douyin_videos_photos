@@ -24,6 +24,10 @@
     ],
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
+    "types": [
+      "mocha"
+    ],
+    "resolveJsonModule": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

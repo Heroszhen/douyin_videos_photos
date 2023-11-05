@@ -4,6 +4,6 @@
     <div class="path" (click)="clearCache()">Vider le cache</div>
     <a class="path" href="#" [routerLink]="['/historique']" routerLinkActive="active">Historique</a>
     <div class="path" (click)="installZooliclient()">Installer</div>
-    <div class="path" (click)="toLogin()" *ngIf="isConnected !==true">Se connecter</div>
-    <div class="path" (click)="deconnect()" *ngIf="isConnected ===true">Se déconnecter</div>
+    <div class="path" id="path-login" (click)="toLogin()" *ngIf="isConnected !==true">Se connecter</div>
+    <div class="path" id="path-logout" (click)="deconnect()" *ngIf="isConnected ===true">Se déconnecter</div>
 </div>
