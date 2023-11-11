@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  // baseUrlAD: "http://localhost:8001",
-  // baseUrlBack: "http://127.0.0.1:8000/api"
-  baseUrlAD: "https://alexandra-daddario.yangzhen.tech",
-  baseUrlBack: "https://www.yangzhen.tech/notes3waapi/public/api",
+  baseUrlAD: "http://localhost:8001",
+  baseUrlBack: "http://127.0.0.1:8000/api"
+  // baseUrlAD: "https://alexandra-daddario.yangzhen.tech",
+  // baseUrlBack: "https://www.yangzhen.tech/notes3waapi/public/api",
 };
 
 /*

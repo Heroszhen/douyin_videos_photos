@@ -6,7 +6,7 @@ describe('Test home page', () => {
   let failedLogin:ILogin;
   beforeEach(() => {
     cy.fixture('login.json').then(({ incorrect }) => {
-      failedLogin = incorrect;console.log(failedLogin)
+      failedLogin = incorrect;
     });
   });
 
@@ -61,5 +61,5 @@ describe('Test home page', () => {
 
       cy.log("Failed Login");
     });
-});
+  });
 })
