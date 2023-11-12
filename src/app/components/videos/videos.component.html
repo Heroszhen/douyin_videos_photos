@@ -14,7 +14,7 @@
     </section>
     <div id="play-switch" *ngIf="elmindex !== -1 && videoId === null">
         <div class="playswitch-prev"><i class="bi bi-chevron-up" (click)="changeElmindex(2)"></i></div>
-        <div class="playswitch-prev"><i class="bi bi-chevron-down" (click)="changeElmindex(1)"></i></div>
+        <div class="playswitch-next"><i class="bi bi-chevron-down" (click)="changeElmindex(1)"></i></div>
     </div>
     <div id="wrap-description" #wrap_description>
         <ng-container *ngIf="elmindex !== -1">
