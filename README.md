@@ -16,6 +16,11 @@ npm run build
 ### lint
 npm run lint
 
+### cypress
+npm start
+- npm run cypress:open
+- npx cypress run --spec cypress/e2e/apis.spec.cy.ts
+
 ## presentation
 ### PC
 <img src="docs/md/1.png" alt=""><br>

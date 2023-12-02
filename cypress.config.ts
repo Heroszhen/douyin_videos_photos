@@ -7,6 +7,10 @@ export default defineConfig({
     supportFile: false
   },
   
+  env: {
+    baseUrlBack: "https://www.yangzhen.tech/notes3waapi/public/api",
+    //baseUrlBack: "http://127.0.0.1:8000/api"
+  },
   
   component: {
     devServer: {
