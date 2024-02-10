@@ -99,6 +99,51 @@ ngx-masonry{
                 max-width:none;
             }
         }
+        >#wrap-zoom-window {
+            display:flex;
+            >div{
+                position: relative;
+                height:100%;
+            }
+            #wrap-original-image {
+                width:30%;
+                display:flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0 5px;
+                #wrap-mask {
+                    position: relative;
+                    height:80%;
+                    overflow: hidden;
+                    img {
+                        height:100%;
+                        width:auto;
+                    }
+                    #mask {
+                        position: absolute;
+                        z-index: 100;
+                        width: 100px;
+                        height: 100px;
+                        background: yellow;
+                        opacity: 0.5;
+                        cursor: move;
+                        top: 0;
+                        left: 0;
+                    }
+                }
+            }
+            #zoom-window {
+                width:70%;
+                overflow: hidden;
+                img {
+                    width: 200vw;
+                    max-width: 200vw;
+                    height:auto;
+                    position: absolute;
+                    z-index: 101;
+                }
+            }
+        }
     }
 }
 

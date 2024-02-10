@@ -24,6 +24,7 @@
         <div (click)="setPhotoAction(2)" [ngClass]="{'active':photoAction===2}"><i class="bi bi-zoom-in"></i></div>
         <div (click)="setPhotoAction(3)" [ngClass]="{'active':photoAction===3}"><i class="bi bi-arrow-clockwise"></i></div>
         <div (click)="setPhotoAction(4)" [ngClass]="{'active':photoAction===4}"><i class="bi bi-arrows-angle-expand"></i></div>
+        <div (click)="setPhotoAction(5)" [ngClass]="{'active':photoAction===5}" *ngIf="window_width>767"><i class="bi bi-pip"></i></div>
         <div (click)="elmindex=null"><i class="bi bi-x-circle"></i></div>
     </div>
     
@@ -58,5 +59,21 @@
         <pinch-zoom class="h-full w-full" *ngIf="photoAction === 4">
             <img src="{{photos[elmindex]['photourl']}}" /> 
         </pinch-zoom>
+        <section *ngIf="photoAction===5 && window_width > 767" class="wrap" id="wrap-zoom-window">
+            <div id="wrap-original-image">
+                <div 
+                    id="wrap-mask" 
+                    (mouseenter)="switchMask(1)" 
+                    (mouseleave)="switchMask(2)"
+                    (mousemove)="moveMask($event)"
+                >
+                    <img src="{{photos[elmindex]['photourl']}}" alt="" #ref_image>
+                    <div id="mask" [ngClass]="{'d-none':hiddenMask}" #ref_mask></div>
+                </div>
+            </div>
+            <div id="zoom-window" #ref_wrapbigimage>
+                <img src="{{photos[elmindex]['photourl']}}" alt="" #ref_bigimage>
+            </div>
+        </section>
     </div>
 </section>

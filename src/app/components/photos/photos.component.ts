@@ -27,7 +27,11 @@ export class PhotosComponent implements OnInit, OnDestroy {
   photoZoomOut:number = 0;
   @ViewChild('photoToZoom') photoToZoom: ElementRef<HTMLImageElement>;
   angle:number = 0;
-
+  hiddenMask:boolean = true;
+  @ViewChild('ref_image') ref_image: ElementRef<HTMLImageElement>;
+  @ViewChild('ref_bigimage') ref_bigimage: ElementRef<HTMLImageElement>;
+  @ViewChild('ref_wrapbigimage') ref_wrapbigimage: ElementRef<HTMLDivElement>;
+  @ViewChild('ref_mask') ref_mask: ElementRef<HTMLDivElement>;
   constructor(private apiService: ApiService, private storeService: StoreService) { }
 
   ngOnInit(): void {
@@ -46,6 +50,11 @@ export class PhotosComponent implements OnInit, OnDestroy {
 
   listener():void {
     this.window_width = window.innerWidth;
+    if (this.window_width <= 767) {
+      if (this.photoAction === 5) {
+        this.photoAction = null;
+      }
+    }
   }
 
   getPhotos(): void {
@@ -115,4 +124,51 @@ export class PhotosComponent implements OnInit, OnDestroy {
     if (this.angle === 180)this.angle = 0;
     this.photoToZoom.nativeElement.style.transform = `rotate(${this.angle}deg)`;
   }
+
+  switchMask(action:number): void {
+    if (action == 1) {
+      //hover
+      this.hiddenMask = false;
+    } else {
+        //leave
+        this.hiddenMask = true;
+    }
+  }
+
+  moveMask(e:MouseEvent) {
+    let clientRect:DOMRect = this.ref_image.nativeElement.getBoundingClientRect();
+    let top:number = Math.ceil(clientRect.top); //y->vertical
+    let left:number = Math.ceil(clientRect.left); //x -> horizontal
+    let width_image:number = this.ref_image.nativeElement.clientWidth;
+    let height_image:number = this.ref_image.nativeElement.clientHeight;
+    if (
+        e.clientY < top ||
+        e.clientY > top + height_image ||
+        e.clientX < left ||
+        e.clientX > left + width_image
+    ) {
+        this.hiddenMask = true;
+        return;
+    }
+    //let bigimageurl:string|null = this.ref_image.nativeElement.getAttribute("src");
+    this.hiddenMask = false;
+    let top2 = e.clientY - top - 50;
+    if (top2 < 0) top2 = 0;
+    if (e.clientY + 50 > top + height_image) top2 = height_image - 100;
+    let left2 = e.clientX - left - 50;
+    if (left2 < 0) left2 = 0;
+    if (e.clientX + 50 > left + width_image) left2 = width_image - 100;
+    this.ref_mask.nativeElement.style.top = top2 + "px";
+    this.ref_mask.nativeElement.style.left = left2 + "px";
+    let per_width = (e.clientX - left) / width_image;
+    let per_height = (e.clientY - top) / height_image;
+
+    //big image
+    let half_wrap_width:number = this.ref_wrapbigimage.nativeElement.clientWidth / 2;
+    let half_wrap_height:number = this.ref_wrapbigimage.nativeElement.clientHeight / 2;
+    let bigwidth:number = per_width * this.ref_bigimage.nativeElement.clientWidth;
+    let bigheight:number = per_height * this.ref_bigimage.nativeElement.clientHeight;
+    this.ref_bigimage.nativeElement.style.marginLeft = half_wrap_width - bigwidth + "px";
+    this.ref_bigimage.nativeElement.style.marginTop = half_wrap_height - bigheight + "px";
+}
 }

@@ -33,6 +33,13 @@ export function isMobile(): boolean {
     return false;
 }
 
+export function isMobile2(): boolean {
+    let useragent:string = navigator.userAgent.toLowerCase();
+    const regex = RegExp('.*mobile.*');
+    if (regex.test(useragent)) return true;
+    return false;
+}
+
 export function detecteBrowser(): string {
     let userAgent:string = navigator.userAgent.toLowerCase();
     if(userAgent.includes("firefox"))return "firefox";
