@@ -14,6 +14,7 @@ declare global {
 }
 import { AlertComponent } from './components/common/alert/alert.component';
 import { wait } from './utils/util';
+import env from '../assets/env.local.json';
 
 @Component({
   selector: 'app-root',
@@ -52,6 +53,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
     this.apiService.checkToken(localStorage.getItem("token") ?? '');
+    this.autoLogin();
 
     window.addEventListener('beforeinstallprompt', (event: BeforeInstallPromptEvent) => {
       console.log('🚀 onBeforeInstallPrompt');
@@ -124,6 +126,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
+  autoLogin(): void {
+    this.user = {
+      email: env["login"]["email"],
+      password:env["login"]["password"],
+      passwordType:"password"
+    };
+    this.toLogin(null);
+  }
+
   showLoginForm(e:IData):void {
     this.user = {
       email:"",
@@ -132,10 +143,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     };
     this.displayLogin = true;
   }
-  toLogin(target:EventTarget): void {
-    const button:HTMLButtonElement|null = (target as HTMLFormElement).querySelector("button");
+  toLogin(target:EventTarget|null): void {
+    const button:HTMLButtonElement|null = (target as HTMLFormElement)?.querySelector("button");
     const toggleButton = (disabled:boolean) => {
-      if (button !== null)button.disabled = disabled;
+      if (button !== undefined && button !== null)button.disabled = disabled;
     };
     toggleButton(true);
     this.apiService.postLoginToAD(this.user).subscribe({

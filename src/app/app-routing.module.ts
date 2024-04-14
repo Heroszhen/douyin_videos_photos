@@ -10,6 +10,7 @@ import { HistoryComponent } from './components/history/history.component';
 
 const routes: Routes = [
   { path: '', component: TailwindcssComponent },
+  { path: 'accueil', component: TailwindcssComponent },
   { path: 'tailwindcss/:token', component: TailwindcssComponent },
   { path: 'actrices', component: ActressesComponent, canActivate: [AuthGuard] },
   { path: 'photos', component: PhotosComponent, canActivate: [AuthGuard] },
