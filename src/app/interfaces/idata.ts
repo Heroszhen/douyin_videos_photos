@@ -36,3 +36,10 @@ export interface IActress {
     name:string,
     photourl:string
 }
+
+export type IApiPlatform = {
+    '@context': string,
+    '@id': string,
+    '@type': string,
+    'hydra:member': any[]
+}

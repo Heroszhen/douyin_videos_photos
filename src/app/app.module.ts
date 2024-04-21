@@ -25,6 +25,7 @@ import { SearchbarComponent } from './components/common/searchbar/searchbar.comp
 import { DouyinComponent } from './components/douyin/douyin.component';
 import { HistoryComponent } from './components/history/history.component';
 import { AlertComponent } from './components/common/alert/alert.component';
+import { JasmineComponent } from './components/jasmine/jasmine.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AlertComponent } from './components/common/alert/alert.component';
     SearchbarComponent,
     DouyinComponent,
     HistoryComponent,
-    AlertComponent
+    AlertComponent,
+    JasmineComponent
   ],
   imports: [
     BrowserModule,

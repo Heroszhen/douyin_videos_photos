@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BaseService } from './base.service';
 import { Observable } from 'rxjs';
-import { IData } from '../interfaces/IData';
+import { IApiPlatform, IData } from '../interfaces/IData';
 import { StoreService } from './store.service';
 import { Router } from '@angular/router';
 
@@ -117,5 +117,12 @@ export class ApiService extends BaseService {
   }
   postLoginToAD(user:Object): Observable<IData> {
     return this.http.post<IData>(`${this.baseUrl2}/mk/jf/login-to-AD`, JSON.stringify(user), this.getHttpOptionsAuth());
+  }
+
+  getGetJasmine(folder:string): Observable<IApiPlatform & {'hydra:member':{url:string}[]}>{
+    let params = (new HttpParams())
+                .set('folder', folder)
+                .set('page', 1);
+    return this.http.get<IApiPlatform & {'hydra:member':{url:string}[]}>(`${this.baseUrl2}/mk/jf/jasmine`, this.getHttpOptionsAuth({params: params}));
   }
 }

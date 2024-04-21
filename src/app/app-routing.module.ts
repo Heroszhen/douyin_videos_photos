@@ -7,6 +7,7 @@ import { PhotosComponent } from './components/photos/photos.component';
 import { VideosComponent } from './components/videos/videos.component';
 import { DouyinComponent } from './components/douyin/douyin.component';
 import { HistoryComponent } from './components/history/history.component';
+import { JasmineComponent } from './components/jasmine/jasmine.component';
 
 const routes: Routes = [
   { path: '', component: TailwindcssComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'photos', component: PhotosComponent, canActivate: [AuthGuard] },
   { path: 'videos', component: VideosComponent, canActivate: [AuthGuard] },
   { path: 'douyin', component: DouyinComponent, canActivate: [AuthGuard] },
+  { path: 'jasmine', component: JasmineComponent, canActivate: [AuthGuard] },
   { path: 'historique', component: HistoryComponent, canActivate: [AuthGuard] },
   { path: '**', component: TailwindcssComponent }
 ];

@@ -1,0 +1,24 @@
+<section class="component" id="section-jasmine">
+    <section class="container mx-auto">
+        <section *ngIf="section==1" class="columns-1" id="section-photos">
+            <ngx-masonry [options]="masonryOptions" [useImagesLoaded]="true">
+                <div ngxMasonryItem class="masonry-item"  *ngFor="let photo of allPhotos;let key = index;" class="masonry-item">
+                    <div class="wrap">
+                        <img src="{{photo.url}}">
+                    </div>
+                </div>
+            </ngx-masonry>
+        </section>
+        <section *ngIf="section==2" class="columns-1" id="section-videos">
+            <ng-container *ngFor="let video of allVideos;let key = index;">
+                <div class="wrap-video">
+                    <video playsinline controls>
+                        <source src="{{ video.url }}" type="video/mp4" />
+                    </video>
+                </div>
+            </ng-container>
+        </section>
+    </section>
+
+    <div id="btn-section" class="pointer" (click)="switchSection()"></div>
+</section>
