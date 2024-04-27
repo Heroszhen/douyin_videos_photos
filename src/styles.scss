@@ -88,6 +88,10 @@ img{
     background-color: rgba(0, 0, 0, .1);
     top:0;
     left:0;
+    &.modal {
+        background-color: rgba(0,0,0,.9);
+        overflow-y: auto;
+    }
 }
 
 .panel{
