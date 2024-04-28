@@ -1,6 +1,6 @@
-<section class="component" id="section-jasmine" [ngClass]="{'wrap-videos': section === 2}" (scrollend)="scrollVideos($event)" (wheel)="wheelVideos($event)">
+<section *ngIf="section==1" class="component" id="section-jasmine">
     <section class="container mx-auto">
-        <section *ngIf="section==1" class="columns-1" id="section-photos">
+        <section class="columns-1" id="section-photos">
             <ngx-masonry [options]="masonryOptions" [useImagesLoaded]="true">
                 <div ngxMasonryItem class="masonry-item"  *ngFor="let photo of allPhotos;let key = index;" class="masonry-item">
                     <div class="wrap" (dblclick)="photoIndex=key">
@@ -10,17 +10,17 @@
             </ngx-masonry>
         </section>
     </section>
-
-    <ng-container *ngIf="section===2">
-        <div class="wrap-video" *ngFor="let video of allVideos;let key = index;">
-            <video playsinline controls id="video-{{key}}" [src]="key===0 ? video.url : ''" type="video/mp4">
-                <!-- <source  /> -->
-            </video>
-        </div>
-    </ng-container>
-
-    <div id="btn-section" class="pointer" (click)="switchSection()"></div>
 </section>
+
+<section class="component wrap-videos" id="section-jasmine" [ngClass]="{'hidden': section !== 2, 'flex': section === 2}" (scrollend)="scrollVideos($event)" (wheel)="wheelVideos($event)">
+    <div class="wrap-video" *ngFor="let video of allVideos;let key = index;">
+        <video playsinline controls id="video-{{key}}" [src]="key===0 ? video.url : ''" type="video/mp4">
+            <!-- <source  /> -->
+        </video>
+    </div>
+</section>
+
+<div id="btn-section" class="pointer" (click)="switchSection()"></div>
 
 <div class="loader modal flex justify-center items-start" id="section-jasmine-modal" *ngIf="photoIndex !== null" (dblclick)="photoIndex=null">
     <img src="{{allPhotos[photoIndex]['url']}}">

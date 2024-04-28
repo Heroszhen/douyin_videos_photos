@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgxMasonryOptions } from 'ngx-masonry';
 import { IApiPlatform } from 'src/app/interfaces/IData';
 import { ApiService } from 'src/app/services/api.service';
+import env from '../../../assets/env.local.json';
 
 @Component({
   selector: 'app-jasmine',
@@ -19,26 +20,32 @@ export class JasmineComponent implements OnInit {
 	};
   constructor(private apiService: ApiService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {console.log(env['zhen'])
     this.getJasmine();
   }
 
   getJasmine(): void {
-    this.apiService.getGetJasmine('photos').subscribe({
-      next: (data:IApiPlatform & {'hydra:member':{url:string}[]})=>{
-        this.allPhotos = data['hydra:member'];
-      }
-    });
-    this.apiService.getGetJasmine('videos').subscribe({
-      next: (data:IApiPlatform & {'hydra:member':{url:string}[]})=>{
-        this.allVideos = data['hydra:member'];
-      }
-    });
+    let response:string|null = prompt("Who is zhen ?");
+    if (response?.toLowerCase() === env['zhen']['response'].toLowerCase()) {
+      this.apiService.getGetJasmine('photos').subscribe({
+        next: (data:IApiPlatform & {'hydra:member':{url:string}[]})=>{
+          this.allPhotos = data['hydra:member'];
+        }
+      });
+      this.apiService.getGetJasmine('videos').subscribe({
+        next: (data:IApiPlatform & {'hydra:member':{url:string}[]})=>{
+          this.allVideos = data['hydra:member'];
+        }
+      });
+    }
   }
 
   switchSection(): void {
     if (this.section === 1)this.section = 2;
-    else this.section = 1;
+    else {
+      this.section = 1;
+      document.querySelectorAll('video').forEach((video:HTMLElement) => (video as HTMLVideoElement).pause());
+    }
   }
 
   wheelVideos(e:WheelEvent): void {
@@ -65,8 +72,13 @@ export class JasmineComponent implements OnInit {
   }
 
   private setVideosUrl(index:number): void {
-    document.getElementById(`video-${index - 1}`)?.setAttribute('src', this.allVideos[index - 1]['url']);
-    document.getElementById(`video-${index}`)?.setAttribute('src', this.allVideos[index]['url']);
-    document.getElementById(`video-${index + 1}`)?.setAttribute('src', this.allVideos[index + 1]['url']);
+    const setSrc = (index:number): void => {
+      let video: HTMLElement|null = document.getElementById(`video-${index}`);
+      if (video !== null && [null, ''].includes(video.getAttribute('src')))video.setAttribute('src', this.allVideos[index]['url']);
+    }
+
+    setSrc(index - 1);
+    setSrc(index);
+    setSrc(index + 1);
   }
 }

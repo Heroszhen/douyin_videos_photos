@@ -18,7 +18,6 @@ interface IActressPhotos {
   styleUrls: ['./actresses.component.scss']
 })
 export class ActressesComponent implements OnInit {
-
   actresses: Array<IActress> = [];
   autoPlay:boolean = true;
   displayCarousel:boolean = false;
@@ -55,6 +54,7 @@ export class ActressesComponent implements OnInit {
   }
 
   getActressDescription(): void {
+    this.options.autoPlay = false;
     this.elmindex = this.carousel.activeCarouselElement;
     let id:number = this.actresses[this.carousel.activeCarouselElement]["id"];
     this.getActressPhotos(id);
@@ -68,6 +68,7 @@ export class ActressesComponent implements OnInit {
       this.actressDescription.nativeElement.classList.add('displayed');
     } else {
       this.actressDescription.nativeElement.classList.toggle('closed');
+      this.options.autoPlay = true;
     }
   }
 
