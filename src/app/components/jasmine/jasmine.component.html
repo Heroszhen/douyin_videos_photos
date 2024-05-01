@@ -14,9 +14,7 @@
 
 <section class="component wrap-videos" id="section-jasmine" [ngClass]="{'hidden': section !== 2, 'flex': section === 2}" (scrollend)="scrollVideos($event)" (wheel)="wheelVideos($event)">
     <div class="wrap-video" *ngFor="let video of allVideos;let key = index;">
-        <video playsinline controls id="video-{{key}}" [src]="key===0 ? video.url : ''" type="video/mp4">
-            <!-- <source  /> -->
-        </video>
+        <video playsinline controls id="video-{{key}}" [src]="key===0 ? video.url : ''" type="video/mp4" #jasminvideo></video>
     </div>
 </section>
 

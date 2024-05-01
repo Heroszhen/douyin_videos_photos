@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { NgxMasonryOptions } from 'ngx-masonry';
 import { IApiPlatform } from 'src/app/interfaces/IData';
 import { ApiService } from 'src/app/services/api.service';
@@ -18,9 +18,11 @@ export class JasmineComponent implements OnInit {
 		resize: true,
 		initLayout: true
 	};
+  @ViewChildren('jasminvideo') jasmineVideos:QueryList<ElementRef<HTMLVideoElement>>;
+  videoCounter:number = 5;
   constructor(private apiService: ApiService) { }
 
-  ngOnInit(): void {console.log(env['zhen'])
+  ngOnInit(): void {
     this.getJasmine();
   }
 
@@ -52,8 +54,7 @@ export class JasmineComponent implements OnInit {
     if (this.section === 2) {
       let div = e.target as HTMLDivElement;
       let id:number = parseInt(div.id.split('-')[1]);
-      this.stopVideo(document.getElementById(`video-${id}`));
-      this.stopVideo(document.getElementById(`video-${id + 1}`));
+      this.stopVideos(id);
       this.setVideosUrl(id);
     }
   }
@@ -61,24 +62,31 @@ export class JasmineComponent implements OnInit {
     if (this.section === 2) {
       const video:HTMLVideoElement = document.getElementById('video-0') as HTMLVideoElement;
       let id:number = Math.floor((e.target as HTMLDivElement).scrollTop / video.clientHeight);
-      this.stopVideo(document.getElementById(`video-${id - 1}`));
-      this.stopVideo(document.getElementById(`video-${id + 1}`));
+      this.stopVideos(id);
       this.setVideosUrl(id);
     }
   }
 
-  private stopVideo = (video:HTMLElement|null): void => {
-    (video as HTMLVideoElement)?.pause();
+  private stopVideos(index:number): void {
+    for(let i = index - this.videoCounter; i <= index; i++) {
+      this.jasmineVideos.get(i)?.nativeElement.pause();
+    }
+    for(let i = index + this.videoCounter; i > index; i--) {
+      this.jasmineVideos.get(i)?.nativeElement.pause();
+    }
   }
 
   private setVideosUrl(index:number): void {
     const setSrc = (index:number): void => {
-      let video: HTMLElement|null = document.getElementById(`video-${index}`);
-      if (video !== null && [null, ''].includes(video.getAttribute('src')))video.setAttribute('src', this.allVideos[index]['url']);
+      let video: HTMLVideoElement|undefined = this.jasmineVideos.get(index)?.nativeElement;
+      if (video !== undefined && [null, ''].includes(video.getAttribute('src')))video.setAttribute('src', this.allVideos[index]['url']);
     }
 
-    setSrc(index - 1);
-    setSrc(index);
-    setSrc(index + 1);
+    for(let i = index - this.videoCounter; i <= index; i++) {
+      setSrc(i);
+    }
+    for(let i = index + this.videoCounter; i > index; i--) {
+      setSrc(i);
+    }
   }
 }
