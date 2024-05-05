@@ -15,6 +15,7 @@ declare global {
 import { AlertComponent } from './components/common/alert/alert.component';
 import { wait } from './utils/util';
 import env from '../assets/env.local.json';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     passwordType:""
   };
   @ViewChild('alert') alert:AlertComponent;
+  showedNavs:boolean = true;
 
   constructor(
     private router: Router,
@@ -83,7 +85,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         });
     } else {
       await wait(0.5);
-      this.alert.showDialogue(1, "Le service de la mise à jour automaique est désactivé, veuillez vider le cache manuellement pour mettre à jour l'application.");
+      if (environment.production)this.alert.showDialogue(1, "Le service de la mise à jour automaique est désactivé, veuillez vider le cache manuellement pour mettre à jour l'application.");
     }
   }
  
@@ -95,6 +97,11 @@ export class AppComponent implements OnInit, AfterViewInit {
         next: (data:string)=>{
           this.checkToken(data);
           this.storeService.toSearch$.next([false]);
+          if (data === '/ztab') {
+            this.showedNavs = false;
+          } else {
+            this.showedNavs = true;
+          }
         },
         error:(err:any) =>{}
     });

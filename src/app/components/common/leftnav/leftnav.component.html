@@ -4,6 +4,7 @@
     <a class="path" href="#" [routerLink]="['/jasmine']" routerLinkActive="active">Jasmine</a>
     <div class="path" (click)="clearCache()">Vider le cache</div>
     <a class="path" href="#" [routerLink]="['/historique']" routerLinkActive="active">Historique</a>
+    <a class="path" href="#" [routerLink]="['/ztab']" routerLinkActive="active">ZTab</a>
     <div class="path" (click)="installZooliclient()">Installer</div>
     <div class="path" (click)="toLogin()" *ngIf="isConnected !==true">Se connecter</div>
     <div class="path" (click)="deconnect()" *ngIf="isConnected ===true">Se déconnecter</div>

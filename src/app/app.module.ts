@@ -26,6 +26,7 @@ import { DouyinComponent } from './components/douyin/douyin.component';
 import { HistoryComponent } from './components/history/history.component';
 import { AlertComponent } from './components/common/alert/alert.component';
 import { JasmineComponent } from './components/jasmine/jasmine.component';
+import { ZtabComponent } from './components/ztab/ztab.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { JasmineComponent } from './components/jasmine/jasmine.component';
     DouyinComponent,
     HistoryComponent,
     AlertComponent,
-    JasmineComponent
+    JasmineComponent,
+    ZtabComponent
   ],
   imports: [
     BrowserModule,

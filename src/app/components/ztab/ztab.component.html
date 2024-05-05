@@ -1,0 +1,42 @@
+<section id="ztab" #ztabsection (click)="clickOnZtab()">
+    <section id="wrap-search"  *ngIf="ztabUser.webSites[0] !== undefined" (click)="$event.stopPropagation()">
+        <div id="wrap-input-search">
+            <div class="wrap-log">
+                <img src="{{ztabUser.webSites[0]['logo']}}" (click)="showListWebsites=true">
+            </div>
+            <input type="search" (keyup)="searchByKeywords($event)">
+        </div>
+        <section id="wrap-search-websites" *ngIf="showListWebsites">
+            <article *ngFor="let item of ztabUser.webSites;let key = index;" class="website">
+                <div class="wrap-delete wrap-action">
+                    <i class="bi bi-x"></i>
+                </div>
+                <div class="wrap-delete wrap-action wrap-modify">
+                    <i class="bi bi-pencil-fill"></i>
+                </div>
+                <div class="wrap-logo">
+                    <img src="{{item.logo}}">
+                </div>
+                <div>{{item.title}}</div>
+            </article>
+            <article class="website" (click)="switchSectionForm(1, null)">
+                <div class="wrap-logo">
+                    <i class="bi bi-plus"></i>
+                </div>
+                <div class="text-center">Add</div>
+            </article>
+        </section>
+    </section>
+
+    <section id="section1" *ngIf="section===1">
+        <i class="bi bi-browser-safari btn-section" (click)="section=2"></i>
+    </section>
+
+    <section id="section2" *ngIf="section===2">
+        <i class="bi bi-boxes btn-section" (click)="section=1"></i>
+    </section>
+    
+    <section id="section-forms" #section_form>
+dqdqsdf
+    </section>
+</section>

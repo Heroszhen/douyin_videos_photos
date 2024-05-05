@@ -1,5 +1,5 @@
-<app-topnav (toSwitchLeftNav)="switchLeftNav($event)"></app-topnav>
-<app-leftnav #leftNav (installApp)="installApp($event)" (login)="showLoginForm($event)"></app-leftnav>
+<app-topnav (toSwitchLeftNav)="switchLeftNav($event)" *ngIf="showedNavs"></app-topnav>
+<app-leftnav #leftNav (installApp)="installApp($event)" (login)="showLoginForm($event)" *ngIf="showedNavs"></app-leftnav>
 <main class="douyin">
     <router-outlet></router-outlet>
 </main>

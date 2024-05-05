@@ -1,11 +1,19 @@
 //https://www.npmjs.com/package/ngx-indexed-db
 //https://github.com/firefox-devtools/profiler/blob/8436a874983faf0690b3dbba82d094859541ed76/src/types/indexeddb.js
 export class Indexeddb { 
-    readonly TABLES_CACHE:string[] = ["video"];
+    readonly ZTAB_CATEGORY = 'ztab_category';
+    readonly ZTAB_TAB = 'ztab_tab';
+    readonly ZTAB_USER = 'ztab_user';
+    readonly TABLES_CACHE:string[] = [
+        'video', 
+        this.ZTAB_CATEGORY, 
+        this.ZTAB_TAB, 
+        this.ZTAB_USER
+    ];
 
     opendDB():Promise<IDBDatabase> {
         let db:IDBDatabase;
-        let openRequest:IDBOpenDBRequest = window.indexedDB.open("joliesfilles", 1);
+        let openRequest:IDBOpenDBRequest = window.indexedDB.open("joliesfilles", 2);
 
         return new Promise<IDBDatabase>((resolve, reject) => {
             openRequest.onupgradeneeded = () => {
@@ -24,10 +32,12 @@ export class Indexeddb {
     }
 
     private createObjectStore(db:IDBDatabase): void {
-        if (!db.objectStoreNames.contains('video')) {
-            db.createObjectStore('video', { keyPath: 'id', autoIncrement: true })
-                .createIndex('id', 'id', { unique: true });
-        }
+        this.TABLES_CACHE.forEach((tab:string) => {
+            if (!db.objectStoreNames.contains(tab)) {
+                db.createObjectStore(tab, { keyPath: 'id', autoIncrement: true })
+                    .createIndex('id', 'id', { unique: true });
+            }
+        });
     }
 
     get(table:string, db:IDBDatabase = null!): Promise<Array<object>> {
@@ -50,7 +60,7 @@ export class Indexeddb {
     getById(table:string, id:number, db:IDBDatabase = null!): Promise<object> {
         return new Promise<object>(async(resolve, reject) => {
             db = db ?? await this.opendDB();
-            let request: IDBRequest<any> = db.transaction([table], "readonly")
+            let request: IDBRequest<object> = db.transaction([table], "readonly")
                 .objectStore(table)
                 .index("id")
                 .get(id);
@@ -61,7 +71,7 @@ export class Indexeddb {
         });
     }
 
-    add(table:string, data:any, db:IDBDatabase = null!): Promise<number> {
+    add<T>(table:string, data:T, db:IDBDatabase = null!): Promise<number> {
         return new Promise(async(resolve, reject) => {
             db = db ?? await this.opendDB();
             let request:IDBRequest<IDBValidKey> = db.transaction([table], 'readwrite')
@@ -74,7 +84,7 @@ export class Indexeddb {
         });
     }
 
-    update(table:string, data:any, db:IDBDatabase = null!): Promise<number> {
+    update<T>(table:string, data:T, db:IDBDatabase = null!): Promise<number> {
         return new Promise<number>(async (resolve, reject) => {
             db = db ?? await this.opendDB();
             let request:IDBRequest<IDBValidKey> = db.transaction([table], 'readwrite')

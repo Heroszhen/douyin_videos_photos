@@ -8,6 +8,7 @@ import { VideosComponent } from './components/videos/videos.component';
 import { DouyinComponent } from './components/douyin/douyin.component';
 import { HistoryComponent } from './components/history/history.component';
 import { JasmineComponent } from './components/jasmine/jasmine.component';
+import { ZtabComponent } from './components/ztab/ztab.component';
 
 const routes: Routes = [
   { path: '', component: TailwindcssComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'douyin', component: DouyinComponent, canActivate: [AuthGuard] },
   { path: 'jasmine', component: JasmineComponent, canActivate: [AuthGuard] },
   { path: 'historique', component: HistoryComponent, canActivate: [AuthGuard] },
+  { path: 'ztab', component: ZtabComponent },
   { path: '**', component: TailwindcssComponent }
 ];
 
