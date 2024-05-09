@@ -3,6 +3,12 @@
     min-height: 100vh;
 }
 
+@mixin flex($position1:center, $position2:center) {
+    display: flex;
+    justify-content: $position1;
+    align-items: $position2;
+}
+
 #ztab {
     width: 100vw;
     height: 100vh;
@@ -52,13 +58,16 @@
             width:100%;
             display:flex;
             justify-content: flex-start;
+            flex-wrap: wrap;
             background-color: rgba(255, 255, 255, .8);
             padding: 20px;
             border-radius: 10px;
+            max-height: 300px;
+            overflow-y: auto;
             .website {
                 cursor: pointer;
                 position:relative;
-                margin-right: 30px;
+                margin-right: 20px;
                 margin-bottom: 20px;
                 .wrap-logo {
                     display: flex;
@@ -97,15 +106,6 @@
                     left: -10px;
                 }
             }
-            .wrap-modify {
-                left: auto !important;
-                right: -10px;
-                font-size: 15px !important;
-                color: black !important;
-                &:hover {
-                    color: blue !important;
-                }
-            }
             .wrap-action {
                 display: none !important;
             }
@@ -139,11 +139,24 @@
         z-index: 2000;
         width: 300px;
         height: 100vh;
+        overflow-y: auto;
         left:0;
         top:0;
         background-color: white;
         box-shadow: 0px 2px 12px 0px #00000026!important;
         left: -300px;
+        padding: 20px 15px;
+        color: black;
+        .wrap-title {
+            @include flex(space-between);
+            > div:first-child {
+                @include flex(flex-start);
+            }
+            margin-bottom: 20px;
+        }
+        form {
+            
+        }
     }
     #section-forms.displayed {
         animation: show_form .3s linear;

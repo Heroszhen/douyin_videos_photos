@@ -28,6 +28,12 @@ import { AlertComponent } from './components/common/alert/alert.component';
 import { JasmineComponent } from './components/jasmine/jasmine.component';
 import { ZtabComponent } from './components/ztab/ztab.component';
 
+// primeng
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { ToastModule } from 'primeng/toast';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -63,7 +69,11 @@ import { ZtabComponent } from './components/ztab/ztab.component';
     BrowserAnimationsModule,
     NgMagnizoomModule,
     PinchZoomModule,
-    CarouselModule
+    CarouselModule,
+    ButtonModule,
+    InputTextModule,
+    SelectButtonModule,
+    ToastModule
   ],
   providers: [],
   bootstrap: [AppComponent],

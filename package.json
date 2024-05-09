@@ -29,6 +29,7 @@
     "ngx-acuw": "^3.2.0",
     "ngx-masonry": "^14.0.1",
     "ngx-pinch-zoom": "^2.6.2",
+    "primeng": "^14.2.2",
     "rxjs": "~7.5.0",
     "tesseract.js": "^4.1.0",
     "three": "^0.136.0",

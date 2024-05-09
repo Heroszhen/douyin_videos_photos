@@ -3,6 +3,9 @@
 @import "tailwindcss/utilities";
 @import "_variables";
 
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
 @layer base {
     h2 {
         font-size:26px;
@@ -51,6 +54,9 @@
         &:hover{
             box-shadow: 0px 8px 10px 1px rgba(0,0,0,.14), 0px 3px 14px 2px rgba(0,0,0,.12), 0px 5px 5px -3px rgba(0,0,0,.2);
         }
+    }
+    .alert {
+        @apply p-1 rounded-md text-red-400 font-bold border border-red-400 text-center;
     }
 }
 
@@ -287,4 +293,16 @@ app-videos{
     }
 }
 
+$primeng_padding: 0.3rem 0.7rem;
 
+// primeng
+[size='small'] {
+    button, [role='button'], .p-toast-message-content {
+        padding: $primeng_padding;
+        font-size: 14px;
+    }
+}
+.p-fileupload-choose {
+    width: 100%;
+    padding: $primeng_padding;
+}

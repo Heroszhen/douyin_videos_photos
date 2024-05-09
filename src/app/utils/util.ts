@@ -61,3 +61,30 @@ export function readFile(file: File): Promise<any> {
       reader.readAsDataURL(file);
     });
 }
+
+export function getImageFileFromUrl(url:string, filename:string = 'image.png'): Promise<File> {
+    return new Promise((resolve, reject) => {
+        // fetch(url)
+        // .then(res => res.blob())
+        // .then(blob => {
+        //     console.log(blob)
+        //     resolve(new File([blob], filename, {type: 'image/png'}));
+        // });
+        var image = new Image();
+         image.crossOrigin = 'Anonymous';
+         image.onload = () => {
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            canvas.height = image.height;
+            canvas.width = image.width;
+            context?.drawImage(image, 0, 0);
+            var dataURL = canvas.toDataURL('image/jpeg');
+            console.log(dataURL);
+         };
+         image.src = url;
+    });
+}
+
+export function capitalizeFirstLetter(str:string):string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
