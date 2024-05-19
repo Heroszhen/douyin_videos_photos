@@ -117,6 +117,10 @@ img{
     }
 }
 
+// .cdk-drag-animating {
+//     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+//   }
+
 .wrap-loading{
     @extend .loader;
 
@@ -293,11 +297,24 @@ app-videos{
     }
 }
 
-$primeng_padding: 0.3rem 0.7rem;
+
+.cdk-drag.website-wrap, .cdk-drag.website {
+    width: 50px !important;
+    img {
+        width:40px !important; 
+    }
+}
 
 // primeng
+$primeng_padding: 0.3rem 0.7rem;
+
+
 [size='small'] {
-    button, [role='button'], .p-toast-message-content {
+    button, [role='button'], 
+    .p-toast-message-content,
+    .p-placeholder,
+    .p-inputtext 
+    {
         padding: $primeng_padding;
         font-size: 14px;
     }
@@ -305,4 +322,7 @@ $primeng_padding: 0.3rem 0.7rem;
 .p-fileupload-choose {
     width: 100%;
     padding: $primeng_padding;
+}
+.p-dropdown {
+    width: 100%;
 }

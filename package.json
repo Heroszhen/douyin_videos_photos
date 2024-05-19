@@ -12,7 +12,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^14.2.0",
-    "@angular/cdk": "^16.2.4",
+    "@angular/cdk": "^14.2.4",
     "@angular/common": "^14.2.0",
     "@angular/compiler": "^14.2.0",
     "@angular/core": "^14.2.0",
@@ -25,6 +25,7 @@
     "@types/offscreencanvas": "^2019.7.0",
     "@types/three": "^0.136.1",
     "masonry-layout": "^4.2.2",
+    "moment": "^2.30.1",
     "ng-magnizoom": "^1.2.0",
     "ngx-acuw": "^3.2.0",
     "ngx-masonry": "^14.0.1",

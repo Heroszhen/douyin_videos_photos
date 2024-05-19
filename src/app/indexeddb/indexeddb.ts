@@ -97,6 +97,19 @@ export class Indexeddb {
         });
     }
 
+    remove(table:string, id:number, db:IDBDatabase = null!): Promise<number> {
+        return new Promise<number>(async (resolve, reject) => {
+            db = db ?? await this.opendDB();
+            let request:IDBRequest<undefined> = db.transaction([table], 'readwrite')
+                .objectStore(table)
+                .delete(id);
+
+            request.onsuccess = () => {
+                resolve(1);
+            };
+        });
+    }
+
     empty(table:string, db:IDBDatabase = null!): Promise<boolean> {
         return new Promise<boolean>(async (resolve, reject) => {
             db = db ?? await this.opendDB();

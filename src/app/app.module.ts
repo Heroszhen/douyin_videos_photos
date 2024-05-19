@@ -9,6 +9,7 @@ import { NgxMasonryModule } from 'ngx-masonry';
 import { NgMagnizoomModule } from 'ng-magnizoom';
 import { PinchZoomModule } from 'ngx-pinch-zoom';
 import { CarouselModule } from "ngx-acuw";
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,6 +34,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ToastModule } from 'primeng/toast';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -73,7 +75,9 @@ import { ToastModule } from 'primeng/toast';
     ButtonModule,
     InputTextModule,
     SelectButtonModule,
-    ToastModule
+    ToastModule,
+    DragDropModule,
+    DropdownModule
   ],
   providers: [],
   bootstrap: [AppComponent],
