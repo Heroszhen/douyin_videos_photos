@@ -68,7 +68,7 @@
                 <i class="bi bi-house pointer" [routerLink]="['/accueil']"></i>
             </section>
         </section>
-        <section id="list-weblinks">
+        <section id="list-weblinks" class="scrollbar">
             <article class="weblink" *ngFor="let item of displayedTabs;let key = index;">
                 <a class="wrap-logo" href="{{item.link}}" target="_blank" (contextmenu)="rightClick($event, 'siteinternet', key)">
                     <img src="{{item.logo}}" alt="">

@@ -208,6 +208,19 @@ app-videos{
     }
 }
 
+.scrollbar{
+    overflow:overlay !important;
+}
+.scrollbar::-webkit-scrollbar{
+    width:8px;
+    height:10px;
+    background-color:transparent;
+    border-radius:10px;
+}
+.scrollbar::-webkit-scrollbar-thumb{
+    background-color:rgba(255, 255, 255, 0.5);
+    border-radius:10px;
+}
 
 /**acuw-carousel */
 .carousel{

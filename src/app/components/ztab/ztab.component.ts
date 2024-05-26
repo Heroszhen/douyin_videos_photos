@@ -51,7 +51,7 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
   timer:number;
   rightMenu:boolean = false;
   rightMenuWidth:number = 196;
-  rightMenuHeight:number = 180;
+  rightMenuHeight:number = 245;
   rightMenuExtraAction:string|null = "";
   @ViewChild('rightmenudiv') rightMenuDiv: ElementRef<HTMLDivElement>;
   categoryId:number;

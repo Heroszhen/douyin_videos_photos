@@ -191,7 +191,10 @@
         }
         #list-weblinks {
             width:70%;
-            margin-top: -300px;
+            position:absolute;
+            top: 180px;
+            left: 15%;
+            max-height: 530px;
             @include flex(flex-start, flex-start);
             flex-wrap: wrap;
             .weblink{
