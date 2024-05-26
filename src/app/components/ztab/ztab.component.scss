@@ -201,22 +201,26 @@
                 width: calc(100% / 8);
                 padding: 5px;
                 margin-bottom: 10px;
-                .wrap-logo {
-                    display: block;
-                    width:72px;
-                    height:72px;
-                    @include flex(center, flex-start);
-                    margin: 0 auto;
-                    overflow: hidden;
-                    cursor: pointer;
-                    border-radius: 20px;
-                }
-                .title {
-                    width: 99%;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    text-align: center;
-                    overflow: hidden;
+                .weblink-wrap {
+                    width: 100%;
+                    .wrap-logo {
+                        display: block;
+                        width:72px;
+                        height:72px;
+                        @include flex(center, flex-start);
+                        margin: 0 auto;
+                        overflow: hidden;
+                        cursor: pointer;
+                        border-radius: 20px;
+                        margin: 0 auto;
+                    }
+                    .title {
+                        width: 99%;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        text-align: center;
+                        overflow: hidden;
+                    }
                 }
             }
         }
@@ -233,6 +237,19 @@
                 font-size: 50px;
                 color: rgba(255, 255, 255, 0.8);
             }
+        }
+    }
+    #section3 {
+        width:100%;
+        height: 100vh;
+        overflow: hidden;
+        font-size: 50px;
+        font-style: italic;
+        display:flex;
+        font-weight: bold;
+        #wrap-slogan{
+            position: absolute;
+            z-index: 20;
         }
     }
     #section-forms {
@@ -255,9 +272,6 @@
             }
             margin-bottom: 20px;
         }
-        form {
-            
-        }
     }
     #section-forms.displayed {
         animation: show_form .3s linear;
@@ -267,8 +281,6 @@
         animation: hide_form .3s linear;
         animation-fill-mode:forwards;
     }
-
-
 
     @keyframes show_form {
         0% { left:-300px; }

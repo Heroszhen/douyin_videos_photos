@@ -68,13 +68,30 @@
                 <i class="bi bi-house pointer" [routerLink]="['/accueil']"></i>
             </section>
         </section>
-        <section id="list-weblinks" class="scrollbar">
-            <article class="weblink" *ngFor="let item of displayedTabs;let key = index;">
-                <a class="wrap-logo" href="{{item.link}}" target="_blank" (contextmenu)="rightClick($event, 'siteinternet', key)">
-                    <img src="{{item.logo}}" alt="">
-                </a>
-                <div class="title">{{item.title}}</div>
-            </article>
+        <section id="list-weblinks" class="scrollbar" #dropListContainerWeblink cdkDropListGroup>
+            <ng-container *ngFor="let item of allTabs;let key = index;">
+                <article 
+                    class="weblink" 
+                    cdkDropList
+                    [cdkDropListData]="item"
+                    [attr.data-index]="key"
+                    *ngIf="item.categoryId === categoryId"
+                >
+                    <div 
+                        class="weblink-wrap"
+                        cdkDrag
+                        [cdkDragData]="item"
+                        (cdkDragEntered)="dragEnteredWebsite($event, 'weblink')"
+                        (cdkDragMoved)="dragMovedWebsite($event, 'weblink')"
+                        (cdkDragDropped)="dragDroppedWebsite($event, 'weblink')"   
+                    >
+                        <a class="wrap-logo" href="{{item.link}}" target="_blank" (contextmenu)="rightClick($event, 'siteinternet', key)">
+                            <img src="{{item.logo}}" alt="">
+                        </a>
+                        <div class="title">{{item.title}}</div>
+                    </div>
+                </article>
+            </ng-container>
         </section>
     </section>
 
@@ -86,7 +103,9 @@
         </div>
     </section>
     
-    <section id="section3" *ngIf="section===3"></section>
+    <section id="section3" *ngIf="section===3">
+        <div id="wrap-slogan" #wrapSlogan>{{ztabUser.slogan}}</div>
+    </section>
 
     <section id="section-forms" #section_form (click)="$event.stopPropagation()">
         <form *ngIf="reactiveForm !== null" [formGroup]="reactiveForm" (ngSubmit)="sendForm()">
@@ -141,7 +160,29 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="formType===2"></ng-container>
+            <ng-container *ngIf="formType===2">
+                <div class="mb-3">
+                    <label for="title">Nom</label>
+                    <input 
+                        pInputText 
+                        id="name"
+                        name="name"
+                        class="block h-8 w-full"
+                        formControlName="name"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="title">Slogan</label>
+                    <textarea 
+                        rows="1" 
+                        pInputTextarea 
+                        id="slogan"
+                        name="slogan"
+                        class="block w-full p-inputtext"
+                        formControlName="slogan">
+                    </textarea>
+                </div>
+            </ng-container>
 
             <ng-container *ngIf="formType===3">
                 <div class="mb-3">

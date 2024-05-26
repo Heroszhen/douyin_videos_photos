@@ -22,7 +22,6 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
   indexedDB_db:IDBDatabase;
   allCategorys: Array<ZTabCategory> = [];
   allTabs: Array<ZTab> = [];
-  displayedTabs: Array<ZTab> = [];
   ztabUser: ZTabUser = new ZTabUser();
   @ViewChild('ztabsection') ztabSection: ElementRef<HTMLElement>;
   elmIndex:number|null = null;
@@ -33,16 +32,17 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
   stateOptions: any[] = [{ label: 'Image Url', value: '1' },{ label: 'Upload Image', value: '2' }];
   stateValue: string = '2';
   photoUrl:string|null = null;
-  ztabUserM:ZTabUser;
+  userM:ZTabUser;
   webSiteM:Partial<ZTab>;
   categoryM: ZTabCategory;
   ztabM: ZTab;
   reactiveForm: FormGroup|null = null;
   @ViewChild('dropListContainerWebsite') dropListContainerWebsite?: ElementRef<HTMLElement>;
+  @ViewChild('dropListContainerWeblink') dropListContainerWeblink?: ElementRef<HTMLElement>;
   dropListReceiverElement?: HTMLElement;
   dragDropInfo?: {
-    dragIndex: Partial<ZTab>;
-    dropIndex: Partial<ZTab>;
+    dragIndex: Partial<ZTab>|ZTabCategory;
+    dropIndex: Partial<ZTab>|ZTabCategory;
   };
   date = {
     time:'',
@@ -56,6 +56,8 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('rightmenudiv') rightMenuDiv: ElementRef<HTMLDivElement>;
   categoryId:number;
   private keyDownlistener:any;
+  @ViewChild('wrapSlogan') wrapSlogan: ElementRef<HTMLDivElement>;
+  sloganTimer:number;
 
   constructor(private messageService:MessageService) {
     this.getDB();
@@ -78,6 +80,7 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     window.clearInterval(this.timer);
+    window.clearInterval(this.sloganTimer);
     window.removeEventListener('keydown', this.keyDownlistener, false);
     window.removeEventListener('resize', this.keyDownlistener, false);
   }
@@ -111,7 +114,7 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
       this.allCategorys.push(category);
     }
 
-    this.indexedDB.get(this.indexedDB.ZTAB_TAB, this.indexedDB_db).then((data:Array<object>) => {
+    this.indexedDB.get(this.indexedDB.ZTAB_TAB, this.indexedDB_db).then(async (data:Array<object>) => {
       this.allTabs = data as Array<ZTab>;
       this.setCategoryId(this.allCategorys[0]['id']);
     });
@@ -123,11 +126,10 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ztabSection.nativeElement.style.backgroundSize = `cover`;
   }
 
-  setCategoryId(id:number|null|undefined): void {
-    if(id !== null && id !== undefined)this.categoryId = id;
-    this.displayedTabs = [];
-    for(let entry of this.allTabs) {
-      if (entry.categoryId === id) this.displayedTabs.push(entry);
+  async setCategoryId(id:number|null|undefined): Promise<void> {
+    if(id !== null && id !== undefined) {
+      this.categoryId = id;
+      this.allTabs = sortArray(this.allTabs, 'order', 1, 1);
     }
   }
 
@@ -189,7 +191,12 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       case 2:
-        this.reactiveForm = new FormGroup({});
+        this.userM = new ZTabUser();
+        this.userM.assignData(this.ztabUser);
+        this.reactiveForm = new FormGroup({
+          name: new FormControl(this.userM["name"]),
+          slogan: new FormControl(this.userM["slogan"])
+        });
         this.photoUrl = this.ztabUser.backgroundPhoto ?? 'assets/photos/ad_loader.png';
         break;
       case 3:
@@ -238,7 +245,6 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       //focusout
       file = await getImageFileFromUrl((e.target as HTMLInputElement).value);
-      console.log(file)
     }
 
     if (file instanceof File)this.photoUrl = (await readFile(file))['target']['result'];
@@ -246,10 +252,9 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async deleteWeblink(index:number|null): Promise<void> {
     if (index !== null) {
-      let id:number = this.displayedTabs[index].id!;
+      let id:number = this.allTabs[index].id!;
       await this.indexedDB.remove(this.indexedDB.ZTAB_TAB, id, this.indexedDB_db);
       this.allTabs = this.allTabs.filter((tab:ZTab) => tab.id !== id);
-      this.displayedTabs.splice(index, 1);
       this.displayToast('Deleted');
     }
   }
@@ -269,6 +274,7 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setBackgroundPhoto();
         break;
       case 2:
+        Object.assign(this.ztabUser, this.reactiveForm?.value);
         this.ztabUser.backgroundPhoto = this.photoUrl;
         id = await this.ztabUserProvider();
         this.ztabUser = (await this.indexedDB.getById(this.indexedDB.ZTAB_USER, id, this.indexedDB_db) as ZTabUser);
@@ -319,7 +325,7 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   
-  async dragEnteredWebsite(event: CdkDragEnter<Partial<ZTab>>): Promise<void> {
+  async dragEnteredWebsite(event: CdkDragEnter<Partial<ZTab>>, obj:string = 'website'): Promise<void> {
     const drag = event.item;
     const dropList = event.container;
     const dragIndex = drag.data;
@@ -333,43 +339,90 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
     if (phElement) {
       phContainer.removeChild(phElement);
       phContainer.parentElement?.insertBefore(phElement, phContainer);
+      switch (obj) {
+        case "website":
+          this.allTabs.findIndex((entry:ZTab) => entry.id === dragIndex.id)
+          moveItemInArray(
+            this.ztabUser.webSites,
+            this.ztabUser.webSites.findIndex((entry:Partial<ZTab>) => entry.order === dragIndex.order),
+            this.ztabUser.webSites.findIndex((entry:Partial<ZTab>) => entry.order === dropIndex.order) 
+          );
+          break;
+        case "weblink":
+          this.allTabs.findIndex((entry:ZTab) => entry.id === dragIndex.id)
+          moveItemInArray(
+            this.allTabs, 
+            this.allTabs.findIndex((entry:ZTab) => entry.id === dragIndex.id),
+            this.allTabs.findIndex((entry:ZTab) => entry.id === dropIndex.id) 
+          );
+          break;
+        default:
+          break;
+      }
+      
     }    
   }
 
-  dragMovedWebsite(event: CdkDragMove<Partial<ZTab>>) {
-    if (!this.dropListContainerWebsite || !this.dragDropInfo) return;
+  dragMovedWebsite(event: CdkDragMove<Partial<ZTab>>, obj:string = 'website') {
+    if ((!this.dropListContainerWebsite && !this.dropListContainerWeblink) || 
+      !this.dragDropInfo) return;
     
-    const placeholderElement =
-      this.dropListContainerWebsite.nativeElement.querySelector(
-        '.cdk-drag-placeholder'
-      );
+      let placeholderElement:HTMLDivElement|undefined;
+      switch (obj) {
+        case "website":
+          placeholderElement =
+          this.dropListContainerWebsite?.nativeElement.querySelector(
+            '.cdk-drag-placeholder'
+          ) ?? undefined;
+          break;
+        case "weblink":
+          placeholderElement =
+          this.dropListContainerWeblink?.nativeElement.querySelector(
+            '.cdk-drag-placeholder'
+          ) ?? undefined;
+          break;
+        default:
+          break;
+    }
     const receiverElement =
       this.dragDropInfo.dragIndex.order ?? 0 > this.dragDropInfo.dropIndex.order! ?? 0
         ? placeholderElement?.nextElementSibling
         : placeholderElement?.previousElementSibling;
-
     if (!receiverElement) {
       return;
     }
 
-    // (receiverElement as HTMLElement).style.display = 'none';
+    // // (receiverElement as HTMLElement).style.display = 'none';
+    // this.dropListReceiverElement = (receiverElement as HTMLElement);
+    //(receiverElement as HTMLElement).style.display = 'none';
     this.dropListReceiverElement = (receiverElement as HTMLElement);
   }
 
-  async dragDroppedWebsite(event: CdkDragDrop<Partial<ZTab>>) {
+  async dragDroppedWebsite(event: CdkDragDrop<Partial<ZTab>>, obj:string = 'website'): Promise<void> {
     if (!this.dropListReceiverElement) {
       return;
     }
 
-    moveItemInArray(this.ztabUser.webSites, this.dragDropInfo?.dragIndex.order ?? 0, this.dragDropInfo?.dropIndex.order ?? 0);
-    await this.ztabUserProvider();
+    switch (obj) {
+      case "website":
+        // moveItemInArray(this.ztabUser.webSites, this.dragDropInfo?.dragIndex.order ?? 0, this.dragDropInfo?.dropIndex.order ?? 0);
+        //await this.ztabUserProvider();
+        break;
+      case "weblink":
+        // moveItemInArray(this.allTabs, this.dragDropInfo?.dragIndex.order ?? 0, this.dragDropInfo?.dropIndex.order ?? 0);
+        await this.ztabTabProvider();
+        break;
+      default:
+        break;
+    }
+   
 
     this.dropListReceiverElement.style.removeProperty('display');
     this.dropListReceiverElement = undefined;
     this.dragDropInfo = undefined;
   }
 
-  setOrder(tab:Array<Partial<ZTab>|ZTabCategory>): Array<Partial<ZTab>|ZTabCategory> {
+  setOrder(tab:Array<Partial<ZTab>>): Array<Partial<ZTab>> {
     for(let index in tab) {
       tab[index]['order'] = parseInt(index);
     }
@@ -386,8 +439,19 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async ztabCategopryProvider(): Promise<void> {
     this.allCategorys = this.setOrder(this.allCategorys) as ZTabCategory[];
-    this.indexedDB.update(this.indexedDB.ZTAB_CATEGORY, this.allCategorys, this.indexedDB_db);
+    await this.indexedDB.update(this.indexedDB.ZTAB_CATEGORY, this.allCategorys, this.indexedDB_db);
     this.allCategorys = sortArray(this.allCategorys, 'order', 1, 1);
+  }
+
+  async ztabTabProvider(): Promise<void> {
+    let order:number = 0;
+    for(let index in this.allTabs) {
+      if (this.allTabs[index].categoryId === this.categoryId) {
+        this.allTabs[index].order = order;
+        order++;
+      }
+    }
+    this.allTabs.forEach(async (entry:ZTab) => this.indexedDB.update(this.indexedDB.ZTAB_TAB, entry, this.indexedDB_db))
   }
 
 
@@ -452,7 +516,9 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  listenToKeydown(e: KeyboardEvent|Event): void {
+  async listenToKeydown(e: KeyboardEvent|Event): Promise<void> {
+    const getRandomInt = (max:number):number => Math.floor(Math.random() * max + 1);
+
     if (e instanceof KeyboardEvent) {
       if (this.section === 3) {
         e.preventDefault();
@@ -460,11 +526,29 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
         if (e.ctrlKey && e.key === 'z') {
           this.section = 1;
           this.openFullScreen(false);
+          window.clearInterval(this.sloganTimer)
         }
       } else {
         if (e.ctrlKey && e.key === 'z') {
           this.section = 3;
           this.openFullScreen(true);
+          
+          await wait(0.4);
+          let slogan:HTMLDivElement = this.wrapSlogan.nativeElement;
+          let sloganSpeed = 50;
+          let sloganLeft = slogan.clientWidth * -1;
+          slogan.style.left = sloganLeft + "px";
+          slogan.style.width = slogan.clientWidth + "px";
+          this.sloganTimer = window.setInterval(() => {
+            sloganLeft += sloganSpeed;
+            slogan.style.left = sloganLeft + "px";
+            if (sloganLeft > window.innerWidth + slogan.clientWidth) {
+              let top = getRandomInt(window.innerHeight);
+              slogan.style.top = top + "px";
+              sloganLeft = slogan.clientWidth * -1;
+              slogan.style.left = sloganLeft + "px";
+            }
+          }, 100);
         }
       }
     } else {

@@ -318,6 +318,15 @@ app-videos{
     }
 }
 
+.cdk-drag.weblink-wrap, .cdk-drag.weblink {
+    .wrap-logo {
+        border-radius: 20px;
+        img {
+            width:72px !important; 
+        }
+    }
+}
+
 // primeng
 $primeng_padding: 0.3rem 0.7rem;
 
