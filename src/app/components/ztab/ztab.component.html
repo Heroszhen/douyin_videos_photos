@@ -233,9 +233,6 @@
                         class="block h-8 w-full"
                         formControlName="link"
                     />
-                    <small id="username-help">
-                        exemple: https://www.google.com/search?q=
-                    </small>
                     <div *ngIf="reactiveForm.get('link')?.touched && reactiveForm.get('link')?.invalid" class="mt-1">
                         <div *ngIf="reactiveForm.get('link')?.hasError('required')" class="alert">
                             The link is required

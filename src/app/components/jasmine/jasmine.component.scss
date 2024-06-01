@@ -40,6 +40,9 @@
     border-radius: 50%;
     background: transparent;
     border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media (max-width:992px) {

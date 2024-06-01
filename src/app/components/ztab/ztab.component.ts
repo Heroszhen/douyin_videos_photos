@@ -147,9 +147,9 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   canDeleteCategory(index:number|null): boolean {
-    if (this.allCategorys.length < 2)return false;
+    if (this.allCategorys.length < 2 || index === null)return false;
 
-    let id:number|undefined = this.allCategorys[index ?? -1].id;
+    let id:number|undefined = this.allCategorys[index].id;
     for(let entry of this.allTabs) {
       if (entry.categoryId === id)return false;
     }

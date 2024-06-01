@@ -18,7 +18,10 @@
     </div>
 </section>
 
-<div id="btn-section" class="pointer" (click)="switchSection()"></div>
+<div id="btn-section" class="pointer" (click)="switchSection()">
+    <i class="bi bi-images" *ngIf="section===1"></i>
+    <i class="bi bi-film" *ngIf="section===2"></i>
+</div>
 
 <div class="loader modal flex justify-center items-start" id="section-jasmine-modal" *ngIf="photoIndex !== null" (dblclick)="photoIndex=null">
     <img src="{{allPhotos[photoIndex]['url']}}">

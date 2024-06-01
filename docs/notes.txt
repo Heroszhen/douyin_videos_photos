@@ -2,3 +2,8 @@
 https://www.syt5.com/guniangtag/
 
 //https://github.com/avmaisak/ngx-bootstrap-icons
+
+
+---problèmes: 
+-weblink 
+border-radius sur les photos rectangulaires
