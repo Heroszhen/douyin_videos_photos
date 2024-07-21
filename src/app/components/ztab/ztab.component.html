@@ -324,6 +324,15 @@
                     </select>
                 </div>
                 <div class="mb-4" *ngIf="form1.action==='2'">
+                    <label for="category-id">Category</label><br>
+                    <select name="category-id" id="category-id" #categoryId="ngModel" [(ngModel)]="form1.categoryId">
+                        <option value="" checked>Please choose an option</option>
+                        <ng-container *ngFor="let item of allCategorys">
+                            <option value="{{item.id}}">{{item.title}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <div class="mb-4" *ngIf="form1.action==='2'">
                     <label for="file">CSV*</label><br>
                     <input type="file" name="file" id="file" (change)="handleForm1File($event)">
                 </div>

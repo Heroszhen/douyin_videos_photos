@@ -9,6 +9,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { CdkDragDrop, CdkDragEnter, CdkDragMove, moveItemInArray } from "@angular/cdk/drag-drop";
 import * as moment from 'moment';
+import { ZTabExportImport } from 'src/app/models/ZTabExportImport';
+import { Model } from 'src/app/models/model';
 
 @Component({
   selector: 'app-ztab',
@@ -60,11 +62,7 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
   sloganTimer:number;
   @ViewChild('dialog') dialog: ElementRef<HTMLDialogElement>;
   modalForm:number|null = null;
-  form1 = {
-    action: '1',//1: export, 2: import
-    table:'',
-    file: null
-  }
+  form1:ZTabExportImport = new ZTabExportImport();
 
   constructor(private messageService:MessageService) {
     this.getDB();
@@ -155,8 +153,9 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
 
   canDeleteCategory(index:number|null): boolean {
     if (this.allCategorys.length < 2 || index === null)return false;
+    if (this.allCategorys[index] === undefined)return false;
 
-    let id:number|undefined = this.allCategorys[index].id;
+    let id:number = this.allCategorys[index].id as number;
     for(let entry of this.allTabs) {
       if (entry.categoryId === id)return false;
     }
@@ -166,12 +165,10 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async deleteCategory(index:number|null): Promise<void> {
     if (index !== null) {
-      let id:number|undefined = this.allCategorys[index ?? -1].id;
-      if (id !== undefined) {
-        await this.indexedDB.remove(this.indexedDB.ZTAB_CATEGORY, id);
-        this.allCategorys.splice(index, 1);
-        this.displayToast('Deleted');
-      }
+      let id:number = this.allCategorys[index].id as number;
+      await this.indexedDB.remove(this.indexedDB.ZTAB_CATEGORY, id);
+      this.allCategorys.splice(index, 1);
+      this.displayToast('Deleted');
     }
   }
 
@@ -573,23 +570,20 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (form === 1) {
-      this.form1 = {
-        action: '1',
-        table : '',
-        file : null
-      }
+      this.form1 = new ZTabExportImport();
     }
 
     this.dialog.nativeElement.showModal();
   }
 
   handleForm1File(event:Event) {
-    console.log(event)
+    let file: File = (event.target as HTMLInputElement).files?.item(0) as File;
+    if(file.type === 'text/csv') this.form1.file = file;
   }
 
-  submitForm1() {
+  async submitForm1(): Promise<void> {
     if (this.form1.action === '1') {
-      const convertTabToString = (tab:any[]) => {
+      const convertTabToString = (tab:any[]):string => {
         let str:string = "";
         let rowIndex:number = 0;
         let titlesTab:string [], dataTab: any[];
@@ -623,7 +617,39 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (this.form1.action === '2') {
-      
+      let reader = new FileReader();
+      reader.readAsText(this.form1.file as Blob);
+      reader.onload = async (e: ProgressEvent<FileReader>) => {
+        let result:string = e.target?.result as string;
+        if (result !== '') {
+          function merge<T extends Model>(ob:T, header:string[], data:string[]):T {
+            let tmpOb:any = {};
+            for(let i = 0; i < header.length; i++) {
+              tmpOb[header[i]] = data[i];
+            }
+            ob.assignData(tmpOb);
+            return ob;
+          }
+          
+          let tab:string[] = result.split('\n');
+          let header:string[] = tab.shift()?.split('|') as string[];
+          let ob:ZTab|ZTabCategory;
+          for(let entry of tab) {
+            if(entry === '')continue;
+            if (this.form1.table === 'category')ob = new ZTabCategory;
+            else ob = new ZTab();
+            ob = merge(ob, header, entry.split('|') as string[]);
+            if (this.form1.table === 'website' && this.form1.categoryId !== '')(ob as ZTab).categoryId = parseInt(this.form1.categoryId);
+            delete ob.id;
+
+            if (this.form1.table === 'category')await this.indexedDB.add(this.indexedDB.ZTAB_CATEGORY, ob)
+            else await this.indexedDB.add(this.indexedDB.ZTAB_TAB, ob)
+          }
+
+          await this.getDB();
+          this.displayToast('Imported');
+        }
+      };
     }
   }
 }
