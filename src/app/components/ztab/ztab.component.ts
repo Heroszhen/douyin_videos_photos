@@ -58,6 +58,13 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
   private keyDownlistener:any;
   @ViewChild('wrapSlogan') wrapSlogan: ElementRef<HTMLDivElement>;
   sloganTimer:number;
+  @ViewChild('dialog') dialog: ElementRef<HTMLDialogElement>;
+  modalForm:number|null = null;
+  form1 = {
+    action: '1',//1: export, 2: import
+    table:'',
+    file: null
+  }
 
   constructor(private messageService:MessageService) {
     this.getDB();
@@ -555,6 +562,68 @@ export class ZtabComponent implements OnInit, AfterViewInit, OnDestroy {
       if (document.fullscreenElement === null && this.section === 3) {
         this.openFullScreen(true);
       }
+    }
+  }
+
+  toggleModal(toOpen:boolean = true, form:number|null = null) {
+    this.modalForm = form;
+    if (!toOpen) {
+      this.dialog.nativeElement.close();
+      return;
+    }
+
+    if (form === 1) {
+      this.form1 = {
+        action: '1',
+        table : '',
+        file : null
+      }
+    }
+
+    this.dialog.nativeElement.showModal();
+  }
+
+  handleForm1File(event:Event) {
+    console.log(event)
+  }
+
+  submitForm1() {
+    if (this.form1.action === '1') {
+      const convertTabToString = (tab:any[]) => {
+        let str:string = "";
+        let rowIndex:number = 0;
+        let titlesTab:string [], dataTab: any[];
+        for(let ob of tab) {
+          titlesTab = [];
+          dataTab = [];
+          for(let index in ob) {
+            if (rowIndex === 0) {
+              titlesTab.push(index);
+            }
+            dataTab.push(ob[index]);
+          }
+          if (rowIndex === 0){
+            str += titlesTab.join('|') + '\n';
+          }
+          str += dataTab.join('|') + '\n';
+          rowIndex++;
+        }
+
+        return str;
+      }
+      
+      let data:string = convertTabToString(this.form1.table === 'category' ? this.allCategorys : this.allTabs);
+      const aTag = document.createElement('a');
+      const blob = new Blob(['\uFEFF', data], {type: 'text/csv'});
+      aTag.download = this.form1.table === 'category' ? 'categorys.csv' : 'websites.csv';
+      aTag.href = URL.createObjectURL(blob);
+      aTag.click();
+      URL.revokeObjectURL(aTag.href);
+      aTag.remove();
+    }
+
+    if (this.form1.action === '2') {
+      
     }
   }
 }

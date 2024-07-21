@@ -36,6 +36,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,9 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     SelectButtonModule,
     ToastModule,
     DragDropModule,
-    DropdownModule
+    DropdownModule,
+    InputTextareaModule,
+    RadioButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent],

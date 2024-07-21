@@ -107,7 +107,7 @@
         <div id="wrap-slogan" #wrapSlogan>{{ztabUser.slogan}}</div>
     </section>
 
-    <section id="section-forms" #section_form (click)="$event.stopPropagation()">
+    <section id="section-forms" #section_form (click)="$event.stopPropagation()" (contextmenu)="$event.stopPropagation();$event.preventDefault()">
         <form *ngIf="reactiveForm !== null" [formGroup]="reactiveForm" (ngSubmit)="sendForm()">
             <section class="wrap-title">
                 <div>
@@ -296,6 +296,45 @@
     <p-toast></p-toast>
 </section>
 
+<dialog #dialog (contextmenu)="$event.stopPropagation();$event.preventDefault()">
+    <div class="wrap">
+        <div class="icon-close" (click)="toggleModal(false)">x</div>
+        <section *ngIf="modalForm===1">
+            <h4 class="mb-2">Export or Import</h4>
+            <form #form1Form="ngForm" (ngSubmit)="submitForm1()">
+                <div class="mb-4">
+                    <label>Action*</label>
+                    <div class="flex align-item-center">
+                        <div class="me-3">
+                            <input type="radio" id="action-export" name="action" value="1" checked [(ngModel)]="form1.action" />
+                            <label for="action-export">Export</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="action-import" name="action" value="2" [(ngModel)]="form1.action" />
+                            <label for="action-import">Import</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="table">Table*</label><br>
+                    <select name="table" id="table" #table="ngModel" [(ngModel)]="form1.table" required>
+                        <option value="">Please choose an option</option>
+                        <option value="category">Category</option>
+                        <option value="website">Website</option>
+                    </select>
+                </div>
+                <div class="mb-4" *ngIf="form1.action==='2'">
+                    <label for="file">CSV*</label><br>
+                    <input type="file" name="file" id="file" (change)="handleForm1File($event)">
+                </div>
+                <div>
+                    <p-button label="Submit" type="sumbit" size="small" class="ok" [disabled]="form1Form.form.invalid || (form1.action==='2'&&form1.file===null)"></p-button>
+                </div>
+            </form>
+        </section>
+    </div>
+</dialog>
+
 <div id="right-menu" #rightmenudiv (contextmenu)="$event.stopPropagation();$event.preventDefault()" [ngClass]="{'hidden': rightMenu === false}" (click)="rightMenu=false">
     <div class="menu-item" (click)="switchSectionForm(2, null)">Edit background image</div>
     <div class="menu-item" [ngClass]="{'hidden': rightMenuExtraAction !=='website'}" (click)="switchSectionForm(1, elmIndex)" >Edit search engine</div>
@@ -306,6 +345,7 @@
     <div class="menu-item" (click)="switchSectionForm(4, null)">Add site internet</div>
     <div class="menu-item" [ngClass]="{'hidden': rightMenuExtraAction !=='siteinternet'}" (click)="switchSectionForm(4, elmIndex)">Edit site internet</div>
     <div class="menu-item" [ngClass]="{'hidden': rightMenuExtraAction !=='siteinternet'}" (click)="deleteWeblink(elmIndex)">Delete site internet</div>
+    <div class="menu-item" (click)="toggleModal(true, 1)">Export or Import</div>
     <div class="menu-item" (click)="gotoPortfolio()">Qui est Zhen</div>
     <div class="menu-item">Contact</div>
 </div>
