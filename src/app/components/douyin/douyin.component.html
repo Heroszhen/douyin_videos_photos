@@ -11,4 +11,17 @@
     </article>
 </section>
 
+<section id="wrap-video" *ngIf="vid !== null">
+    <div class="wrap-iframe">
+        <iframe
+            [src]="vid | safe:'resourceUrl'"
+            referrerpolicy="unsafe-url"
+            allowfullscreen
+        ></iframe>
+    </div>
+    <div class="back">
+        <i class="bi bi-backspace-fill" (click)="vid=null"></i>
+    </div>
+</section>
+
 <app-alert #alert></app-alert>

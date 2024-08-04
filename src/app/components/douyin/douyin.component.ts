@@ -14,6 +14,7 @@ export class DouyinComponent implements OnInit {
   videos:IVideo[] = [];
   pageItem:number = 1;
   canCharge:boolean = false;
+  vid:string|null = null;
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
@@ -49,7 +50,13 @@ export class DouyinComponent implements OnInit {
   }
 
   openOriginalSite(index:number): void {
-    window.open(this.videos[index]["videourl"], "douyin", `toolbar=yes,scrollbars=yes,resizable=yes,top=5,left=5,width=${window.innerWidth - 10},height=${window.innerHeight- 10}`);
-  }
+    // window.open(this.videos[index]["videourl"], "douyin", `toolbar=yes,scrollbars=yes,resizable=yes,top=5,left=5,width=${window.innerWidth - 10},height=${window.innerHeight- 10}`);
 
+    //https://open.douyin.com/player/video?vid={{}}&autoplay=1
+    const regex = /\d*$/;
+    const found:RegExpMatchArray | null = this.videos[index]["videourl"].match(regex);
+    if (found !== null) {
+      this.vid = `https://open.douyin.com/player/video?vid=${found[0]}&autoplay=1`;
+    }
+  }
 }
