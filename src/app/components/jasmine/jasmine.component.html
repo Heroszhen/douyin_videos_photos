@@ -18,9 +18,15 @@
     </div>
 </section>
 
-<div id="btn-section" class="pointer" (click)="switchSection()">
-    <i class="bi bi-images" *ngIf="section===1"></i>
-    <i class="bi bi-film" *ngIf="section===2"></i>
+<section *ngIf="section==3" class="component" id="section-jasmine" [ngClass]="{'hidden': section !== 3}">
+
+</section>
+
+<div id="btn-section"> 
+    <i class="bi bi-toggles" [ngClass]="{'active': activedBtnSection}" (click)="activedBtnSection=activedBtnSection?false:true"></i>
+    <i class="bi bi-images mt-3" (click)="switchSection(1)"></i>
+    <i class="bi bi-film mt-3" (click)="switchSection(2)"></i>
+    <i class="bi bi-grid-3x3-gap"  (click)="switchSection(3)"></i>
 </div>
 
 <div class="loader modal flex justify-center items-start" id="section-jasmine-modal" *ngIf="photoIndex !== null" (dblclick)="photoIndex=null">

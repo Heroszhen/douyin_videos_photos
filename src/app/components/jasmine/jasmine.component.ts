@@ -4,14 +4,20 @@ import { IApiPlatform } from 'src/app/interfaces/IData';
 import { ApiService } from 'src/app/services/api.service';
 import env from '../../../assets/env.local.json';
 
+interface IVideo {
+  updated:string,
+  url:string,
+  name:string
+}
+
 @Component({
   selector: 'app-jasmine',
   templateUrl: './jasmine.component.html',
   styleUrls: ['./jasmine.component.scss']
 })
 export class JasmineComponent implements OnInit {
-  allPhotos: {url:string}[] = [];
-  allVideos: {url:string}[] = [];
+  allPhotos: IVideo[] = [];
+  allVideos: IVideo[] = [];
   section:number = 2;
   photoIndex:number|null = null;
   public masonryOptions: NgxMasonryOptions = {
@@ -19,7 +25,8 @@ export class JasmineComponent implements OnInit {
 		initLayout: true
 	};
   @ViewChildren('jasminvideo') jasmineVideos:QueryList<ElementRef<HTMLVideoElement>>;
-  videoCounter:number = 5;
+  videoCounter:number = 15;
+  activedBtnSection: boolean = false;
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
@@ -27,8 +34,8 @@ export class JasmineComponent implements OnInit {
   }
 
   getJasmine(): void {
-    let response:string|null = prompt("Who is zhen ?");
-    if (response?.toLowerCase().trim() === env['zhen']['response'].toLowerCase().trim()) {
+    // let response:string|null = prompt("Who is zhen ?");
+    // if (response?.toLowerCase().trim() === env['zhen']['response'].toLowerCase().trim()) {
       this.apiService.getGetJasmine('photos').subscribe({
         next: (data:IApiPlatform & {'hydra:member':{url:string}[]})=>{
           this.allPhotos = data['hydra:member'];
@@ -37,17 +44,20 @@ export class JasmineComponent implements OnInit {
       this.apiService.getGetJasmine('videos').subscribe({
         next: (data:IApiPlatform & {'hydra:member':{url:string}[]})=>{
           this.allVideos = data['hydra:member'];
+          this.allVideos.sort((a: IVideo, b: IVideo) => {
+            return new Date(b["updated"]).getTime() - new Date(a["updated"]).getTime();
+          });
         }
       });
-    }
+    // }
   }
 
-  switchSection(): void {
-    if (this.section === 1)this.section = 2;
-    else {
+  switchSection(s:number): void {
+    if (this.section === 2 && s !== 2) {
       this.section = 1;
       document.querySelectorAll('video').forEach((video:HTMLElement) => (video as HTMLVideoElement).pause());
     }
+    this.section = s;
   }
 
   wheelVideos(e:WheelEvent): void {
@@ -58,6 +68,7 @@ export class JasmineComponent implements OnInit {
       this.setVideosUrl(id);
     }
   }
+
   scrollVideos(e:Event): void {
     if (this.section === 2) {
       const video:HTMLVideoElement = document.getElementById('video-0') as HTMLVideoElement;
