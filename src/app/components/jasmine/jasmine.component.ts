@@ -34,8 +34,8 @@ export class JasmineComponent implements OnInit {
   }
 
   getJasmine(): void {
-    // let response:string|null = prompt("Who is zhen ?");
-    // if (response?.toLowerCase().trim() === env['zhen']['response'].toLowerCase().trim()) {
+    let response:string|null = prompt("Who is zhen ?");
+    if (response?.toLowerCase().trim() === env['zhen']['response'].toLowerCase().trim()) {
       this.apiService.getGetJasmine('photos').subscribe({
         next: (data:IApiPlatform & {'hydra:member':{url:string}[]})=>{
           this.allPhotos = data['hydra:member'];
@@ -49,7 +49,7 @@ export class JasmineComponent implements OnInit {
           });
         }
       });
-    // }
+    }
   }
 
   switchSection(s:number): void {
